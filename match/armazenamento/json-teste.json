@@ -1,0 +1,13 @@
+
+{
+    "animais":[
+                {"cachorros":
+                            {
+                                "rex":{"dados de rex"},
+                                "thor":{"dados de thor"}
+                            }},
+                {"gatos":{
+                                "mel":{"dados de mel"}
+                }}
+    ]
+}
