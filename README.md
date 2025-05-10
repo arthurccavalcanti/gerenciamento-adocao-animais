@@ -1,3 +1,8 @@
+# TO DO
+- [ ] CRUD perfis
+- [ ] interface CLI
+- [ ] integrar main com outros arquivos
+
 # ESTRUTURA:
 
 ```
