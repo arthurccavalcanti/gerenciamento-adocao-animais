@@ -1,5 +1,11 @@
+# TO DO
+- [ ] CRUD perfis
+- [ ] interface CLI
+- [ ] integrar main com outros arquivos
+
 # ESTRUTURA:
 
+```
 adocao-animais/
 ├── main.py                  
 ├── perfis/
@@ -25,8 +31,10 @@ adocao-animais/
 ├── config.py                 
 ├── requirements.txt          
 └── README.md
-
+```
 # FLUXO DE PROGRAMA:
 
+```
 main -> CLI/GUI -> Input usuário -> Adicionar/Editar/Deletar/Ler -> Perfis -> Armazenamento (leitura/escrita no json) -> Perfis -> main -> CLI/GUI
 main -> CLI/GUI -> Input usuário -> Adicionar/Editar/Deletar/Ler -> Match -> Armazenamento (leitura no json) -> Match -> main -> CLI/GUI
+```
