@@ -1,21 +1,11 @@
 import json
 import re
+import sys
+sys.path.append(r"C:\Users\Casa\gerenciamento-adocao-animais")
+from armazenamento.armazenamento_json import criar_entrada, ler_entrada, editar_entrada, deletar_entrada
 
+CAMINHO_ARQUIVO = "json-test.json"
 
-CAMINHO_ARQUIVO = "adotantes.json"
-
-
-def carregar_dados():
-    try:
-        with open(CAMINHO_ARQUIVO, "r") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return []
-
-
-def salvar_dados(adotantes):
-    with open(CAMINHO_ARQUIVO, "w") as f:
-        json.dump(adotantes, f, indent=4)
 
 
 def validar_cpf(cpf):
@@ -30,6 +20,21 @@ def validar_idade(idade):
 
 def validar_contato(contato):
     return contato.isdigit()
+
+
+def carregar_dados():
+     try:
+         with open(CAMINHO_ARQUIVO, "r") as f:
+             return json.load(f)
+     except FileNotFoundError:
+         return [] 
+     
+
+
+def salvar_dados(adotantes):
+    with open(CAMINHO_ARQUIVO, "w") as f:
+        json.dump(adotantes, f, indent=4)
+
 
 
 def cadastrar_adotante(adotantes):
@@ -54,7 +59,7 @@ def cadastrar_adotante(adotantes):
             continue
 
         adotante = {
-            "cpf": cpf,
+            "id": cpf,
             "nome": nome,
             "idade": int(idade),
             "profissao": profissao,
@@ -62,80 +67,15 @@ def cadastrar_adotante(adotantes):
             "contato": contato
         }
 
-        adotantes.append(adotante)
-        salvar_dados(adotantes)
-        print("Adotante cadastrado com sucesso!")
+        criar_entrada(adotante, "json-test.json")
         break
+        
 
 
-def listar_adotantes(adotantes):
-    if not adotantes:
-        print("Nenhum adotante cadastrado.")
-    else:
-        for adotante in adotantes:
-            print(f"Nome: {adotante['nome']}, CPF: {adotante['cpf']}, Profissão: {adotante['profissao']}")
+def listar_adotantes_por_cpf():
+    cpf = input("Digite o cpf do adotante")
+    adotante = ler_entrada(cpf,"json-test.json")
+    if isinstance(adotante,dict):
+        print(adotante)
 
 
-def atualizar_adotante(adotantes):
-    cpf = input("Informe o CPF do adotante a ser atualizado: ")
-    for adotante in adotantes:
-        if adotante['cpf'] == cpf:
-            adotante["nome"] = input("Novo nome: ")
-            adotante["idade"] = input("Nova idade: ")
-            if not validar_idade(adotante["idade"]):
-                print("Idade inválida! Deve ser um número inteiro positivo.")
-                return
-
-            adotante["profissao"] = input("Nova profissão: ")
-            adotante["endereco"] = input("Novo endereço: ")
-            adotante["contato"] = input("Novo contato (somente números): ")
-            if not validar_contato(adotante["contato"]):
-                print("Contato inválido! Deve conter apenas números.")
-                return
-
-            salvar_dados(adotantes)
-            print("Adotante atualizado com sucesso!")
-            return
-    print("Adotante não encontrado!")
-
-
-def excluir_adotante(adotantes):
-    cpf = input("Informe o CPF do adotante a ser excluído: ")
-    for adotante in adotantes:
-        if adotante['cpf'] == cpf:
-            adotantes.remove(adotante)
-            salvar_dados(adotantes)
-            print("Adotante excluído com sucesso!")
-            return
-    print("Adotante não encontrado!")
-
-
-def menu():
-    adotantes = carregar_dados()
-
-    while True:
-        print("\n===== MENU =====")
-        print("1. Cadastrar adotante")
-        print("2. Listar adotantes")
-        print("3. Atualizar adotante")
-        print("4. Excluir adotante")
-        print("5. Sair")
-        opcao = input("Escolha uma opção: ")
-
-        if opcao == "1":
-            cadastrar_adotante(adotantes)
-        elif opcao == "2":
-            listar_adotantes(adotantes)
-        elif opcao == "3":
-            atualizar_adotante(adotantes)
-        elif opcao == "4":
-            excluir_adotante(adotantes)
-        elif opcao == "5":
-            print("Saindo...")
-            break
-        else:
-            print("Opção inválida! Tente novamente.")
-
-
-if __name__ == "__main__":
-    menu()
