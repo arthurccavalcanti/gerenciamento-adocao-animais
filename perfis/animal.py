@@ -1,16 +1,28 @@
-'''
-SUGESTÃO PARA USAR CLASSES E MÉTODOS.
+import json
+import os
 
-EXEMPLO:
+arquivo = os.path.join(os.path.dirname(__file__), 'pets_teste.json')
 
-from armazenamento.armazenamento-json import funcao_salvar, funcao_ler
+def carregar_pets():
+  if not os.path.exists(arquivo):
+    with open(arquivo, 'w') as f:
+      json.dump([], f, indent=4)
+      return []
+    
+  with open(arquivo, 'r') as f:
+    return json.load(f)
 
+def listar_pets():
+    pets = carregar_pets()
 
-class Animal:
-    def __init__(self, id, nome, especie, idade, adotado=False):
-        self.id = id
-        self.nome = nome
-        self.especie = especie
-        self.idade = idade
-        self.adotado = adotado
-'''
+    if pets:
+        print("=" * 50)
+        print("LISTA DE Pets:")
+        print("-" * 50)
+        for pet in pets:
+            print("*" * 50)
+            print(f"ID: {pet['id']}, TIPO: {pet['tipo']}, NOME: {pet['nome']}, IDADE: {pet['idade']}, SEXO: {pet['sexo']}, PERSONALIDADE: {pet['personalidade']}, HISTÓRICO: {pet['historico']}, RAÇA: {pet['raca']}, COR: {pet['cor']}, PORTE: {pet['porte']}")
+            print("*" * 50)
+            print("=" * 50)
+    else:
+        print("NENHUM PET CADASTRADO.")
