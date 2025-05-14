@@ -27,3 +27,8 @@ def listar_pets():
             print("=" * 50)
     else:
         print("NENHUM PET CADASTRADO.")
+
+def seus_pets(responsavel):
+    pets = carregar_pets()
+    pets_responsavel = [pet for pet in pets if pet.get('responsavel') == responsavel]
+    return pets_responsavel
