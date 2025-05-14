@@ -2,6 +2,7 @@
 *.env
 venv/
 __pycache__/
+*.pyc
 
 # COMENTARIOS
 # * - matches 0 or more characters

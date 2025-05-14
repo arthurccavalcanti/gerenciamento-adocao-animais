@@ -1,59 +1,32 @@
-import json
-import os
-from time import sleep
+from armazenamento import armazenamento_json as armazenamento
 
-arquivo = os.path.join(os.path.dirname(__file__), 'pets.json')
 
-def carregar_pets():
-    if not os.path.exists(arquivo):
-        with open(arquivo, 'w') as f:
-            json.dump([], f, indent=4)
-
-    with open(arquivo, 'r') as f:
-        try:
-            conteudo = f.read().strip()
-            if not conteudo:
-                return []
-            return json.loads(conteudo)
-        except json.JSONDecodeError:
-            print("Arquivo JSON corrompido. Redefinindo...")
-            return []
-
-def salvar_pets(pets):
-    with open(arquivo, 'w') as f:
-        json.dump(pets, f, indent=4, ensure_ascii=False)
-
-def gerar_novo_id(pets):
-    if not pets:
+def gerar_novo_id(animais_json):
+    if not animais_json:
         return 1
-    return max(pet['id'] for pet in pets) + 1
+    return max(pet['id'] for pet in animais_json) + 1
 
-def menu_inicial():
-    print("=")
-    print(" ---->>> BEM VINDO AO SISTEMA ADOÇÃO DE PETS <<<---- ")
-    print("          1 - VER PETS ")
-    print("          2 - ...")
-    print("          3 - SAIR  ")
-    print("=")
 
 def adicionar_pet():
-    pets = carregar_pets()
-    novo_id = gerar_novo_id(pets)
+    pets = {}
+    animais_json = armazenamento.carregar_arquivo('animais.json')
+    
+    pets['id'] = gerar_novo_id(animais_json)
 
     print("TIPO DO PET:")
     print("1 - Canino")
     print("2 - Felino")
     tipo_opcao = input(">>> ")
-    tipo = "canino" if tipo_opcao == "1" else "felino" if tipo_opcao == "2" else "não especificado"
+    pets['tipo'] = "canino" if tipo_opcao == "1" else "felino" if tipo_opcao == "2" else "não especificado"
 
-    nome = input("NOME DO PET:\n>>> ")
-    idade = input("IDADE:\n>>> ")
+    pets['nome'] = input("NOME DO PET:\n>>> ")
+    pets['idade'] = input("IDADE:\n>>> ")
 
     print("SEXO:")
     print("1 - Macho")
     print("2 - Fêmea")
     sexo_opcao = input(">>> ")
-    sexo = "M" if sexo_opcao == "1" else "F" if sexo_opcao == "2" else "Não especificado"
+    pets['sexo'] = "M" if sexo_opcao == "1" else "F" if sexo_opcao == "2" else "Não especificado"
 
     print("PERSONALIDADE:")
     print("1 - Brincalhão")
@@ -67,7 +40,7 @@ def adicionar_pet():
         "3": "Protetor",
         "4": "Dócil"
     }
-    personalidade = opcoes_personalidade.get(personalidade_opcao, "não especificado")
+    pets['personalidade'] = opcoes_personalidade.get(personalidade_opcao, "não especificado")
 
     print("HISTÓRICO VETERINÁRIO/VACINAL:")
     print("1 - Tudo em dia")
@@ -77,10 +50,10 @@ def adicionar_pet():
         "1": "Tudo em dia",
         "2": "Faltando"
     }
-    historico = opcoes_historico.get(historico_opcao, "não especificado")
+    pets['historico'] = opcoes_historico.get(historico_opcao, "não especificado")
 
-    raca = input("RAÇA:\n>>> ")
-    cor = input("COR PREDOMINANTE:\n>>> ")
+    pets['raca'] = input("RAÇA:\n>>> ")
+    pets['cor'] = input("COR PREDOMINANTE:\n>>> ")
 
     print("PORTE:")
     print("1 - Pequeno")
@@ -92,36 +65,21 @@ def adicionar_pet():
         "2": "médio",
         "3": "grande"
     }
-    porte = opcoes_porte.get(porte_opcao, "não especificado")
+    pets['porte'] = opcoes_porte.get(porte_opcao, "não especificado")
 
-    pets.append({
-        'id': novo_id,
-        'tipo': tipo,
-        'nome': nome,
-        'idade': idade,
-        'sexo': sexo,
-        'personalidade': personalidade,
-        'historico': historico,
-        'raca': raca,
-        'cor': cor,
-        'porte': porte
-    })
-
-    salvar_pets(pets)
+    armazenamento.criar_entrada(pets, 'animais.json')
     print("PET ADICIONADO COM SUCESSO!\n")
 
+    return 0
+
+
 def atualizar_pet(id_pet):
-    pets = carregar_pets()
-    pet_encontrado = None
 
-    for pet in pets:
-        if pet['id'] == id_pet:
-            pet_encontrado = pet
-            break
+    pet = armazenamento.ler_entrada(id_pet, 'id', 'animais.json')
 
-    if not pet_encontrado:
-        print(" PET NÃO ENCONTRADO.")
-        return
+    if pet == 2:
+        print("O ID fornecido não corresponde a nenhuma animal.")
+        return 2
 
     novo_nome = input("NOVO NOME:\n>>> ")
     nova_idade = input("NOVA IDADE:\n>>> ")
@@ -130,7 +88,7 @@ def atualizar_pet(id_pet):
     print("1 - Macho")
     print("2 - Fêmea")
     sexo_opcao = input(">>> ")
-    novo_sexo = "M" if sexo_opcao == "1" else "F" if sexo_opcao == "2" else "Não especificado"
+    novo_sexo = "M" if sexo_opcao == "1" else "F" if sexo_opcao == "2" else "não especificado"
 
     print("NOVA PERSONALIDADE:")
     print("1 - Brincalhão")
@@ -172,39 +130,27 @@ def atualizar_pet(id_pet):
     novo_porte = opcoes_porte.get(porte_opcao, "não especificado")
 
 
-    pet_encontrado['nome'] = novo_nome
-    pet_encontrado['idade'] = nova_idade
-    pet_encontrado['sexo'] = novo_sexo
-    pet_encontrado['personalidade'] = nova_personalidade
-    pet_encontrado['historico'] = novo_historico
-    pet_encontrado['raca'] = nova_raca
-    pet_encontrado['cor'] = nova_cor
-    pet_encontrado['porte'] = novo_porte
+    pet['nome'] = novo_nome
+    pet['idade'] = nova_idade
+    pet['sexo'] = novo_sexo
+    pet['personalidade'] = nova_personalidade
+    pet['historico'] = novo_historico
+    pet['raca'] = nova_raca
+    pet['cor'] = nova_cor
+    pet['porte'] = novo_porte
 
-    salvar_pets(pets)
+    armazenamento.editar_entrada(id_pet, 'id', pet, 'animais.json')
     print("✅ PET ATUALIZADO COM SUCESSO!\n")
+    
+    return 0
+
 
 
 def seusPets(responsavel):
-    pets = carregarPets()
+    pets = armazenamento.carregar_arquivo('animais.json')
     pets_responsavel = [pet for pet in pets if pet.get('responsavel') == responsavel]
     return pets_responsavel
 
-
-def listarPets():
-    pets = carregarPets()
-    if pets:
-        print("=" * 50)
-        print("LISTA DE PETS:\n")
-        for pet in pets:
-            print("*" * 50)
-            print(f"ID: {pet['id']}, TIPO: {pet['tipo']}, NOME: {pet['nome']}, IDADE: {pet['idade']}, SEXO: {pet['sexo']}, "
-                  f"PERSONALIDADE: {pet['personalidade']}, HISTÓRICO: {pet['historico']}, RAÇA: {pet['raca']}, "
-                  f"COR: {pet['cor']}, PORTE: {pet['porte']}")
-            print("*" * 50)
-        print("=" * 50)
-    else:
-        print("NENHUM PET CADASTRADO.")
 
 def listarSeusPets(responsavel):
     pets = seusPets(responsavel)
@@ -220,6 +166,23 @@ def listarSeusPets(responsavel):
         print("=" * 50)
     else:
         print("Você não possui pets cadastrados.")
+
+
+def listarPets():
+    pets = armazenamento.carregar_arquivo('animais.json')
+    if pets:
+        print("=" * 50)
+        print("LISTA DE PETS:\n")
+        for pet in pets:
+            print("*" * 50)
+            print(f"ID: {pet['id']}, TIPO: {pet['tipo']}, NOME: {pet['nome']}, IDADE: {pet['idade']}, SEXO: {pet['sexo']}, "
+                  f"PERSONALIDADE: {pet['personalidade']}, HISTÓRICO: {pet['historico']}, RAÇA: {pet['raca']}, "
+                  f"COR: {pet['cor']}, PORTE: {pet['porte']}")
+            print("*" * 50)
+        print("=" * 50)
+    else:
+        print("NENHUM PET CADASTRADO.")
+
 
 def deletarPet(responsavel):
     pets = seusPets(responsavel)
@@ -237,19 +200,18 @@ def deletarPet(responsavel):
             print("ID inválido. Use apenas números.")
             continue
 
-        todos_pets = carregarPets()
-        encontrado = False
-        for pet in todos_pets:
-            if pet['id'] == id_escolhido:
-                encontrado = True
-                if pet['responsavel'] == responsavel:
-                    todos_pets.remove(pet)
-                    with open(arquivo, 'w') as f:
-                        json.dump(todos_pets, f, indent=4, ensure_ascii=False)
-                    print("Pet deletado com sucesso.")
-                    return
-                else:
-                    print("Você não tem permissão para deletar este pet.")
-                    return
-        if not encontrado:
-            print("Pet com esse ID não foi encontrado.")
+        pet = armazenamento.ler_entrada(id_escolhido, 'id', 'animais.json')
+
+        if pet == 2:
+            print("Pet com esse ID não foi encontrado.\n")
+            continuar = print(input("Deseja continuar? 's/'n' \n"))
+            if continuar == 'n':
+                break
+
+        if pet[responsavel] == responsavel:
+            armazenamento.deletar_entrada(id_escolhido, 'id', 'animais.json')
+            print(f"O pet de ID {id_escolhido} foi deletado.")
+            return 0
+        else:
+            print("Você não tem permissão para deletar este pet.")
+            return 1
