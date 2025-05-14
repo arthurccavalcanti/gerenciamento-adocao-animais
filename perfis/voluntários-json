@@ -1,1 +1,100 @@
+'''
+CRUD DE VOLUNTARIOS
+'''
 
+import uuid
+
+# Lista para armazenar voluntários
+voluntarios = []
+
+# Função para cadastrar voluntário
+def cadastrar_voluntario():
+    nome = input("Nome do voluntário: ")
+    email = input("Email: ")
+    telefone = input("Telefone: ")
+    
+    voluntario = {
+        "id": str(uuid.uuid4()),  # Gera um ID único
+        "nome": nome,
+        "email": email,
+        "telefone": telefone
+    }
+
+    voluntarios.append(voluntario)
+    print("Voluntário cadastrado com sucesso!")
+
+# Função para listar voluntários
+def listar_voluntarios():
+    if not voluntarios:
+        print("Nenhum voluntário cadastrado.")
+        return
+
+    print("\n Lista de Voluntários:")
+    for v in voluntarios:
+        print(f"ID: {v['id']}")
+        print(f"Nome: {v['nome']}")
+        print(f"Email: {v['email']}")
+        print(f"Telefone: {v['telefone']}")
+        print("-" * 30)
+
+# Função para atualizar voluntário
+def atualizar_voluntario():
+    id_voluntario = input("Digite o ID do voluntário que deseja atualizar: ")
+
+    for v in voluntarios:
+        if v["id"] == id_voluntario:
+            print("Deixe em branco para manter o valor atual.")
+            nome = input(f"Novo nome ({v['nome']}): ") or v["nome"]
+            email = input(f"Novo email ({v['email']}): ") or v["email"]
+            telefone = input(f"Novo telefone ({v['telefone']}): ") or v["telefone"]
+
+            v["nome"] = nome
+            v["email"] = email
+            v["telefone"] = telefone
+
+            print("Voluntário atualizado com sucesso!")
+            return
+
+    print("Voluntário não encontrado.")
+
+# Função para deletar voluntário
+def deletar_voluntario():
+    id_voluntario = input("Digite o ID do voluntário que deseja remover: ")
+
+    for i, v in enumerate(voluntarios):
+        if v["id"] == id_voluntario:
+            del voluntarios[i]
+            print("Voluntário removido com sucesso!")
+            return
+
+    print("Voluntário não encontrado.")
+
+# Menu principal
+def menu():
+    while True:
+        print("\n Sistema de Gerenciamento de Adoção de Animais - Voluntários")
+        print("1. Cadastrar voluntário")
+        print("2. Listar voluntários")
+        print("3. Atualizar voluntário")
+        print("4. Remover voluntário")
+        print("5. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            cadastrar_voluntario()
+        elif opcao == "2":
+            listar_voluntarios()
+        elif opcao == "3":
+            atualizar_voluntario()
+        elif opcao == "4":
+            deletar_voluntario()
+        elif opcao == "5":
+            print("Saindo do sistema...")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+# Executar o menu
+if __name__ == "__main__":
+    menu()
