@@ -2,12 +2,9 @@ import pprint
 from armazenamento import armazenamento_json as armazenamento
 
 '''
-ALGORITMO PARA ENCONTRAR VOLUNTARIOS PARA UM PAR ADOTANTE-ANIMAL
-'''
-
-'''
-A funçao de match pede ao usuário para escolher um voluntário.
-Com os dados, a função calcula e retorna os melhores matches.
+O programa de match pede ao usuário para escolher um voluntário.
+Com os dados do voluntário escolhido, a função calcula e retorna os melhores matches.
+A função também deve dar ao usuário a opção de visualizar todas as entradas.
 '''
 
 # ESBOÇO

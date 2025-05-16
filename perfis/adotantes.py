@@ -65,3 +65,51 @@ def cadastrar_adotante():
 
         armazenamento.criar_entrada(adotante, "adotantes.json")
         break
+
+def atualizar_adotante():
+    cpf = input("Digite o CPF do adotante: ")
+    novos_dados = {
+        "nome": input("Novo nome: "),
+        "idade": input("Nova idade: "),
+        "profissao": input("Nova profissão: "),
+        "endereco": input("Novo endereço: "),
+        "contato": input("Novo contato: ")
+    }
+
+    armazenamento.editar_entrada(cpf, novos_dados, "json-test.json")
+
+
+def excluir_adotante():
+    cpf = input("Digite o CPF do adotante a excluir: ")
+    armazenamento.deletar_entrada(cpf, "json-test.json")
+
+
+def menu():
+    adotantes = carregar_dados()
+
+    while True:
+        print("\n===== MENU =====")
+        print("1. Cadastrar adotante")
+        print("2. Listar adotantes")
+        print("3. Atualizar adotante")
+        print("4. Excluir adotante")
+        print("5. Sair")
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            cadastrar_adotante(adotantes)
+        elif opcao == "2":
+            listar_adotantes_por_cpf(adotantes)
+        elif opcao == "3":
+            atualizar_adotante(adotantes)
+        elif opcao == "4":
+            excluir_adotante(adotantes)
+        elif opcao == "5":
+            print("Saindo...")
+            break
+        else:
+            print("Opção inválida! Tente novamente.")
+
+
+if __name__ == "_main_":
+    menu()

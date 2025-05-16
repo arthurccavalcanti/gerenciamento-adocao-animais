@@ -2,11 +2,8 @@ import pprint
 from armazenamento import armazenamento_json as armazenamento
 
 '''
-ALGORTIMO PARA ENCONTRAR UM PAR ANIMAL-ADOTANTE
-'''
-
-'''
-A funçao de match pede ao usuário para escolher um pet, calcula e retorna os melhores matches.
+O programa de match pede ao usuário para escolher um pet.
+Com os dados do pet, calcula e retorna os melhores matches.
 A função também deve dar ao usuário a opção de visualizar todas as entradas.
 '''
 
