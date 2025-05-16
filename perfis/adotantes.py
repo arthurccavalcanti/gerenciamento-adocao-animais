@@ -1,6 +1,15 @@
 import re
 from armazenamento import armazenamento_json as armazenamento
 
+
+# A FAZER:
+'''
+A função do perfil recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
+A função do perfil também deve dar ao usuário a opção de visualizar todas as entradas.
+'''
+def main(tipo_operacao=None):
+    return
+
 def validar_contato():
     print("A FAZER...")
 

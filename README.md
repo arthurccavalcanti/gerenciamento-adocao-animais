@@ -2,7 +2,7 @@
 - [ ] interface CLI
 - [ ] interface GUI
 - [ ] funções de match
-- [ ] integrar main com outros arquivos
+- [x] integrar main com outros arquivos
 - [ ] banco de dados
 
 # ESTRUTURA:
