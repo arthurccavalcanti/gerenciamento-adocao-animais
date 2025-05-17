@@ -2,7 +2,7 @@
 - [ ] interface CLI
 - [ ] interface GUI
 - [ ] funções de match
-- [ ] integrar main com outros arquivos
+- [x] integrar main com outros arquivos
 - [ ] banco de dados
 
 # ESTRUTURA:
@@ -17,8 +17,8 @@ adocao-animais/
 │   ├── voluntarios.py          
 ├── match/
 │   ├── __init__.py
-│   ├── match-animal-adotante.py
-│   ├── match-voluntario.py
+│   ├── match_pet.py
+│   ├── match_voluntario.py
 ├── armazenamento/
 │   ├── __init__.py
 │   ├── armazenamento_json.py
@@ -40,11 +40,11 @@ adocao-animais/
 
 _CRUD_:
 ```
-main -> CLI/GUI (Recebe do usuário operação CRUD e perfil a ser modificado) -> Perfis (recebem e validam dados, chamam funções de armazenamento e retornam resultado) -> main (recebe resultados) -> CLI/GUI (exibe resultados, pergunta se usuário deseja nova operação)
+main -> menu principal -> menu crud -> perfil -> operações crud -> menu principal
 ```
 
 
 _MATCH_
 ```
-main -> CLI/GUI (Recebe do usuário tipo de match: voluntário x adotante-animal, geral x perfil específico) -> Match (Recebe dados do usuário, acessa dados armazenados, realiza algoritmo) -> main (recebe resultados) -> CLI/GUI (exibe resultados, pergunta se usuário deseja realizar novo match)
+main -> menu principal -> menu match -> match voluntario/pet -> menu principal
 ```
