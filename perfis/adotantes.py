@@ -75,13 +75,13 @@ def atualizar_adotante():
         "endereco": input("Novo endereço: "),
         "contato": input("Novo contato: ")
     }
-
-    armazenamento.editar_entrada(cpf, novos_dados, "json-test.json")
+    armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json")
 
 
 def excluir_adotante():
     cpf = input("Digite o CPF do adotante a excluir: ")
-    armazenamento.deletar_entrada(cpf, "json-test.json")
+    armazenamento.deletar_entrada(cpf, "adotantes.json")
+
 
 
 def menu():
@@ -111,5 +111,5 @@ def menu():
             print("Opção inválida! Tente novamente.")
 
 
-if __name__ == "_main_":
+if _name_ == "_main_":
     menu()
