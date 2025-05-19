@@ -151,30 +151,6 @@ def atualizar_pet(id_pet):
     
     return 0
 
-
-
-def seusPets(responsavel):
-    pets = armazenamento.carregar_arquivo('animais.json')
-    pets_responsavel = [pet for pet in pets if pet.get('responsavel') == responsavel]
-    return pets_responsavel
-
-
-def listarSeusPets(responsavel):
-    pets = seusPets(responsavel)
-    if pets:
-        print("=" * 50)
-        print(f"PETS DO RESPONSÁVEL: {responsavel.upper()}\n")
-        for pet in pets:
-            print("*" * 50)
-            print(f"ID: {pet['id']}, TIPO: {pet['tipo']}, NOME: {pet['nome']}, IDADE: {pet['idade']}, SEXO: {pet['sexo']}, "
-                  f"PERSONALIDADE: {pet['personalidade']}, HISTÓRICO: {pet['historico']}, RAÇA: {pet['raca']}, "
-                  f"COR: {pet['cor']}, PORTE: {pet['porte']}")
-            print("*" * 50)
-        print("=" * 50)
-    else:
-        print("Você não possui pets cadastrados.")
-
-
 def listarPets():
     pets = armazenamento.carregar_arquivo('animais.json')
     if pets:
@@ -191,13 +167,13 @@ def listarPets():
         print("NENHUM PET CADASTRADO.")
 
 
-def deletarPet(responsavel):
-    pets = seusPets(responsavel)
+def deletarPet():
+    pets = armazenamento.carregar_arquivo('animais.json')
     if not pets:
-        print("Você não possui pets cadastrados.")
+        print("Nenhum pet cadastrado.")
         return
 
-    listarSeusPets(responsavel)
+    listarPets()
 
     while True:
         id_escolhido = input("Digite o ID do pet que deseja deletar: ")
@@ -209,16 +185,14 @@ def deletarPet(responsavel):
 
         pet = armazenamento.ler_entrada(id_escolhido, 'id', 'animais.json')
 
-        if pet == 2:
+        if pet is None:
             print("Pet com esse ID não foi encontrado.\n")
-            continuar = print(input("Deseja continuar? 's/'n' \n"))
-            if continuar == 'n':
+            continuar = input("Deseja tentar novamente? ('s'/'n')\n")
+            if continuar.lower() == 'n':
                 break
+            else:
+                continue
 
-        if pet[responsavel] == responsavel:
-            armazenamento.deletar_entrada(id_escolhido, 'id', 'animais.json')
-            print(f"O pet de ID {id_escolhido} foi deletado.")
-            return 0
-        else:
-            print("Você não tem permissão para deletar este pet.")
-            return 1
+        armazenamento.deletar_entrada(id_escolhido, 'id', 'animais.json')
+        print(f"O pet de ID {id_escolhido} foi deletado.")
+        return 0
