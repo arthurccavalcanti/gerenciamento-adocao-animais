@@ -45,7 +45,7 @@ def encontrar_matches(pet):
         if pet['porte'] == adotante['preferencia_porte']:
             compatibilidade_counter += 1
         testes += 1
-        if pet['temperamento'] == adotante['personalidade']:
+        if pet['temperamento'] == adotante['temperamento']:
             compatibilidade_counter += 1
         testes += 1
         if pet['sexo'] == adotante['preferencia_sexo']:
