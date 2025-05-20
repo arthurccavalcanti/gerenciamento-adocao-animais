@@ -31,59 +31,87 @@ def adicionar_pet():
     pets = carregar_pets()
     novo_id = gerar_novo_id(pets)
 
-    print("TIPO DO PET:")
-    print("1 - Canino")
-    print("2 - Felino")
-    tipo_opcao = input(">>> ")
-    tipo = "canino" if tipo_opcao == "1" else "felino" if tipo_opcao == "2" else "não especificado"
+    while True:
+        print("TIPO DO PET:")
+        print("1 - Canino")
+        print("2 - Felino")
+        tipo_opcao = input(">>> ")
+        if tipo_opcao == "1":
+            tipo = "canino"
+            break
+        elif tipo_opcao == "2":
+            tipo = "felino"
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
     nome = input("DIGITE O NOME DO PET:\n>>> ")
     idade = input("DIGITE A IDADE DO PET:\n>>> ")
 
-    print("SEXO:")
-    print("1 - Macho")
-    print("2 - Fêmea")
-    sexo_opcao = input(">>> ")
-    sexo = "M" if sexo_opcao == "1" else "F" if sexo_opcao == "2" else "não especificado"
+    while True:
+        print("SEXO:")
+        print("1 - Macho")
+        print("2 - Fêmea")
+        sexo_opcao = input(">>> ")
+        if sexo_opcao == "1":
+            sexo = "M"
+            break
+        elif sexo_opcao == "2":
+            sexo = "F"
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
-    print("PERSONALIDADE:")
-    print("1 - Brincalhão")
-    print("2 - Calmo")
-    print("3 - Protetor")
-    print("4 - Dócil")
-    personalidade_opcao = input(">>> ")
     opcoes_personalidade = {
         "1": "Brincalhão",
         "2": "Calmo",
         "3": "Protetor",
         "4": "Dócil"
     }
-    personalidade = opcoes_personalidade.get(personalidade_opcao, "não especificado")
+    while True:
+        print("PERSONALIDADE:")
+        for k, v in opcoes_personalidade.items():
+            print(f"{k} - {v}")
+        personalidade_opcao = input(">>> ")
+        if personalidade_opcao in opcoes_personalidade:
+            personalidade = opcoes_personalidade[personalidade_opcao]
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
-    print("HISTÓRICO VETERINÁRIO/VACINAL:")
-    print("1 - Tudo em dia")
-    print("2 - Faltando")
-    historico_opcao = input(">>> ")
     opcoes_historico = {
         "1": "Tudo em dia",
         "2": "Faltando"
     }
-    historico = opcoes_historico.get(historico_opcao, "não especificado")
+    while True:
+        print("HISTÓRICO VETERINÁRIO/VACINAL:")
+        for k, v in opcoes_historico.items():
+            print(f"{k} - {v}")
+        historico_opcao = input(">>> ")
+        if historico_opcao in opcoes_historico:
+            historico = opcoes_historico[historico_opcao]
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
     raca = input("DIGITE A RAÇA:\n>>> ")
     cor = input("DIGITE A COR PREDOMINANTE:\n>>> ")
 
-    print("PORTE:")
-    print("1 - Pequeno")
-    print("2 - Médio")
-    print("3 - Grande")
-    porte_opcao = input(">>> ")
     opcoes_porte = {
         "1": "pequeno",
         "2": "médio",
         "3": "grande"
     }
-    porte = opcoes_porte.get(porte_opcao, "não especificado")
+    while True:
+        print("PORTE:")
+        for k, v in opcoes_porte.items():
+            print(f"{k} - {v}")
+        porte_opcao = input(">>> ")
+        if porte_opcao in opcoes_porte:
+            porte = opcoes_porte[porte_opcao]
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
 
     pet_novo = {
         "id": novo_id,
