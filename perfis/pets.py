@@ -299,6 +299,170 @@ def deletar_pet():
     salvar_pets(pets)
     print(f"Pet {pet['nome']} (ID {pet['id']}) deletado com sucesso!")
 
+def filtrar_pets():
+    pets = carregar_pets()
+    if not pets:
+        print("Nenhum pet cadastrado para filtrar.")
+        return
+
+    filtros = {}
+
+    def menu_filtrar():
+        while True:
+            print("\nESCOLHA UM CRITÉRIO PARA FILTRAR:")
+            print("1 - Tipo (canino/felino)")
+            print("2 - Sexo (M/F)")
+            print("3 - Porte (pequeno/médio/grande)")
+            print("4 - Personalidade")
+            print("5 - Histórico Veterinário/Vacinal")
+            print("6 - Raça")
+            print("7 - Cor")
+            print("0 - Finalizar filtros")
+            opcao = input(">>> ")
+            if opcao in {"0", "1", "2", "3", "4", "5", "6", "7"}:
+                return opcao
+            else:
+                print("Opção inválida. Tente novamente.")
+
+    while True:
+        opcao = menu_filtrar()
+        if opcao == "0":
+            break
+
+        elif opcao == "1":
+            while True:
+                print("TIPO:")
+                print("1 - Canino")
+                print("2 - Felino")
+                escolha = input(">>> ")
+                if escolha == "1":
+                    filtros["tipo"] = "canino"
+                    break
+                elif escolha == "2":
+                    filtros["tipo"] = "felino"
+                    break
+                else:
+                    print("Opção inválida. Tente novamente.")
+
+        elif opcao == "2":
+            while True:
+                print("SEXO:")
+                print("1 - Macho")
+                print("2 - Fêmea")
+                escolha = input(">>> ")
+                if escolha == "1":
+                    filtros["sexo"] = "M"
+                    break
+                elif escolha == "2":
+                    filtros["sexo"] = "F"
+                    break
+                else:
+                    print("Opção inválida. Tente novamente.")
+
+        elif opcao == "3":
+            while True:
+                print("PORTE:")
+                print("1 - Pequeno")
+                print("2 - Médio")
+                print("3 - Grande")
+                escolha = input(">>> ")
+                opcoes = {"1": "pequeno", "2": "médio", "3": "grande"}
+                if escolha in opcoes:
+                    filtros["porte"] = opcoes[escolha]
+                    break
+                else:
+                    print("Opção inválida. Tente novamente.")
+
+        elif opcao == "4":
+            while True:
+                print("PERSONALIDADE:")
+                print("1 - Brincalhão")
+                print("2 - Calmo")
+                print("3 - Protetor")
+                print("4 - Dócil")
+                escolha = input(">>> ")
+                opcoes = {
+                    "1": "Brincalhão",
+                    "2": "Calmo",
+                    "3": "Protetor",
+                    "4": "Dócil"
+                }
+                if escolha in opcoes:
+                    filtros["personalidade"] = opcoes[escolha]
+                    break
+                else:
+                    print("Opção inválida. Tente novamente.")
+
+        elif opcao == "5":
+            while True:
+                print("HISTÓRICO VETERINÁRIO/VACINAL:")
+                print("1 - Tudo em dia")
+                print("2 - Faltando")
+                escolha = input(">>> ")
+                opcoes = {"1": "Tudo em dia", "2": "Faltando"}
+                if escolha in opcoes:
+                    filtros["historico"] = opcoes[escolha]
+                    break
+                else:
+                    print("Opção inválida. Tente novamente.")
+
+        elif opcao == "6":
+            valor = input("Digite a raça:\n>>> ").strip().lower()
+            if valor:
+                filtros["raca"] = valor
+            else:
+                print("Raça não pode ser vazia.")
+
+        elif opcao == "7":
+            valor = input("Digite a cor:\n>>> ").strip().lower()
+            if valor:
+                filtros["cor"] = valor
+            else:
+                print("Cor não pode ser vazia.")
+
+        else:
+            print("Opção inválida. Tente novamente.")
+
+        while True:
+            continuar = input("Deseja adicionar mais um filtro? (s/n)\n>>> ").lower()
+            if continuar in ('s', 'n'):
+                break
+            else:
+                print("Digite 's' para sim ou 'n' para não.")
+        if continuar != 's':
+            break
+
+    if filtros:
+        print("\n=== FILTROS APLICADOS ===")
+        for chave, valor in filtros.items():
+            print(f"{chave.capitalize()}: {valor}")
+        print("=" * 50)
+
+    pets_filtrados = pets
+    for chave, valor in filtros.items():
+        pets_filtrados = [
+            p for p in pets_filtrados
+            if p.get(chave, '').strip().lower() == valor.strip().lower()
+        ]
+
+    if not pets_filtrados:
+        print("\nNenhum pet encontrado com os filtros fornecidos.")
+    else:
+        print("\n=== PETS FILTRADOS ===")
+        for pet in pets_filtrados:
+            print("-" * 50)
+            print(f"ID: {pet['id']}")
+            print(f"Tipo: {pet['tipo']}")
+            print(f"Nome: {pet['nome']}")
+            print(f"Idade: {pet['idade']}")
+            print(f"Sexo: {pet['sexo']}")
+            print(f"Personalidade: {pet['personalidade']}")
+            print(f"Histórico: {pet['historico']}")
+            print(f"Raça: {pet['raca']}")
+            print(f"Cor: {pet['cor']}")
+            print(f"Porte: {pet['porte']}")
+        print("=" * 50)
+
 def main():
     while True:
         print("\n--- MENU PRINCIPAL ---")
@@ -306,7 +470,8 @@ def main():
         print("2 - Listar pets")
         print("3 - Atualizar pet")
         print("4 - Deletar pet")
-        print("5 - Sair")
+        print("5 - Filtrar pet por característica")
+        print("6 - Sair")
         opcao = input("Escolha uma opção:\n>>> ")
 
         if opcao == "1":
@@ -318,6 +483,8 @@ def main():
         elif opcao == "4":
             deletar_pet()
         elif opcao == "5":
+            filtrar_pets()
+        elif opcao == "6":
             print("Saindo...")
             break
         else:
