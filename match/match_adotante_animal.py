@@ -10,7 +10,7 @@ A função também deve dar ao usuário a opção de visualizar todas as entrada
 # ESBOÇO
 def main():
 
-    visualizar = input("Deseja visualizar todos os pets? 's'/'n'\n")
+    visualizar = input("Deseja visualizar todos os pets? 's'/'n'\n").lower()
 
     if visualizar == 's':
         pprint.pprint(armazenamento.carregar_arquivo('pets.json'))
@@ -19,9 +19,13 @@ def main():
 
     pet_escolhido = armazenamento.ler_entrada(id_pet_escolhido, 'id', 'pets.json')
 
+    if not pet_escolhido:
+        print("Pet não encontrado. Verifique o ID e tente novamente.")
+        return
+
     possiveis_matches = encontrar_matches(pet_escolhido)
 
-    melhores_dez_matches = possiveis_matches[:9]
+    melhores_dez_matches = possiveis_matches[:10]
 
     return melhores_dez_matches
 
@@ -44,6 +48,18 @@ def encontrar_matches(pet):
         if pet['temperamento'] == adotante['personalidade']:
             compatibilidade_counter += 1
         testes += 1
+        if pet['sexo'] == adotante['preferencia_sexo']:
+            compatibilidade_counter += 1
+        testes += 1
+        if pet['idade'] in adotante['faixa_etaria_aceita']:
+            compatibilidade_counter += 1
+        testes += 1
+        if pet['tipo'] == adotante['preferencia_tipo']:
+            compatibilidade_counter += 1
+        testes += 1
+        if not pet['exige_experiencia'] or adotante['tem_experiencia']:
+            pontos_em_comum += 1
+        total_criterios += 1
         # ...
 
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
