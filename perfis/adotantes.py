@@ -55,18 +55,54 @@ def cadastrar_adotante():
             continue
         contato = int(contato)
 
+       
+        print("\n--- Preferências do adotante ---")
+
+        tipo = input("Prefere qual tipo de animal? (canino/felino): ").lower()
+        while tipo not in ["canino", "felino"]:
+            tipo = input("Entrada inválida. Digite canino ou felino: ").lower()
+
+        porte = input("Porte preferido? (pequeno/médio/grande): ").lower()
+        while porte not in ["pequeno", "médio", "grande"]:
+            porte = input("Entrada inválida. Digite pequeno, médio ou grande: ").lower()
+
+        temp = input("Personalidades preferidas (separe por vírgula, ex: brincalhão,calmo): ").lower()
+        temperamento = [t.strip() for t in temp.split(",") if t.strip()]
+
+        sexo = input("Sexo preferido? (macho/fêmea): ").lower()
+        while sexo not in ["macho", "fêmea"]:
+            sexo = input("Entrada inválida. Digite macho ou fêmea: ").lower()
+
+        faixa_etaria = input("Faixa etária preferida? (filhote/adulto/idoso): ").lower()
+        while faixa_etaria not in ["filhote", "adulto", "idoso"]:
+            faixa_etaria = input("Entrada inválida. Digite filhote, adulto ou idoso: ").lower()
+
+        experiencia = input("Tem experiência com animais? (s/n): ").lower()
+        experiencia = True if experiencia == "s" else False
+
+        preferencias = {
+            "tipo": tipo,
+            "porte": porte,
+            "temperamento": temperamento,
+            "sexo": sexo,
+            "faixa_etaria": faixa_etaria,
+            "experiencia": experiencia
+        }
+
         adotante = {
             "id": cpf,
             "nome": nome,
             "idade": idade,
             "profissao": profissao,
             "endereco": endereco,
-            "contato": contato
+            "contato": contato,
+            "preferencias": preferencias
         }
 
         print("\nConfira os dados inseridos:")
         for k, v in adotante.items():
             print(f"{k}: {v}")
+
         confirm = input("Deseja salvar esse adotante? (s/n): ").lower()
         if confirm == "s":
             armazenamento.criar_entrada(adotante, "adotantes.json")
