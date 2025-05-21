@@ -105,7 +105,7 @@ def editar_entrada(id: int, chave_id: str, dados_atualizados: dict, nome_json: s
             return 0
         
     print(f"Não há entrada com o id {id}.")
-    return 1
+    return 2
         
 # -------------------------------------------------------
 
@@ -129,7 +129,7 @@ def deletar_entrada(id: int, chave_id: str, nome_json: str):
             return 0
     
     print(f"Não há entrada com o id {id}.")
-    return 1
+    return 2
 
 # ---------------------------------------------------------
 
