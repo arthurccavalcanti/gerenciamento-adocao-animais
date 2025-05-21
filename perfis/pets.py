@@ -1,4 +1,5 @@
 from armazenamento import armazenamento_json as armazenamento
+from perfis.adotantes import validar_idade
 
 # A FAZER:
 '''
