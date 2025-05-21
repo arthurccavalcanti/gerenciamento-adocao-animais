@@ -40,15 +40,16 @@ def main():
                 resultado_crud = crud_voluntario(tipo_operacao)
             elif perfil == 'adotante':
                 resultado_crud = crud_adotante(tipo_operacao)
-            
+            else:
+                print("Perfil inválido.")
+                continue
             '''
             A função de exibição recebe e mostra o resultado ao usuário, além de perguntar se o usuário deseja fazer mais uma operação.
             Se sim, a função retorna True. Se não, a função retorna False.
             '''
-            if exibir_resultado(resultado_crud, 'crud'):
-                continue
-            else:
-                break
+        if not exibir_resultado(resultado_crud, 'crud'):   
+        
+            break
 
         '''
         A funçao do menu de match deve perguntar ao usuário qual tipo de match ele deseja fazer (melhores matches de um pet ou de um voluntário).
@@ -68,18 +69,18 @@ def main():
                 resultado_match = match_pets()
             elif escolha_usuario == 'voluntario':
                 resultado_match = match_voluntario()
-            
-            '''
+            else: 
+                print("Opção inválida.")
+                continue
+            ''' 
             A função de exibição recebe e mostra o resultado ao usuário, além de perguntar se o usuário deseja fazer mais uma operação.
             Se sim, a função retorna True. Se não, a função retorna False.
             '''
             if exibir_resultado(resultado_match, 'match'):
-                continue
-            else:
+
                 break
   
 
         if operacao == 'sair':
+            print("Encerrando o programa. Até mais!")
             break
-        else:
-            continue

@@ -7,6 +7,94 @@ from armazenamento import armazenamento_json as armazenamento
 A função do perfil recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
 A função do perfil também deve dar ao usuário a opção de visualizar todas as entradas.
 '''
+def exibir_menu():
+    while True:
+        print("\n=== MENU PRINCIPAL ===")
+        print("1  Gerenciar dados (CRUD)")
+        print("2 Fazer match")
+        print("3  Sair")
+        
+        escolha = input("Escolha uma opção (1-3): ").strip()
+        
+        if escolha == '1':
+            return 'CRUD'
+        elif escolha == '2':
+            return 'match'
+        elif escolha == '3':
+            return 'sair'
+        else:
+            print("Opção inválida. Tente novamente.")
+
+def exibir_menu_crud():
+    while True:
+        print("\n=== MENU CRUD ===")
+        print("1  Criar")
+        print("2Ler")
+        print("3  Editar")
+        print("4  Deletar")
+        print("5 Voltar ao menu principal")
+        
+        operacao = input("Escolha a operação (1-5): ").strip()
+
+        if operacao == '5':
+            return False
+
+        operacoes = {'1': 'criar', '2': 'ler', '3': 'editar', '4': 'deletar'}
+
+        if operacao in operacoes:
+            tipo_operacao = operacoes[operacao]
+            
+            print("\nEscolha o perfil:")
+            print("1  Adotante")
+            print("2 Pet")
+            print("3  Voluntário")
+            print("4  Voltar")
+            
+            perfil = input("Escolha o perfil (1-4): ").strip()
+
+            perfis = {'1': 'adotante', '2': 'pet', '3': 'voluntario'}
+
+            if perfil == '4':
+                continue  # volta ao menu de operação
+
+            if perfil in perfis:
+                return (tipo_operacao, perfis[perfil])
+            else:
+                print("Perfil inválido.")
+        else:
+            print("Operação inválida.")
+
+def exibir_resultado(resultado, tipo):
+    print("\n=== RESULTADO DA OPERAÇÃO ===")
+    print(resultado)
+
+    while True:
+        escolha = input(f"Deseja realizar mais uma operação de {tipo}? (s/n): ").lower().strip()
+        if escolha == 's':
+            return True
+        elif escolha == 'n':
+            return False
+        else:
+            print("❗ Escolha inválida, responda com 's' ou 'n'.")
+
+def exibir_menu_match():
+    while True:
+        print("\n=== MENU DE MATCH ===")
+        print("1  Ver melhores matches de pets")
+        print("2 Ver melhores matches de voluntários")
+        print("3 Voltar ao menu principal")
+        
+        escolha = input("Escolha uma opção (1-3): ").strip()
+
+        if escolha == '1':
+            return 'pets'
+        elif escolha == '2':
+            return 'voluntario'
+        elif escolha == '3':
+            return False
+        else:
+            print(" Opção inválida.")
+            
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
 
@@ -26,6 +114,13 @@ def listar_adotantes_por_cpf():
         print(adotante)
     else:
         print("Adotante não encontrado.")
+
+def confirmar_acao(msg="Deseja confirmar? (s/n): "):
+    while True:
+        resp = input(msg).strip().lower()
+        if resp in ['s', 'n']:
+            return resp == 's'
+        print("Responda apenas com 's' ou 'n'")
 
 def cadastrar_adotante():
     while True:
@@ -67,8 +162,8 @@ def cadastrar_adotante():
         print("\nConfira os dados inseridos:")
         for k, v in adotante.items():
             print(f"{k}: {v}")
-        confirm = input("Deseja salvar esse adotante? (s/n): ").lower()
-        if confirm == "s":
+
+        if confirmar_acao("Deseja salvar esse adotante? (s/n): "):
             armazenamento.criar_entrada(adotante, "adotantes.json")
             print("Adotante cadastrado com sucesso!")
         else:
@@ -97,12 +192,13 @@ def atualizar_adotante():
     print("\nConfira as alterações:")
     for chave in novos_dados:
         print(f"{chave}: {dados_atuais[chave]} → {novos_dados[chave]}")
-    confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
-    if confirm == "s":
+
+    if confirmar_acao("Deseja prosseguir com a atualização? (s/n): "):
         armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json")
         print("Adotante atualizado com sucesso!")
     else:
         print("Atualização cancelada.")
+
 
 def excluir_adotante():
     cpf = input("Digite o CPF do adotante a excluir: ")
@@ -114,36 +210,15 @@ def excluir_adotante():
     print("Adotante encontrado:")
     for k, v in adotante.items():
         print(f"{k}: {v}")
-    confirm = input("Deseja realmente excluir esse adotante? (s/n): ").lower()
-    if confirm == "s":
-        armazenamento.deletar_entrada(cpf, "adotantes.json")
-        print("Adotante excluído.")
+
+    if confirmar_acao("Deseja salvar esse adotante? (s/n): "):
+            armazenamento.criar_entrada(cpf, "adotantes.json")
+            print("Adotante cadastrado com sucesso!")
     else:
-        print("Exclusão cancelada.")
+            print("Cadastro cancelado.")
+  
 
-def menu():
-    while True:
-        print("\n===== MENU =====")
-        print("1. Cadastrar adotante")
-        print("2. Listar adotantes")
-        print("3. Atualizar adotante")
-        print("4. Excluir adotante")
-        print("5. Sair")
-        opcao = input("Escolha uma opção: ")
 
-        if opcao == "1":
-            cadastrar_adotante()
-        elif opcao == "2":
-            listar_adotantes_por_cpf()
-        elif opcao == "3":
-            atualizar_adotante()
-        elif opcao == "4":
-            excluir_adotante()
-        elif opcao == "5":
-            print("Saindo...")
-            break
-        else:
-            print("Opção inválida! Tente novamente.")
 
 if __name__ == "__main__":
-    menu()
+    main()
