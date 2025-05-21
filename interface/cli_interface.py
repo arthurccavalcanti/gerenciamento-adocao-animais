@@ -44,6 +44,9 @@ A função de exibir recebe e mostra o resultado ao usuário, além de perguntar
 Se sim, a função retorna True. Se não, a função retorna False.
 
 O tipo de resultado a ser exibido pode ser um match ('match') ou uma operação de CRUD  ('crud').
+
+As operações de CRUD retornam um resultado no padrão ('operacao', dados1, dados2, ...)
+Quando há erro, as operações de CRUD retornam uma string.
 '''
 def exibir_resultado(resultado = None, tipo_resultado = None):
     return
