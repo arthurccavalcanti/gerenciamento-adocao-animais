@@ -7,6 +7,33 @@ from armazenamento import armazenamento_json as armazenamento
 A função do perfil recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
 A função do perfil também deve dar ao usuário a opção de visualizar todas as entradas.
 '''
+def main(tipo_operacao: str):
+
+    while True:
+        print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
+        print("1 - SIM")
+        print("2 - NÃO")
+        deseja_listar = input(">>> ")
+        if deseja_listar == "1":
+            listar_adotantes_por_cpf()  
+            break
+        elif deseja_listar == "2":
+            break
+        else:
+            print("Opção inválida.")    
+    
+    if tipo_operacao == "criar":
+        return cadastrar_adotante()
+    elif tipo_operacao == "atualizar":
+        return atualizar_adotante()
+    elif tipo_operacao == "deletar":
+        return excluir_adotante()
+    elif tipo_operacao == "ler":
+        return listar_adotantes_por_cpf()
+    else:
+        return "Operação inválida. Tente novamente."
+
+
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
 
