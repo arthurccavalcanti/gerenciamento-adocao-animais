@@ -1,10 +1,120 @@
 from armazenamento import armazenamento_json as armazenamento
-import os
 from datetime import datetime
 import re
 import requests
 
-arquivo_voluntario = os.path.join(os.path.dirname(__file__), '..', 'armazenamento', 'voluntarios.json')
+
+def main(tipo_operacao: str):
+
+    nome_arquivo_json = "voluntarios.json"
+
+    while True:
+        print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
+        print("1 - SIM")
+        print("2 - NÃO")
+        deseja_listar = input(">>> ")
+        if deseja_listar == 1:
+            listar_voluntarios(nome_arquivo_json)
+            break
+        elif deseja_listar == 2:
+            break
+        else:
+            print("Opção inválida.")    
+
+    if tipo_operacao == "criar":
+        cpf = solicitar_cpf()
+        nome = input("Nome completo: ").strip()
+        nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
+        endereco = solicitar_endereco()
+        disponibilidade = verificar_disponibilidade()
+        data_cadastro = datetime.today().strftime("%d/%m/%Y")
+
+        email = input("Digite o e-mail: ").strip()
+        while not validar_email(email):
+            print("E-mail inválido.")
+            email = input("Digite o e-mail: ").strip()
+
+        telefone = input("Digite o número de celular (com DDD): ").strip()
+        valido, telefone_formatado = validar_e_formatar_telefone(telefone)
+        while not valido:
+            print("Telefone inválido.")
+            telefone = input("Digite o número de celular (com DDD): ").strip()
+            valido, telefone_formatado = validar_e_formatar_telefone(telefone)
+
+        return criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone_formatado, nome_arquivo_json)
+
+    elif tipo_operacao == "ler":
+        cpf = solicitar_cpf()
+        voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
+        if voluntario == 2:
+            return f"Erro ao ler voluntário: voluntário com id {cpf} não encontrado."
+        elif voluntario == 1:
+            return f"Erro ao ler voluntário: o arquivo {nome_arquivo_json} não existe."
+        return ('ler', voluntario)
+
+
+    elif tipo_operacao == "editar":
+        cpf = input("Digite o CPF do voluntário que deseja editar: ").strip()
+        voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
+
+        if voluntario == 2:
+            return f"Erro ao editar voluntário: voluntário com id {cpf} não encontrado."
+        elif voluntario == 1:
+            return f"Erro ao editar voluntário: o arquivo {nome_arquivo_json} não existe."
+        
+        print("Deixe em branco os campos que você **não** deseja alterar.")
+        novo_nome = input("Novo nome completo: ").strip()
+        novo_email = input("Novo e-mail: ").strip()
+        novo_telefone = input("Novo telefone: ").strip()
+        alterar_disponibilidade = input("Deseja alterar a disponibilidade? (s/n): ").strip().lower()
+
+        novos_dados = {}
+        if novo_nome:
+            novos_dados["Nome Completo"] = novo_nome
+        if novo_email and validar_email(novo_email):
+            novos_dados["E-mail"] = novo_email
+        if novo_telefone:
+            valido, telefone_formatado = validar_e_formatar_telefone(novo_telefone)
+            if valido:
+                novos_dados["Telefone"] = telefone_formatado
+        if alterar_disponibilidade == 's':
+            novos_dados["Disponibilidade"] = verificar_disponibilidade()
+
+        if novos_dados:
+            res = armazenamento.editar_entrada(int(cpf), 'CPF', novos_dados, nome_arquivo_json)
+            if res == 1:
+                return f"Erro ao editar voluntário: o arquivo {nome_arquivo_json} não existe."
+            elif res == 2:
+                return f"Erro ao editar voluntário: não há voluntário com o CPF {cpf}"
+            return ('editar', (voluntario, novos_dados))
+        return "Usuário não editou nenhum dado"
+
+
+    elif tipo_operacao == "deletar":
+        cpf = solicitar_cpf()
+        voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
+        res = armazenamento.deletar_entrada(int(cpf), 'CPF', nome_arquivo_json)
+        if res == 1:
+            return f"Erro ao deletar voluntário: o arquivo {nome_arquivo_json} não existe."
+        elif res == 2:
+                return f"Erro ao deletar voluntário: não há voluntário com o CPF {cpf}"
+        return ('deletar', voluntario)
+
+
+    elif tipo_operacao == "ler":
+        cpf = solicitar_cpf()
+        voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
+        if voluntario == 1:
+            return f"Erro ao ler voluntário: o arquivo {nome_arquivo_json} não existe."
+        elif voluntario == 2:
+            return f"Erro ao ler voluntário: não há voluntário com o CPF {cpf}"
+        return ('ler', voluntario)
+
+
+
+
+# FUNÇÕES DE VALIDAÇÃO ------------------------------------------------------
+
 
 def solicitar_cpf():
     while True:
@@ -28,6 +138,7 @@ def validar_cpf(cpf: str) -> bool:
     digito2 = (soma2 * 10 % 11) % 10
 
     return cpf[-2:] == f"{digito1}{digito2}"
+
 
 def verificar_disponibilidade():
     dias_semana = {
@@ -86,6 +197,7 @@ def verificar_disponibilidade():
 
     return disponibilidade
 
+
 def solicitar_endereco():
     while True:
         cep = input("Digite seu CEP (somente números): ").strip()
@@ -98,6 +210,7 @@ def solicitar_endereco():
                 return endereco
         else:
             print("Tente novamente com um CEP válido.")
+
 
 def buscar_endereco_por_cep(cep):
     cep = re.sub(r'[^0-9]', '', cep)
@@ -122,21 +235,24 @@ def buscar_endereco_por_cep(cep):
         print("Erro de conexão.")
         return None
 
+
 def validar_email(email):
     return bool(re.match(r'^[\w\.-]+@[\w\.-]+\.\w{2,}$', email))
+
 
 def validar_e_formatar_telefone(telefone):
     numeros = re.sub(r'\D', '', telefone)
     if re.fullmatch(r'\d{11}', numeros) and numeros[2] == '9':
-        return True, f"({numeros[:2]}) {numeros[2:7]}-{numeros[7:]}"
+        return True, f"({numeros[:2]}) {numeros[2:7]}-{numeros[7:]}"    # depois checar se python descompacta retorno da função mesmo se ela não estiver em um tupla - arthur
     elif re.fullmatch(r'\d{10}', numeros) and numeros[2] != '9':
-        return True, f"({numeros[:2]}) {numeros[2:6]}-{numeros[6:]}"
+        return True, f"({numeros[:2]}) {numeros[2:6]}-{numeros[6:]}"    # depois checar se python descompacta retorno da função mesmo se ela não estiver em um tupla - arthur
     return False, None
+
 
 def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone, nome_arquivo_json):
     data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y")
     hoje = datetime.today()
-    idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
+    idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))  # isso me bugou, preciso rever depois - arthur 
 
     novo_voluntario = {
         "CPF": cpf,
@@ -150,141 +266,42 @@ def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cada
         "Telefone": telefone
     }
 
-    return armazenamento.criar_entrada(novo_voluntario, nome_arquivo_json)
+    res = armazenamento.criar_entrada(novo_voluntario, nome_arquivo_json)
+    if res == True:
+        return ('criar', novo_voluntario)
+    elif res == 1:
+        return f"Erro ao criar voluntário: não foi possível criar o arquivo {nome_arquivo_json}."
+    elif res == 2:
+        return f"Erro ao criar voluntário: não foi possível abrir o arquivo {nome_arquivo_json}."
 
-def buscar_voluntario(cpf, nome_arquivo_json):
-    dados = armazenamento.ler_entradas(nome_arquivo_json)
-    return next((v for v in dados if v.get("CPF") == cpf), None)
+def listar_voluntarios(nome_arquivo):
 
-def editar_voluntario(cpf, novos_dados, nome_arquivo_json):
-    dados = armazenamento.ler_entradas(nome_arquivo_json)
-    for i, voluntario in enumerate(dados):
-        if voluntario.get("CPF") == cpf:
-            dados[i].update(novos_dados)
-            return armazenamento.editar_entrada(dados, nome_arquivo_json)
-    return False
+    voluntarios = armazenamento.carregar_arquivo(nome_arquivo)
 
-def excluir_voluntario(cpf, nome_arquivo_json):
-    dados = armazenamento.ler_entradas(nome_arquivo_json)
-    novos_dados = [v for v in dados if v.get("CPF") != cpf]
-    if len(novos_dados) == len(dados):
-        return False
-    return armazenamento.salvar_entradas(novos_dados, nome_arquivo_json)
+    if voluntarios == 1:
+        print(f"Erro ao listar voluntários: não foi possível criar o arquivo {nome_arquivo}")
+        return
+    elif voluntarios == 2:
+        print(f"Erro ao listar voluntários: não foi possível abrir o arquivo {nome_arquivo}")
+        return
+    elif  not voluntarios:
+        print("Nenhum voluntário cadastrado.")
+        return
+    
+    print("\n--- LISTA DE VOLUNTÁRIOS ---")
+    for v in voluntarios:
+        print(f"CPF: {v['CPF']}")
+        print(f"Nome: {v['Nome Completo']}")
+        print(f"E-mail: {v['E-mail']}")
+        print(f"Telefone: {v['Telefone']}")
+        print(f"Idade: {v['Idade']}")
+        print(f"Endereço: {v['Endereço']}")
+        print("Disponibilidade:")
+        for d in v['Disponibilidade']:
+            print(f"  - {d['Dia']}: {', '.join(d['Períodos'])}")
+        print("-" * 30)
 
-def main():
-    nome_arquivo_json = "voluntarios.json"
 
-    while True:
-        print("\n--- MENU CRUD VOLUNTÁRIOS ---")
-        print("1. Cadastrar voluntário")
-        print("2. Buscar voluntário por CPF")
-        print("3. Editar voluntário")
-        print("4. Excluir voluntário")
-        print("5. Listar voluntários")
-        print("6. Sair")
 
-        opcao = input("Escolha uma opção: ").strip()
-
-        if opcao == "1":
-            cpf = solicitar_cpf()
-            nome = input("Nome completo: ").strip()
-            nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
-            endereco = solicitar_endereco()
-            disponibilidade = verificar_disponibilidade()
-            data_cadastro = datetime.today().strftime("%d/%m/%Y")
-
-            email = input("Digite o e-mail: ").strip()
-            while not validar_email(email):
-                print("E-mail inválido.")
-                email = input("Digite o e-mail: ").strip()
-
-            telefone = input("Digite o número de celular (com DDD): ").strip()
-            valido, telefone_formatado = validar_e_formatar_telefone(telefone)
-            while not valido:
-                print("Telefone inválido.")
-                telefone = input("Digite o número de celular (com DDD): ").strip()
-                valido, telefone_formatado = validar_e_formatar_telefone(telefone)
-
-            criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone_formatado, nome_arquivo_json)
-
-        elif opcao == "2":
-            cpf = solicitar_cpf()
-            voluntario = buscar_voluntario(cpf, nome_arquivo_json)
-            if voluntario:
-                print("\n--- DADOS DO VOLUNTÁRIO ---")
-                for chave, valor in voluntario.items():
-                    print(f"{chave}: {valor}")
-            else:
-                print("Voluntário não encontrado.")
-
-        elif opcao == "3":
-            cpf = input("Digite o CPF do voluntário que deseja editar: ").strip()
-            voluntario = buscar_voluntario(cpf, nome_arquivo_json)
-            if voluntario:
-                print(f"\nVoluntário encontrado: {voluntario['Nome Completo']}")
-                print("Deixe em branco os campos que você **não** deseja alterar.")
-
-                novo_nome = input("Novo nome completo: ").strip()
-                novo_email = input("Novo e-mail: ").strip()
-                novo_telefone = input("Novo telefone: ").strip()
-                alterar_disponibilidade = input("Deseja alterar a disponibilidade? (s/n): ").strip().lower()
-
-                novos_dados = {}
-                if novo_nome:
-                    novos_dados["Nome Completo"] = novo_nome
-                if novo_email and validar_email(novo_email):
-                    novos_dados["E-mail"] = novo_email
-                if novo_telefone:
-                    valido, telefone_formatado = validar_e_formatar_telefone(novo_telefone)
-                    if valido:
-                        novos_dados["Telefone"] = telefone_formatado
-                if alterar_disponibilidade == 's':
-                    novos_dados["Disponibilidade"] = verificar_disponibilidade()
-
-                if novos_dados:
-                    if editar_voluntario(cpf, novos_dados, nome_arquivo_json):
-                        print("Voluntário atualizado com sucesso.")
-                    else:
-                        print("Erro ao atualizar voluntário.")
-                else:
-                    print("Nenhum dado válido para atualizar.")
-            else:
-                print("Voluntário não encontrado.")
-
-        elif opcao == "4":
-            cpf = solicitar_cpf()
-            if excluir_voluntario(cpf, nome_arquivo_json):
-                print("Voluntário excluído com sucesso.")
-            else:
-                print("Voluntário não encontrado.")
-
-        elif opcao == "5":
-            voluntarios = armazenamento.ler_entradas(nome_arquivo_json)
-            if voluntarios:
-                print("\n--- LISTA DE VOLUNTÁRIOS ---")
-                for v in voluntarios:
-                    print(f"CPF: {v['CPF']}")
-                    print(f"Nome: {v['Nome Completo']}")
-                    print(f"E-mail: {v['E-mail']}")
-                    print(f"Telefone: {v['Telefone']}")
-                    print(f"Idade: {v['Idade']}")
-                    print(f"Endereço: {v['Endereço']}")
-                    print("Disponibilidade:")
-                    for d in v['Disponibilidade']:
-                        print(f"  - {d['Dia']}: {', '.join(d['Períodos'])}")
-                    print("-" * 30)
-            else:
-                print("Nenhum voluntário cadastrado.")
-
-        elif opcao == "6":
-            print("Encerrando programa.")
-            break
-        else:
-            print("Opção inválida.")
-
-'''
-A função principal recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
-A função também deve dar ao usuário a opção de visualizar todas as entradas.
-'''
-def main(tipo_operacao=None):
-    return
+if __name__ == "__main__":
+    main()
