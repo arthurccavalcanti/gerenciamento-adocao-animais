@@ -15,7 +15,7 @@ def main(tipo_operacao: str):
         print("2 - NÃO")
         deseja_listar = input(">>> ")
         if deseja_listar == "1":
-            listar_adotantes_por_cpf()  
+            listar_todos_adotantes()  
             break
         elif deseja_listar == "2":
             break
@@ -46,6 +46,18 @@ def validar_idade(idade):
 def validar_cep(cep):
     return re.match(r"^\d{8}$", cep) is not None
 
+def listar_todos_adotantes():
+    adotantes = armazenamento.listar_todos("adotantes.json")
+    if isinstance(adotantes, list) and adotantes:
+        print("\n--- Lista de Adotantes ---")
+        for adotante in adotantes:
+            print("-" * 30)
+            for chave, valor in adotante.items():
+                print(f"{chave}: {valor}")
+    else:
+        print("Nenhum adotante encontrado.")
+
+
 def listar_adotantes_por_cpf():
     cpf = input("Digite o CPF do adotante: \n")
     adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
@@ -53,6 +65,7 @@ def listar_adotantes_por_cpf():
         print(adotante)
     else:
         print("Adotante não encontrado.")
+        
 
 def cadastrar_adotante():
     while True:
@@ -149,12 +162,36 @@ def atualizar_adotante():
     for k, v in dados_atuais.items():
         print(f"{k}: {v}")
 
+    nome = input("Novo nome: ")
+
+    while True:
+        idade = input("Nova idade: ")
+        if validar_idade(idade):
+            idade = int(idade)
+            break
+        print("Idade inválida!")
+
+    profissao = input("Nova profissão: ")
+
+    while True:
+        endereco = input("Novo CEP (somente números): ")
+        if validar_cep(endereco):
+            break
+        print("CEP inválido! Deve conter 8 dígitos.")
+
+    while True:
+        contato = input("Novo contato (somente números): ")
+        if validar_contato(contato):
+            contato = int(contato)
+            break
+        print("Contato inválido! Deve conter ao menos 8 dígitos.")
+
     novos_dados = {
-        "nome": input("Novo nome: "),
-        "idade": input("Nova idade: "),
-        "profissao": input("Nova profissão: "),
-        "endereco": input("Novo CEP: "),
-        "contato": input("Novo contato: ")
+        "nome": nome,
+        "idade": idade,
+        "profissao": profissao,
+        "endereco": endereco,
+        "contato": contato
     }
 
     print("\nConfira as alterações:")
