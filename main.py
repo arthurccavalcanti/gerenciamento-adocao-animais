@@ -48,7 +48,7 @@ def main():
             Se sim, a função retorna True. Se não, a função retorna False.
             '''
         if not exibir_resultado(resultado_crud, 'crud'):   
-        
+            print("Voltando ao menu principal...")
             break
 
         '''
@@ -76,8 +76,8 @@ def main():
             A função de exibição recebe e mostra o resultado ao usuário, além de perguntar se o usuário deseja fazer mais uma operação.
             Se sim, a função retorna True. Se não, a função retorna False.
             '''
-            if exibir_resultado(resultado_match, 'match'):
-
+            if not exibir_resultado(resultado_match, 'match'):
+                print("Voltando ao menu principal...")
                 break
   
 
