@@ -1,14 +1,7 @@
 import re
 from armazenamento import armazenamento_json as armazenamento
 
-
-# A FAZER:
-'''
-A função do perfil recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
-A função do perfil também deve dar ao usuário a opção de visualizar todas as entradas.
-'''
 def main(tipo_operacao: str):
-
     while True:
         print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
         print("1 - SIM")
@@ -29,10 +22,9 @@ def main(tipo_operacao: str):
     elif tipo_operacao == "deletar":
         return excluir_adotante()
     elif tipo_operacao == "ler":
-        return listar_adotantes_por_cpf()
+        return ler_adotante()
     else:
         return "Operação inválida. Tente novamente."
-
 
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
@@ -57,15 +49,17 @@ def listar_todos_adotantes():
     else:
         print("Nenhum adotante encontrado.")
 
-
-def listar_adotantes_por_cpf():
+def ler_adotante():
     cpf = input("Digite o CPF do adotante: \n")
     adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
     if isinstance(adotante, dict):
-        print(adotante)
+        print("\n--- Dados do Adotante ---")
+        for chave, valor in adotante.items():
+            print(f"{chave}: {valor}")
+        return ("ler", adotante)
     else:
         print("Adotante não encontrado.")
-        
+        return ("ler", None)
 
 def cadastrar_adotante():
     while True:
@@ -95,7 +89,6 @@ def cadastrar_adotante():
             continue
         contato = int(contato)
 
-       
         print("\n--- Preferências do adotante ---")
 
         tipo = input("Prefere qual tipo de animal? (canino/felino): ").lower()
@@ -147,16 +140,17 @@ def cadastrar_adotante():
         if confirm == "s":
             armazenamento.criar_entrada(adotante, "adotantes.json")
             print("Adotante cadastrado com sucesso!")
+            return ("criar", adotante)
         else:
             print("Cadastro cancelado.")
-        break
+            return ("criar", None)
 
 def atualizar_adotante():
     cpf = input("Digite o CPF do adotante: ")
     dados_atuais = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
     if not dados_atuais:
         print("Adotante não encontrado.")
-        return
+        return ("atualizar", None)
 
     print("Dados atuais:")
     for k, v in dados_atuais.items():
@@ -200,16 +194,19 @@ def atualizar_adotante():
     confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
     if confirm == "s":
         armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json")
+        dados_atuais.update(novos_dados)
         print("Adotante atualizado com sucesso!")
+        return ("atualizar", dados_atuais)
     else:
         print("Atualização cancelada.")
+        return ("atualizar", None)
 
 def excluir_adotante():
     cpf = input("Digite o CPF do adotante a excluir: ")
     adotante = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
     if not adotante:
         print("Adotante não encontrado.")
-        return
+        return ("deletar", None)
 
     print("Adotante encontrado:")
     for k, v in adotante.items():
@@ -218,32 +215,10 @@ def excluir_adotante():
     if confirm == "s":
         armazenamento.deletar_entrada(cpf, "adotantes.json")
         print("Adotante excluído.")
+        return ("deletar", adotante)
     else:
         print("Exclusão cancelada.")
-
-def menu():
-    while True:
-        print("\n===== MENU =====")
-        print("1. Cadastrar adotante")
-        print("2. Listar adotantes")
-        print("3. Atualizar adotante")
-        print("4. Excluir adotante")
-        print("5. Sair")
-        opcao = input("Escolha uma opção: ")
-
-        if opcao == "1":
-            cadastrar_adotante()
-        elif opcao == "2":
-            listar_adotantes_por_cpf()
-        elif opcao == "3":
-            atualizar_adotante()
-        elif opcao == "4":
-            excluir_adotante()
-        elif opcao == "5":
-            print("Saindo...")
-            break
-        else:
-            print("Opção inválida! Tente novamente.")
+        return ("deletar", None)
 
 if __name__ == "__main__":
-    menu()
+    main()
