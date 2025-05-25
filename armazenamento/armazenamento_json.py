@@ -15,17 +15,14 @@ def carregar_arquivo(nome_json: str):
             with open(caminho_arquivo, 'w') as f:
                 json.dump([], f, indent=4)
         except:
-            print(f"Erro criando arquivo {caminho_arquivo}.")
+            print(f"Erro criando arquivo: {caminho_arquivo}.")
             return 1
 
     with open(caminho_arquivo, 'r') as f:
         try:
-            conteudo = f.read().strip()
-            if not conteudo:
-                return []
-            return json.loads(conteudo)
+            return json.loads(f)
         except:
-            print("Erro ao abrir arquivo.")
+            print(f"Erro ao abrir arquivo: {caminho_arquivo}")
             return 2
 
 
@@ -57,7 +54,7 @@ def criar_entrada(dados: dict, nome_json: str):
 
     print(f"Os dados {dados} foram adicionados ao arquivo {nome_json}.")
 
-    return 0
+    return True
 
 
 # ---------------------------------------------
@@ -67,7 +64,7 @@ def ler_entrada(id: int, chave_id: str, nome_json: str):
     caminho_arquivo = os.path.join(caminho_diretorio, 'armazenamento', nome_json)
 
     if not os.path.exists(caminho_arquivo):
-        print("O arquivo não existe.")
+        print(f"O arquivo não existe: {caminho_arquivo}")
         return 1
     
     with open(caminho_arquivo, 'r') as f:
@@ -77,7 +74,7 @@ def ler_entrada(id: int, chave_id: str, nome_json: str):
         if entrada[chave_id] == id:
             return entrada
         
-    print("O ID fornecido não existe.")
+    print(f"O ID {id} não existe.")
     return 2
 
 # --------------------------------------------------
@@ -87,7 +84,7 @@ def editar_entrada(id: int, chave_id: str, dados_atualizados: dict, nome_json: s
     caminho_arquivo = os.path.join(caminho_diretorio, 'armazenamento', nome_json)
 
     if not os.path.exists(caminho_arquivo):
-        print("O arquivo não existe.")
+        print(f"O arquivo não existe: {caminho_arquivo}")
         return 1
     
     with open(caminho_arquivo, 'r') as f:
@@ -102,7 +99,7 @@ def editar_entrada(id: int, chave_id: str, dados_atualizados: dict, nome_json: s
                 json.dump(arquivo_json, f, indent=4)
 
             print(f"O arquivo {nome_json} foi atualizado com {dados_atualizados}.")
-            return 0
+            return True
         
     print(f"Não há entrada com o id {id}.")
     return 2
@@ -114,7 +111,7 @@ def deletar_entrada(id: int, chave_id: str, nome_json: str):
     caminho_arquivo = os.path.join(caminho_diretorio, 'armazenamento', nome_json)
 
     if not os.path.exists(caminho_arquivo):
-        print("O arquivo não existe.")
+        print(f"O arquivo não existe: {caminho_arquivo}.")
         return 1
     
     with open(caminho_arquivo, 'r') as f:
@@ -126,27 +123,8 @@ def deletar_entrada(id: int, chave_id: str, nome_json: str):
             with open(caminho_arquivo, 'w') as f:
                 json.dump(arquivo_json, f, indent=4)
             print(f"A entrada com id {id} foi deletada.")
-            return 0
+            return True
     
     print(f"Não há entrada com o id {id}.")
     return 2
 
-# ---------------------------------------------------------
-
-if __name__ == "__main__":
-
-    dados1 = {'id':1, 'idade':23}
-    dados2 = {'id':2, 'idade':3}
-
-    criar_entrada(dados1, 'teste.json')
-    criar_entrada(dados2, 'teste.json')
-
-    deletar_entrada(2, 'id', 'teste.json')
-
-    entrada2 = ler_entrada(1, 'id', 'teste.json')
-    print(entrada2)
-
-    editar_entrada(1, 'id', {'id':3, 'idade':4}, 'teste.json')
-
-    entrada5 = ler_entrada(3, 'id', 'teste.json')
-    print(entrada5)

@@ -191,8 +191,8 @@ def atualizar_adotante():
     print("\nConfira as alterações:")
     for chave in novos_dados:
         print(f"{chave}: {dados_atuais[chave]} → {novos_dados[chave]}")
-    confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
-    if confirm == "s":
+
+    if confirmar_acao("Deseja prosseguir com a atualização? (s/n): "):
         armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json")
         dados_atuais.update(novos_dados)
         print("Adotante atualizado com sucesso!")

@@ -18,7 +18,7 @@ def main(tipo_operacao: str):
     
     if tipo_operacao == "criar":
         return adicionar_pet()
-    elif tipo_operacao == "atualizar":
+    elif tipo_operacao == "editar":
         return atualizar_pet()
     elif tipo_operacao == "deletar":
         return deletar_pet()
@@ -122,9 +122,9 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    armazenamento.criar_entrada(pets, 'pets.json')
-
-    return ('adicionar', pets)
+    if armazenamento.criar_entrada(pets, 'pets.json') == True:
+        return ('adicionar', pets)
+    return f"Erro ao criar pet:\n {pets}.\n Tente novamente."
 
 
 # --------------------------------------------------------
@@ -139,8 +139,10 @@ def ler_pet():
     while True:
             id_pet = input("DIGITE A ID DO PET:\n")
             if type(id_pet) is int:
-                pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     # A função retorna 2 se não há pet com a ID fornecida.
-                if pet == 2:                                                 
+                pet = armazenamento.ler_entrada(int(id_pet), 'id', 'pets.json')     
+                if pet == 1:
+                    return f"Erro ao ler pet: o arquivo 'pets.json' não existe."
+                elif pet == 2:                                                 
                     while True:
                         print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
                         print("1 - SIM")
@@ -154,7 +156,7 @@ def ler_pet():
                         else:
                             print("Opção inválida.")            
                 else:
-                    return pet
+                    return ('ler', pet)
             else:
                 print("A ID FORNECIDA DEVE SER UM NÚMERO. TENTE NOVAMENTE.")
                 continue
@@ -263,9 +265,10 @@ def atualizar_pet():
         continuar = input("Deseja continuar editando este pet? (s/n)\n>>> ").lower()
         if continuar != 's':
             print("Finalizando edição do pet.")
-            armazenamento.editar_enterada(id_pet, 'id', novo_pet, 'animais.json')
-            return ('atualizar', (id_pet, pet_antigo, novo_pet))
-
+            if armazenamento.editar_enterada(int(pet_antigo['id']), 'id', novo_pet, 'animais.json') == True:
+                return ('atualizar', (pet_antigo, novo_pet))
+            return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
+        
 
 # ----------------------------------------------------------------------
 def deletar_pet():
@@ -273,9 +276,10 @@ def deletar_pet():
     pet_excluido = ler_pet()
 
     print(f"Deletando pet:\n {pet_excluido}")
-    armazenamento.deletar_entrada(pet_excluido['id'], 'id', 'pets.json')
-    return f"Os dados foram excluídos:\n {pet_excluido}"
-
+    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json') == True:
+        return ('deletar', pet_excluido)
+    return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
+    
 
 # -------------------------------------------------------------------------------------------
 def listar_pets():
@@ -286,10 +290,10 @@ def listar_pets():
     '''
     pets = armazenamento.carregar_arquivo('pets.json')
 
-    if pets == 1:    # Erro ao criar arquivo
-        return "Tente criar o arquivo novamente."
-    elif pets == 2:  # Erro ao abrir o arquivo
-        return "Tente abrir o arquivo novamente."
+    if pets == 1:    
+        return "Erro ao criar o arquivo 'pets.json'. Tente novamente."
+    elif pets == 2: 
+        return "Erro ao abrir o arquivo 'pets.json'. Tente novamente."
     else:
         print("="*50)
         print("LISTA DE PETS:")
@@ -313,6 +317,11 @@ def filtrar_pets():
 
     pets = armazenamento.carregar_arquivo('pets.json')
 
+    if pets == 1:    
+        return "Erro ao criar o arquivo 'pets.json'. Tente novamente."
+    elif pets == 2: 
+        return "Erro ao abrir o arquivo 'pets.json'. Tente novamente."
+    
     filtros = {}
 
     while True:
@@ -408,9 +417,6 @@ def filtrar_pets():
             else:
                 print("Cor não pode ser vazia.")
     
-        else:
-            print("Opção inválida. Tente novamente.")
-    
         while True:
             continuar = input("Deseja adicionar mais um filtro? (s/n)\n>>> ").lower()
             if continuar in ('s', 'n'):
@@ -469,6 +475,7 @@ def menu_filtrar():
         else:
             print("Opção inválida. Tente novamente.")
             
-# ----------------------------------------------------------------------------
+
+
 if __name__ == "__main__":
     main()
