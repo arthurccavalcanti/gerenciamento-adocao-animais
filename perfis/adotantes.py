@@ -1,20 +1,6 @@
 import re
 from armazenamento import armazenamento_json as armazenamento
-
-
-# A FAZER:
-'''
-A função do perfil recebe a operação a ser feita (criar, deletar, atualizar, ler) como parâmetro, realiza a operação e retorna o resultado.
-A função do perfil também deve dar ao usuário a opção de visualizar todas as entradas.
-'''
-
-
-
-
-
-
-
-            
+           
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
 
@@ -124,15 +110,10 @@ def cadastrar_adotante():
         else:
             print("Cadastro cancelado.")
         break
-            armazenamento.criar_entrada(adotante, "adotantes.json")
-            print("Adotante cadastrado com sucesso!")
-        else:
-            print("Cadastro cancelado.")
-        break
 
 def atualizar_adotante():
     cpf = input("Digite o CPF do adotante: ")
-    dados_atuais = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
+    dados_atuais = armazenamento.ler_entrada(cpf, "id", "adotantes.json")
     if not dados_atuais:
         print("Adotante não encontrado.")
         return
