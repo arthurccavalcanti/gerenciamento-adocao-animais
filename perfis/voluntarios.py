@@ -4,7 +4,7 @@ import re
 import requests
 
 
-def main(tipo_operacao: str):
+def crud_voluntarios(tipo_operacao: str):
 
     nome_arquivo_json = "voluntarios.json"
 

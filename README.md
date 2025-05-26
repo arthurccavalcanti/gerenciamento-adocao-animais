@@ -1,14 +1,3 @@
-## TO DO
-- [ ] interface CLI
-- [ ] funções de match
-- [x] integrar main com outros arquivos
-
-## TO DO (se der tempo)
-- [ ] integração BD
-- [ ] GUI e frontend
-- [ ] sistema de login e restrição de operações
-- [ ] filtrar dados a serem exibidos
-
 ## ESTRUTURA DE ARQUIVOS:
 
 ```
@@ -25,16 +14,13 @@ adocao-animais/
 │   ├── match_voluntario.py
 ├── armazenamento/
 │   ├── __init__.py
-│   ├── armazenamento_json.py
-│   ├── armazenamento_db.py    [OPCIONAL]    
+│   ├── armazenamento_json.py    
 ├── testes/
 │   ├── __init__.py
 │   ├── testes.py
 ├── interface/
 │   ├── __init__.py
-│   ├── cli_interface.py       [OPCIONAL]
-│   ├── gui_interface.py               
-├── config.py                  [OPCIONAL] 
+│   ├── cli_interface.py                   
 ├── requirements.txt          
 └── README.md
 ```
@@ -104,4 +90,9 @@ O arquivo voluntário.json tem os seguintes campos:
 - telefone
 
 O arquivo adotantes.json tem os seguintes campos:
-- ...
+- nome
+- cpf
+- idade
+- profissão
+- endereço
+- contato

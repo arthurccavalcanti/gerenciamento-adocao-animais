@@ -1,7 +1,7 @@
 import re
 from armazenamento import armazenamento_json as armazenamento
 
-def main(tipo_operacao: str):
+def crud_adotante(tipo_operacao: str):
     while True:
         print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
         print("1 - SIM")

@@ -1,7 +1,7 @@
 from armazenamento import armazenamento_json as armazenamento
 from perfis.adotantes import validar_idade as validar_idade
 
-def main(tipo_operacao: str):
+def crud_pets(tipo_operacao: str):
     while True:
         print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
         print("1 - SIM")

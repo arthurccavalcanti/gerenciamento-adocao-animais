@@ -1,4 +1,0 @@
-'''
-CONFIGURAÇÕES DO PROGRAMA
-
-'''
