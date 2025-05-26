@@ -124,8 +124,8 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    if armazenamento.criar_entrada(pets, 'pets.json'):
-        return ('adicionar', pets)
+    if not isistance(armazenamento.criar_entrada(pets, 'pets.json'), int):
+        return ('criar', pets)
     return f"Erro ao criar pet:\n {pets}.\n Tente novamente."
 
 def gerar_novo_id(pets_json):
@@ -144,8 +144,8 @@ def ler_pet():
             id_pet = int(id_pet)
             pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     
             if pet == 1:
-                return f"Erro ao ler pet: o arquivo 'pets.json' não existe."
-            elif pet == 2:                                                 
+                return f"Erro ao criar arquivo 'pets.json'."
+            elif pet == 7:                                                 
                 while True:
                     print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
                     print("1 - SIM")
@@ -264,7 +264,8 @@ def atualizar_pet():
         continuar = input("Deseja continuar editando este pet? (s/n)\n>>> ").lower()
         if continuar != 's':
             print("Finalizando edição do pet.")
-            if armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json'):
+            res = armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json')
+            if not isinstance(res, int):
                 return ('atualizar', (pet_antigo, novo_pet))
             return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
 
@@ -272,19 +273,16 @@ def deletar_pet():
     pet_excluido = ler_pet()[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
-    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json'):
+    res = armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json')
+    if not isinstance(res, int):
         return ('deletar', pet_excluido)
     return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
 
 def listar_pets():
     pets = armazenamento.carregar_arquivo('pets.json')
 
-    if pets == 1:    
-        return "Erro ao criar o arquivo 'pets.json'. Tente novamente."
-    elif pets == 2: 
-        return "Erro ao abrir o arquivo 'pets.json'. Tente novamente."
-    elif not pets:
-        print("Nenhum pet cadastrado.")
+    if isinstance(pets, int):    
+        return "Erro ao listar o arquivo 'pets.json'. Tente novamente."
     else:
         print("="*50)
         print("LISTA DE PETS:")
