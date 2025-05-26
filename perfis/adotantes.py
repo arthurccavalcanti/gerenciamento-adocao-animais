@@ -17,7 +17,7 @@ def main(tipo_operacao: str):
     
     if tipo_operacao == "criar":
         return cadastrar_adotante()
-    elif tipo_operacao == "atualizar":
+    elif tipo_operacao == "editar":
         return atualizar_adotante()
     elif tipo_operacao == "deletar":
         return excluir_adotante()
@@ -25,6 +25,9 @@ def main(tipo_operacao: str):
         return ler_adotante()
     else:
         return "Operação inválida. Tente novamente."
+
+
+# FUNÇÕES AUXILIARES -----------------------------------------------------------
 
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
@@ -39,53 +42,68 @@ def validar_cep(cep):
     return re.match(r"^\d{8}$", cep) is not None
 
 def listar_todos_adotantes():
-    adotantes = armazenamento.listar_todos("adotantes.json")
-    if isinstance(adotantes, list) and adotantes:
-        print("\n--- Lista de Adotantes ---")
-        for adotante in adotantes:
-            print("-" * 30)
-            for chave, valor in adotante.items():
-                print(f"{chave}: {valor}")
+    adotantes = armazenamento.carregar_arquivo("adotantes.json")
+    if adotantes == 1:
+        print("Erro ao criar arquivo adotantes.json")
+    elif adotantes == 2:
+        print("Erro ao abrir arquivo adotantes.json")
     else:
-        print("Nenhum adotante encontrado.")
+        print("="*50)
+        print("LISTA DE ADOTANTES:")
+        for adotante in adotantes:
+            print("-"*50)
+            print(f"ID: {adotante['CPF']}")
+            print(f"Nome completo: {adotante['nome']}")
+            print(f"Idade: {adotante['idade']}")
+            print(f"Profissão: {adotante['profissao']}")
+            print(f"Endereço: {adotante['endereco']}")
+            print(f"Contato: {adotante['contato']}")
+            for preferencia in adotante['preferencias']:
+                print(f"Preferência: {preferencia}")
+        print("="*50)
+
+
+# FUNÇÕES CRUD ------------------------------------------------------------
 
 def ler_adotante():
-    cpf = input("Digite o CPF do adotante: \n")
+    cpf = input("Digite o CPF do adotante: ")
+    while not validar_cpf(cpf):
+        cpf = input("CPF inválido. Digite o CPF do adotante: ")
     adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
-    if isinstance(adotante, dict):
-        print("\n--- Dados do Adotante ---")
-        for chave, valor in adotante.items():
-            print(f"{chave}: {valor}")
-        return ("ler", adotante)
-    else:
-        print("Adotante não encontrado.")
-        return ("ler", None)
+    if adotante == 2:
+        return f"Erro ao ler adotante: adotante com id {cpf} não encontrado."
+    elif adotante == 1:
+        return f"Erro ao ler adotante: o arquivo adotantes.json não existe."
+    return ('ler', adotante)
+
+# --------------------------------
 
 def cadastrar_adotante():
     while True:
-        cpf = input("Digite o CPF (somente números, 11 dígitos): \n")
-        if not validar_cpf(cpf):
-            print("CPF inválido!\n")
-            continue
+        cpf = input("Digite o CPF do adotante: ")
+        while not validar_cpf(cpf):
+            cpf = input("CPF inválido. Digite o CPF do adotante: ")
 
         nome = input("Digite o nome completo: \n")
 
-        idade = input("Digite a idade: \n")
-        if not validar_idade(idade):
+        while not validar_idade(idade):
             print("Idade inválida!\n")
+            idade = input("Digite a idade: \n")
             continue
         idade = int(idade)
 
         profissao = input("Digite a profissão: \n")
         
         endereco = input("Digite o CEP (somente números): \n")
-        if not validar_cep(endereco):
+        while not validar_cep(endereco):
             print("CEP inválido! Deve conter 8 dígitos.\n")
+            endereco = input("Digite o CEP (somente números): \n")
             continue
 
-        contato = input("Contato (somente números): ")
-        if not validar_contato(contato):
+        contato = input("Digite o contato (somente números): ")
+        while not validar_contato(contato):
             print("Contato inválido! Deve conter ao menos 8 dígitos.\n")
+            contato = input("Digite o contato (somente números): ")
             continue
         contato = int(contato)
 
@@ -123,7 +141,7 @@ def cadastrar_adotante():
         }
 
         adotante = {
-            "id": cpf,
+            "CPF": cpf,
             "nome": nome,
             "idade": idade,
             "profissao": profissao,
@@ -139,18 +157,22 @@ def cadastrar_adotante():
         confirm = input("Deseja salvar esse adotante? (s/n): ").lower()
         if confirm == "s":
             armazenamento.criar_entrada(adotante, "adotantes.json")
-            print("Adotante cadastrado com sucesso!")
             return ("criar", adotante)
         else:
-            print("Cadastro cancelado.")
-            return ("criar", None)
+            return "Cadastro cancelado."
+        
+# --------------------------------
 
 def atualizar_adotante():
     cpf = input("Digite o CPF do adotante: ")
+    while not validar_cpf(cpf):
+        cpf = input("CPF inválido. Digite o CPF do adotante: ")
+
     dados_atuais = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
-    if not dados_atuais:
-        print("Adotante não encontrado.")
-        return ("atualizar", None)
+    if dados_atuais == 1 or dados_atuais == 2:
+        return f"Erro ao atualizar: problema ao ler adotante com id {cpf}."
+    
+    dados_antigos = dados_atuais
 
     print("Dados atuais:")
     for k, v in dados_atuais.items():
@@ -191,22 +213,24 @@ def atualizar_adotante():
     print("\nConfira as alterações:")
     for chave in novos_dados:
         print(f"{chave}: {dados_atuais[chave]} → {novos_dados[chave]}")
-
-    if confirmar_acao("Deseja prosseguir com a atualização? (s/n): "):
+    
+    confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
+    if confirm == "s":
         armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json")
-        dados_atuais.update(novos_dados)
-        print("Adotante atualizado com sucesso!")
-        return ("atualizar", dados_atuais)
+        return ("atualizar", (dados_antigos, dados_atuais))
     else:
-        print("Atualização cancelada.")
-        return ("atualizar", None)
+        return f"Atualização do adotante com id {cpf} cancelada."
+
+# --------------------------------
 
 def excluir_adotante():
-    cpf = input("Digite o CPF do adotante a excluir: ")
+    cpf = input("Digite o CPF do adotante: ")
+    while not validar_cpf(cpf):
+        cpf = input("CPF inválido. Digite o CPF do adotante: ")
+
     adotante = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
-    if not adotante:
-        print("Adotante não encontrado.")
-        return ("deletar", None)
+    if adotante == 1 or adotante == 2:
+        return f"Erro ao excluir: problema ao ler adotante com id {cpf}."
 
     print("Adotante encontrado:")
     for k, v in adotante.items():
@@ -214,11 +238,7 @@ def excluir_adotante():
     confirm = input("Deseja realmente excluir esse adotante? (s/n): ").lower()
     if confirm == "s":
         armazenamento.deletar_entrada(cpf, "adotantes.json")
-        print("Adotante excluído.")
         return ("deletar", adotante)
     else:
-        print("Exclusão cancelada.")
-        return ("deletar", None)
+        return f"Exclusão do adotante com id {cpf} cancelada."
 
-if __name__ == "__main__":
-    main()
