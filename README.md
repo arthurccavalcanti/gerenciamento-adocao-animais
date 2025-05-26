@@ -12,15 +12,9 @@ adocao-animais/
 │   ├── __init__.py
 │   ├── match_pet.py
 │   ├── match_voluntario.py
-├── armazenamento/
-│   ├── __init__.py
-│   ├── armazenamento_json.py    
-├── testes/
-│   ├── __init__.py
-│   ├── testes.py
-├── interface/
-│   ├── __init__.py
-│   ├── cli_interface.py                   
+├── armazenamento_json.py  
+├── testes.py
+├── cli_interface.py                   
 ├── requirements.txt          
 └── README.md
 ```

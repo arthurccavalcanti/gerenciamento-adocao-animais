@@ -1,4 +1,4 @@
-from armazenamento import armazenamento_json as armazenamento
+import armazenamento_json as armazenamento
 from perfis.adotantes import validar_idade as validar_idade
 
 def crud_pets(tipo_operacao: str):
@@ -30,8 +30,7 @@ def adicionar_pet():
     pets = {}
     pets_json = armazenamento.carregar_arquivo('pets.json')
     
-    
-    if not isinstance(pets_json, list):
+    if not pets_json:
         pets_json = []
     
     pets['id'] = gerar_novo_id(pets_json)
@@ -124,7 +123,7 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    if not isistance(armazenamento.criar_entrada(pets, 'pets.json'), int):
+    if armazenamento.criar_entrada(pets, 'pets.json'):
         return ('criar', pets)
     return f"Erro ao criar pet:\n {pets}.\n Tente novamente."
 
@@ -273,15 +272,13 @@ def deletar_pet():
     pet_excluido = ler_pet()[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
-    res = armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json')
-    if not isinstance(res, int):
+    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json')
         return ('deletar', pet_excluido)
     return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
 
 def listar_pets():
-    pets = armazenamento.carregar_arquivo('pets.json')
 
-    if isinstance(pets, int):    
+    if not armazenamento.carregar_arquivo('pets.json'):
         return "Erro ao listar o arquivo 'pets.json'. Tente novamente."
     else:
         print("="*50)
@@ -303,10 +300,8 @@ def listar_pets():
 def filtrar_pets():
     pets = armazenamento.carregar_arquivo('pets.json')
 
-    if pets == 1:    
+    if not pets: 
         return "Erro ao criar o arquivo 'pets.json'. Tente novamente."
-    elif pets == 2: 
-        return "Erro ao abrir o arquivo 'pets.json'. Tente novamente."
     
     filtros = {}
 
@@ -460,4 +455,4 @@ def menu_filtrar():
             print("Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
-    main()
+    crud_pets()

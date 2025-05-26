@@ -1,7 +1,7 @@
 import re
-from armazenamento import armazenamento_json as armazenamento
+import armazenamento_json as armazenamento
 
-def crud_adotante(tipo_operacao: str):
+def crud_adotantes(tipo_operacao: str):
     while True:
         print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
         print("1 - SIM")
@@ -27,7 +27,7 @@ def crud_adotante(tipo_operacao: str):
         return "Operação inválida. Tente novamente."
 
 
-# FUNÇÕES AUXILIARES -----------------------------------------------------------
+# -----------------------------------------------------------
 
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
@@ -63,7 +63,7 @@ def listar_todos_adotantes():
         print("="*50)
 
 
-# FUNÇÕES CRUD ------------------------------------------------------------
+# ------------------------------------------------------------
 
 def ler_adotante():
     cpf = input("Digite o CPF do adotante: ")
@@ -86,9 +86,9 @@ def cadastrar_adotante():
 
         nome = input("Digite o nome completo: \n")
 
+        idade = input("Digite a idade: \n")
         while not validar_idade(idade):
             print("Idade inválida!\n")
-            idade = input("Digite a idade: \n")
             continue
         idade = int(idade)
 

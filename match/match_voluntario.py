@@ -1,14 +1,8 @@
 import pprint
-from armazenamento import armazenamento_json as armazenamento
+import armazenamento_json as armazenamento
 
-'''
-O programa de match pede ao usuário para escolher um voluntário.
-Com os dados do voluntário escolhido, a função calcula e retorna os melhores matches.
-A função também deve dar ao usuário a opção de visualizar todas as entradas.
-'''
 
-# ESBOÇO
-def main():
+def match_voluntario():
 
     visualizar = input("Deseja visualizar todos os voluntários? 's'/'n'\n")
 

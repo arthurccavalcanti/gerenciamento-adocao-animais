@@ -3,7 +3,7 @@ import os
 import pprint
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from armazenamento import armazenamento_json as armazenamento
+import armazenamento_json as armazenamento
 
 
 def mapear_idade_para_faixa(idade):

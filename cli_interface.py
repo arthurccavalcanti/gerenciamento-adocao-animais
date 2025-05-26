@@ -73,10 +73,7 @@ def exibir_menu_match():
             print("Opção inválida. Tente novamente.")
 
 
-'''
-As operações de CRUD retornam um resultado no padrão ('operacao', dados1, dados2, ...)
-Quando há erro, as operações de CRUD retornam uma string.
-'''
+
 def exibir_resultado(resultado, tipo):
     print(f"\n--- RESULTADO ({tipo.upper()}) ---")
     if tipo == 'crud':

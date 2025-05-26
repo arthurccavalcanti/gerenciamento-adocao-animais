@@ -1,4 +1,4 @@
-from armazenamento import armazenamento_json as armazenamento
+import armazenamento_json as armazenamento
 from datetime import datetime
 import re
 import requests
@@ -13,10 +13,10 @@ def crud_voluntarios(tipo_operacao: str):
         print("1 - SIM")
         print("2 - NÃO")
         deseja_listar = input(">>> ")
-        if deseja_listar == 1:
+        if deseja_listar == '1':
             listar_voluntarios(nome_arquivo_json)
             break
-        elif deseja_listar == 2:
+        elif deseja_listar == '2':
             break
         else:
             print("Opção inválida.")    
@@ -91,6 +91,7 @@ def crud_voluntarios(tipo_operacao: str):
 
 
     elif tipo_operacao == "deletar":
+        print("DELEÇÃO DE VOLUNTÁRIO")
         cpf = solicitar_cpf()
         voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
         res = armazenamento.deletar_entrada(int(cpf), 'CPF', nome_arquivo_json)
@@ -113,12 +114,12 @@ def crud_voluntarios(tipo_operacao: str):
 
 
 
-# FUNÇÕES DE VALIDAÇÃO ------------------------------------------------------
+# -----------------------------------------------------
 
 
 def solicitar_cpf():
     while True:
-        cpf = input("Digite seu CPF: ").strip()
+        cpf = input("Digite o CPF: ").strip()
         if validar_cpf(cpf):
             print("CPF cadastrado!")
             return re.sub(r'[^0-9]', '', cpf)
@@ -304,4 +305,4 @@ def listar_voluntarios(nome_arquivo):
 
 
 if __name__ == "__main__":
-    main()
+    crud_voluntarios()

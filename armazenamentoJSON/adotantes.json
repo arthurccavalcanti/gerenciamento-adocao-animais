@@ -1,0 +1,20 @@
+[
+    {
+        "CPF": "23132132132",
+        "nome": "asd",
+        "idade": 12,
+        "profissao": "asd",
+        "endereco": "12345678",
+        "contato": 12345678,
+        "preferencias": {
+            "tipo": "canino",
+            "porte": "pequeno",
+            "temperamento": [
+                "as"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "filhote",
+            "experiencia": true
+        }
+    }
+]
