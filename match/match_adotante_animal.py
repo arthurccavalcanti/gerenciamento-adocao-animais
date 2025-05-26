@@ -7,7 +7,6 @@ Com os dados do pet, calcula e retorna os melhores matches.
 A função também deve dar ao usuário a opção de visualizar todas as entradas.
 '''
 
-# ESBOÇO
 def main():
 
     visualizar = input("Deseja visualizar todos os pets? 's'/'n'\n").lower()
@@ -19,17 +18,16 @@ def main():
 
     pet_escolhido = armazenamento.ler_entrada(id_pet_escolhido, 'id', 'pets.json')
 
-    if not pet_escolhido:
-        print("Pet não encontrado. Verifique o ID e tente novamente.")
-        return
+    if pet_escolhido == 1 or pet_escolhido == 2:
+        return f"Pet não encontrado. Verifique o ID {id_pet_escolhido} e tente novamente."
 
     possiveis_matches = encontrar_matches(pet_escolhido)
 
-    melhores_dez_matches = possiveis_matches[:10]
+    melhores_dez_matches = possiveis_matches[:9]
 
     return melhores_dez_matches
 
-# ESBOÇO
+
 def encontrar_matches(pet):
 
     possiveis_adotantes = armazenamento.carregar_arquivo('adotantes.json')
@@ -41,7 +39,6 @@ def encontrar_matches(pet):
         compatibilidade_counter = 0
         testes = 0
 
-        # testes de compatibilidade
         if pet['porte'] == adotante['preferencia_porte']:
             compatibilidade_counter += 1
         testes += 1
