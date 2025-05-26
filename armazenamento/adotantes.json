@@ -1,0 +1,38 @@
+[
+    {
+        "id": "12824040408",
+        "nome": "Rafael Procópio",
+        "idade": 21,
+        "profissao": "estudante",
+        "endereco": "52041065",
+        "contato": 81991919462,
+        "preferencias": {
+            "tipo": "felino",
+            "porte": "pequeno",
+            "temperamento": [
+                "brincalhão"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "filhote",
+            "experiencia": true
+        }
+    },
+    {
+        "id": "10994560451",
+        "nome": "Luisa",
+        "idade": 20,
+        "profissao": "arquiteta",
+        "endereco": "52011260",
+        "contato": 81997121748,
+        "preferencias": {
+            "tipo": "canino",
+            "porte": "pequeno",
+            "temperamento": [
+                "brincalhão"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "adulto",
+            "experiencia": true
+        }
+    }
+]

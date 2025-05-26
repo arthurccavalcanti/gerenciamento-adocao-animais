@@ -241,4 +241,3 @@ def excluir_adotante():
         return ("deletar", adotante)
     else:
         return f"Exclusão do adotante com id {cpf} cancelada."
-

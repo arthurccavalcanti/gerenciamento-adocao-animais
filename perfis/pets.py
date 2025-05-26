@@ -2,16 +2,15 @@ from armazenamento import armazenamento_json as armazenamento
 from perfis.adotantes import validar_idade as validar_idade
 
 def main(tipo_operacao: str):
-
     while True:
         print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
         print("1 - SIM")
         print("2 - NÃO")
         deseja_listar = input(">>> ")
-        if deseja_listar == 1:
+        if deseja_listar == "1":
             listar_pets()
             break
-        elif deseja_listar == 2:
+        elif deseja_listar == "2":
             break
         else:
             print("Opção inválida.")    
@@ -27,10 +26,14 @@ def main(tipo_operacao: str):
     else:
         return "Operação inválida. Tente novamente."
 
-# ------------------------------------------------------------------
 def adicionar_pet():
     pets = {}
     pets_json = armazenamento.carregar_arquivo('pets.json')
+    
+    
+    if not isinstance(pets_json, list):
+        pets_json = []
+    
     pets['id'] = gerar_novo_id(pets_json)
 
     while True:
@@ -55,7 +58,6 @@ def adicionar_pet():
             continue
         pets['idade'] = int(idade)
         break
-
 
     while True:
         print("SEXO:")
@@ -122,54 +124,52 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    if armazenamento.criar_entrada(pets, 'pets.json') == True:
-        return ('adicionar', pets)
+    if not isistance(armazenamento.criar_entrada(pets, 'pets.json'), int):
+        return ('criar', pets)
     return f"Erro ao criar pet:\n {pets}.\n Tente novamente."
 
-
-# --------------------------------------------------------
 def gerar_novo_id(pets_json):
-    if not pets_json:
+    if not pets_json:  
         return 1
-    return max(pet['id'] for pet in pets_json) + 1
+    try:
+        return max(int(pet['id']) for pet in pets_json) + 1
+    except (KeyError, ValueError):
+        
+        return len(pets_json) + 1
 
-# --------------------------------------------------------
 def ler_pet():
-
     while True:
-            id_pet = input("DIGITE A ID DO PET:\n")
-            if type(id_pet) is int:
-                pet = armazenamento.ler_entrada(int(id_pet), 'id', 'pets.json')     
-                if pet == 1:
-                    return f"Erro ao ler pet: o arquivo 'pets.json' não existe."
-                elif pet == 2:                                                 
-                    while True:
-                        print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
-                        print("1 - SIM")
-                        print("2 - NÃO")
-                        deseja_listar = input(">>> ")
-                        if deseja_listar == 1:
-                            listar_pets()
-                            break
-                        elif deseja_listar == 2:
-                            break
-                        else:
-                            print("Opção inválida.")            
-                else:
-                    return ('ler', pet)
+        id_pet = int(input("DIGITE A ID DO PET:\n"))
+        try:
+            id_pet = int(id_pet)
+            pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     
+            if pet == 1:
+                return f"Erro ao criar arquivo 'pets.json'."
+            elif pet == 7:                                                 
+                while True:
+                    print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
+                    print("1 - SIM")
+                    print("2 - NÃO")
+                    deseja_listar = input(">>> ")
+                    if deseja_listar == "1":
+                        listar_pets()
+                        break
+                    elif deseja_listar == "2":
+                        break
+                    else:
+                        print("Opção inválida.")            
             else:
-                print("A ID FORNECIDA DEVE SER UM NÚMERO. TENTE NOVAMENTE.")
-                continue
+                return ('ler', pet)
+        except ValueError:
+            print("A ID FORNECIDA DEVE SER UM NÚMERO. TENTE NOVAMENTE.")
+            continue
 
-# ----------------------------------------------------------
-def atualizar_pet():
-    
-    novo_pet = ler_pet()
-                   
-    pet_antigo = novo_pet
+def atualizar_pet():                   
+    pet_antigo = ler_pet()[1]  
+    novo_pet = pet_antigo.copy()
 
     while True:
-        print(f"\nAtualizando pet: {pet_antigo['nome']} (ID: {pet_antigo['id']})")
+        print(f"\nAtualizando pet: {novo_pet['nome']} (ID: {novo_pet['id']})")
         print("Escolha o campo para atualizar:")
         print("1 - Tipo (Canino/Felino)")
         print("2 - Nome")
@@ -261,39 +261,28 @@ def atualizar_pet():
         else:
             print("Opção inválida.")
 
-
         continuar = input("Deseja continuar editando este pet? (s/n)\n>>> ").lower()
         if continuar != 's':
             print("Finalizando edição do pet.")
-            if armazenamento.editar_enterada(int(pet_antigo['id']), 'id', novo_pet, 'animais.json') == True:
+            res = armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json')
+            if not isinstance(res, int):
                 return ('atualizar', (pet_antigo, novo_pet))
             return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
-        
 
-# ----------------------------------------------------------------------
 def deletar_pet():
-
-    pet_excluido = ler_pet()
+    pet_excluido = ler_pet()[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
-    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json') == True:
+    res = armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json')
+    if not isinstance(res, int):
         return ('deletar', pet_excluido)
     return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
-    
 
-# -------------------------------------------------------------------------------------------
 def listar_pets():
-
-    '''
-    Se der tempo, colocar aqui a opção de filtrar a lista de pets.
-    Se o usuário selecionar a opção, esta função pode chamar filtrar_pets()
-    '''
     pets = armazenamento.carregar_arquivo('pets.json')
 
-    if pets == 1:    
-        return "Erro ao criar o arquivo 'pets.json'. Tente novamente."
-    elif pets == 2: 
-        return "Erro ao abrir o arquivo 'pets.json'. Tente novamente."
+    if isinstance(pets, int):    
+        return "Erro ao listar o arquivo 'pets.json'. Tente novamente."
     else:
         print("="*50)
         print("LISTA DE PETS:")
@@ -311,10 +300,7 @@ def listar_pets():
             print(f"Porte: {pet['porte']}")
         print("="*50)
 
-
-# ------------------------------------------------------------
 def filtrar_pets():
-
     pets = armazenamento.carregar_arquivo('pets.json')
 
     if pets == 1:    
@@ -426,7 +412,6 @@ def filtrar_pets():
         if continuar != 's':
             break
     
-    
     if filtros:
         print("\n=== FILTROS APLICADOS ===")
         for chave, valor in filtros.items():
@@ -437,7 +422,7 @@ def filtrar_pets():
     for chave, valor in filtros.items():
         pets_filtrados = [
             p for p in pets_filtrados
-            if p.get(chave, '').strip().lower() == valor.strip().lower()
+            if str(p.get(chave, '')).strip().lower() == str(valor).strip().lower()
         ]
     
     if not pets_filtrados:
@@ -457,8 +442,7 @@ def filtrar_pets():
             print(f"Cor: {pet['cor']}")
             print(f"Porte: {pet['porte']}")
         print("=" * 50)
-            
-# ---------------------------------------------------------------------
+
 def menu_filtrar():
     while True:
         print("\nESCOLHA UM CRITÉRIO PARA FILTRAR:")
@@ -470,12 +454,10 @@ def menu_filtrar():
         print("6 - Raça")
         print("7 - Cor")
         opcao = input(">>> ")
-        if opcao in ["0", "1", "2", "3", "4", "5", "6", "7"]:
+        if opcao in ["1", "2", "3", "4", "5", "6", "7"]:
             return opcao
         else:
             print("Opção inválida. Tente novamente.")
-            
-
 
 if __name__ == "__main__":
     main()
