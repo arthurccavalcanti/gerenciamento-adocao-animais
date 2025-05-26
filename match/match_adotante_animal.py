@@ -15,6 +15,7 @@ def mapear_idade_para_faixa(idade):
         return 'idoso'
 
 
+
 def encontrar_matches(pet):
     possiveis_adotantes = armazenamento.carregar_arquivo('adotantes.json')
     compatibilidades = []
@@ -49,7 +50,9 @@ def encontrar_matches(pet):
             compatibilidade_counter += 1
         testes += 1
 
+
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
+
 
         compatibilidades.append({
             'adotante': adotante,
@@ -67,6 +70,7 @@ def encontrar_matches_para_adotante(adotante):
     for pet in pets_disponiveis:
         compatibilidade_counter = 0
         testes = 0
+
 
         if pet['porte'] == preferencias.get('porte'):
             compatibilidade_counter += 1
