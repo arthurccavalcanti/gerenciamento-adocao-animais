@@ -92,5 +92,41 @@
             "faixa_etaria": "filhote",
             "experiencia": "Não"
         }
+    },
+    {
+        "CPF": 12345678912,
+        "nome": "adasdsad",
+        "idade": 12,
+        "profissao": "adasda",
+        "endereco": "23232323",
+        "contato": 123456789,
+        "preferencias": {
+            "tipo": "canino",
+            "porte": "grande",
+            "temperamento": [
+                "calmo"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "adulto",
+            "experiencia": "Sim"
+        }
+    },
+    {
+        "CPF": 12345687978,
+        "nome": "lol",
+        "idade": 12,
+        "profissao": "ki",
+        "endereco": "56565656",
+        "contato": 848459598,
+        "preferencias": {
+            "tipo": "felino",
+            "porte": "pequeno",
+            "temperamento": [
+                "calmo"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "idoso",
+            "experiencia": "Sim"
+        }
     }
 ]
