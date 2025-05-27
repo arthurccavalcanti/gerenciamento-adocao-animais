@@ -40,6 +40,21 @@ def main():
                 break
   
         if operacao == 'sair':
+            elefante = r"""
+                        ____
+                   .---'-    \
+      .-----------/           \
+     /           (         ^  |   __
+'   (             \        O  /  / .'
+'._/(              '-'  (.   (_.' /
+     \                    \     ./
+      |    |       |    |/ '._.'
+       )   @).____\|  @ |
+      /    /       (    | 
+     /     \       |    |
+
+"""
+            print(elefante)
             print("Encerrando o programa. Até mais! =)\n")
             break
 

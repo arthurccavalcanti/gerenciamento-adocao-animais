@@ -2,6 +2,23 @@ import pprint
 
 def exibir_menu():
     while True:
+        gato = r"""
+        (`.
+         ) )
+        ( (
+         \ \
+          \ \
+        .-'  `-.
+       /        `.
+      (      )    `-._ ,    _
+       )   ,'         (.\--'(
+       \  (         ) /      \
+        \  \_(     / (    <6 (6
+         \_)))\   (   `._  .:Y)__
+          '''  \   `-._.'`---^_)))
+                `-._ )))                                
+                """
+        print(gato)
         print("\n--- MENU PRINCIPAL ---")
         print("1. Gerenciar dados (CRUD)")
         print("2. Fazer match")
@@ -20,6 +37,14 @@ def exibir_menu():
 
 def exibir_menu_crud():
     while True:
+        cachorro = r"""
+      / \__ 
+     (    @\___  
+    /          O 
+   /    (_____/      
+  /_____/    U 
+                """
+        print(cachorro)
         print("\n--- MENU CRUD ---")
         print("1. Adotante")
         print("2. Pet")
@@ -34,7 +59,7 @@ def exibir_menu_crud():
         elif perfil_opcao in perfis:
             perfil = perfis[perfil_opcao]
 
-            print("\nOperações disponíveis:")
+            print("\n--- OPERAÇÕES DISPONÍVEIS ---")
             print("1. Criar")
             print("2. Ler")
             print("3. Editar")
@@ -57,9 +82,27 @@ def exibir_menu_crud():
 
 def exibir_menu_match():
     while True:
+        coelho = r"""
+
+                     /\    .-" /
+                    /  ; .'  .' 
+                   :   :/  .'   
+                    \  ;-.'     
+       .--''''--..__/     `.    
+     .'           .'    `o  \   
+    /                    `   ;  
+   :                  \      :  
+ .-;        -.         `.__.-'  
+:  ;          \     ,   ;       
+'._:           ;   :   (        
+    \/  .__    ;    \   `-.     
+ ;     "-,/_..--"`-..__)    
+     '""--.._:
+                """
+        print(coelho)
         print("\n--- MENU MATCH ---")
-        print("1. Ver melhores matches para um pet")
-        print("2. Ver melhores matches para um voluntário")
+        print("1. Melhores matches para um pet")
+        print("2. Melhores matches para um voluntário")
         print("3. Voltar ao menu principal")
         escolha = input("Escolha uma opção: ")
 
@@ -76,6 +119,13 @@ def exibir_menu_match():
 
 
 def exibir_resultado(resultado, tipo):
+    corujas = r"""
+   ___     ___
+  (o o)   (o o)
+ (  V  ) (  V  ) 
+/--m-m- /--m-m-
+                """
+    print(corujas)
     if tipo == 'crud':
         if isinstance(resultado, tuple):
             print(f"\n--- RESULTADO ({tipo.upper()}) ---")
@@ -104,7 +154,7 @@ def exibir_resultado(resultado, tipo):
                 print(f"{i+1}º MATCH ==============")
                 pprint.pprint(match)
         else:
-            print("Houve um erro ao fazer o match.")
+            print("Houve um erro ao fazer o match:")
             print(resultado)
 
     while True:
