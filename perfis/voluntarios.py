@@ -1,5 +1,6 @@
 import armazenamento_json as armazenamento
 from datetime import datetime
+from perfis.adotantes import tem_algarismos, validar_data_nascimento
 import re
 import requests
 
@@ -9,7 +10,7 @@ def crud_voluntarios(tipo_operacao: str):
     nome_arquivo_json = "voluntarios.json"
 
     while True:
-        print("Deseja visualizar os dados antes da operação?")
+        print("Deseja visualizar os dados de voluntário antes da operação?")
         print("1 - Sim")
         print("2 - Não")
         deseja_listar = input(">>> ")
@@ -24,8 +25,15 @@ def crud_voluntarios(tipo_operacao: str):
     if tipo_operacao == "criar":
         print("--- CRIAÇÃO DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
+
         nome = input("Nome completo: ").strip()
+        while tem_algarismos(nome):
+            nome = input("Nome inválido! Não deve conter algarismos.\n Digite o nome completo: \n")
+
         nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
+        while not validar_data_nascimento(nascimento):
+            nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+
         endereco = solicitar_endereco()
         disponibilidade = verificar_disponibilidade()
         data_cadastro = datetime.today().strftime("%d/%m/%Y")
@@ -47,6 +55,7 @@ def crud_voluntarios(tipo_operacao: str):
 
     elif tipo_operacao == "editar":
         print("--- EDIÇÃO DE VOLUNTÁRIO ---")
+
         cpf = input("Digite o CPF do voluntário que deseja editar: ").strip()
         voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
         if voluntario is None:
@@ -54,6 +63,8 @@ def crud_voluntarios(tipo_operacao: str):
         
         print("Deixe em branco os campos que você **não** deseja alterar.")
         novo_nome = input("Novo nome completo: ").strip()
+        novo_nascimento = input("Nova data de nascimento: ").strip()
+        # novo_endereco = input("Novo endereço: ").strip()
         novo_email = input("Novo e-mail: ").strip()
         novo_telefone = input("Novo telefone: ").strip()
         alterar_disponibilidade = input("Deseja alterar a disponibilidade? (s/n): ").strip().lower()
@@ -69,6 +80,8 @@ def crud_voluntarios(tipo_operacao: str):
                 novos_dados["Telefone"] = telefone_formatado
         if alterar_disponibilidade == 's':
             novos_dados["Disponibilidade"] = verificar_disponibilidade()
+        if novo_nascimento and validar_data_nascimento(novo_nascimento):
+            novos_dados['Data de Nascimento'] = novo_nascimento
 
         if novos_dados:
             if not armazenamento.editar_entrada(int(cpf), 'CPF', novos_dados, nome_arquivo_json):
@@ -242,12 +255,12 @@ def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cada
     novo_voluntario = {
         "CPF": cpf,
         "Nome Completo": nome,
-        "Data Nascimento": nascimento,
+        "Data de Nascimento": nascimento,
         "Idade": idade,
         "Endereço": endereco,
         "Disponibilidade": disponibilidade,
         "Data Cadastro": data_cadastro,
-        "e-Mail": email,
+        "E-mail": email,
         "Telefone": telefone
     }
     if armazenamento.criar_entrada(novo_voluntario, nome_arquivo_json):
@@ -273,6 +286,8 @@ def listar_voluntarios(nome_arquivo):
         print(f"Telefone: {v['Telefone']}")
         print(f"Idade: {v['Idade']}")
         print(f"Endereço: {v['Endereço']}")
+        print(f"Data de nascimento: {v['Data de Nascimento']}")
+        print(f"Data de cadastro: {v['Data Cadastro']}")
         print("Disponibilidade:")
         for d in v['Disponibilidade']:
             print(f"  - {d['Dia']}: {', '.join(d['Períodos'])}")

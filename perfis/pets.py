@@ -3,7 +3,7 @@ from perfis.adotantes import validar_idade as validar_idade
 
 def crud_pets(tipo_operacao: str):
     while True:
-        print("Deseja visualizar os dados antes da operação?")
+        print("Deseja visualizar os dados de pets antes da operação?")
         print("1 - Sim")
         print("2 - Não")
         deseja_listar = input(">>> ")
