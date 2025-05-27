@@ -27,11 +27,13 @@ def match_voluntario():
 
 def visualizar_voluntarios():
     voluntarios = armazenamento.carregar_arquivo('voluntarios.json')
-    if voluntarios is not None:
-        print("\n📋 Lista de Pets Disponíveis:\n")
-        pprint.pprint(voluntarios)
-    else:
+    if voluntarios is None:
         print("Erro ao abrir arquivo voluntarios.json para visualizar no menu de match.")
+    elif not voluntarios:
+        print("Oops, parece que não há entradas no arquivo voluntarios.json")
+    else:
+        print("\n====📋 Lista de Voluntários Disponíveis ====\n")
+        pprint.pprint(voluntarios)
 
 
 def ver_matches_voluntario():
@@ -44,7 +46,8 @@ def ver_matches_voluntario():
     voluntario = armazenamento.ler_entrada(cpf_voluntario, 'CPF', 'voluntarios.json')
     if voluntario is None:
         return f"❌ Voluntário com CPF {cpf_voluntario} não encontrado. Verifique o CPF e tente novamente."
-
+    elif not voluntario:
+        return "Oops, parece que não há entradas no arquivo voluntarios.json"
     return encontrar_matches_voluntario(voluntario)
      
 
