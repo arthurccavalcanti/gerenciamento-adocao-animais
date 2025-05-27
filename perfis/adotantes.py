@@ -22,7 +22,7 @@ def crud_adotantes(tipo_operacao: str):
         print("EDIÇÃO DE ADOTANTE")
         return atualizar_adotante()
     elif tipo_operacao == "deletar":
-        print("DELETAÇÃO DE ADOTANTE")
+        print("DELEÇÃO DE ADOTANTE")
         return excluir_adotante()
     elif tipo_operacao == "ler":
         print("LEITURA DE ADOTANTE")
@@ -79,7 +79,7 @@ def ler_adotante():
     cpf = input("Digite o CPF do adotante: ").strip()
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
-    adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
+    adotante = armazenamento.ler_entrada(int(cpf), 'CPF', "adotantes.json")
     if adotante is not None:
         return ('ler', adotante)
     return f"Erro ao ler adotante com CPF {cpf}"
@@ -92,6 +92,7 @@ def cadastrar_adotante():
         while not validar_cpf(cpf):
             cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
 
+        cpf = int(cpf)
         nome = input("Digite o nome completo: \n")
 
         idade = input("Digite a idade: \n").strip()
@@ -110,6 +111,7 @@ def cadastrar_adotante():
         while not validar_contato(contato):
             print("Contato inválido! Deve conter ao menos 8 dígitos.\n")
             contato = input("Digite o contato (somente números): ").strip()
+        contato = int(contato)
 
         print("\n--- Preferências do adotante ---")
 
@@ -178,6 +180,7 @@ def atualizar_adotante():
     cpf = input("Digite o CPF do adotante a ser atualizado: ").strip()
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
+    cpf = int(cpf)
 
     dados_atuais = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
     if dados_atuais is None:
@@ -209,6 +212,7 @@ def atualizar_adotante():
     while True:
         contato = input("Novo contato (somente números): ").strip()
         if validar_contato(contato):
+            contato = int(contato)
             break
         print("Contato inválido! Deve conter ao menos 8 dígitos.")
 
@@ -227,7 +231,7 @@ def atualizar_adotante():
     confirm = input("Deseja prosseguir com a atualização? (s/n): ").strip().lower()
     while True:
         if confirm == "s":
-            if armazenamento.editar_entrada(cpf, 'CPF', novos_dados, "adotantes.json"):
+            if armazenamento.editar_entrada(int(cpf), 'CPF', novos_dados, "adotantes.json"):
                 return ("atualizar", (dados_antigos, dados_atuais))
             return "Erro ao atualizar adotante."
         elif confirm == "n":
@@ -243,7 +247,7 @@ def excluir_adotante():
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
 
-    adotante = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
+    adotante = armazenamento.ler_entrada(int(cpf), "CPF", "adotantes.json")
     if adotante is None:
         return f"Erro ao excluir: problema ao ler adotante com id {cpf}."
 
