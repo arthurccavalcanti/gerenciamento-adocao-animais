@@ -9,9 +9,9 @@ def crud_voluntarios(tipo_operacao: str):
     nome_arquivo_json = "voluntarios.json"
 
     while True:
-        print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
-        print("1 - SIM")
-        print("2 - NÃO")
+        print("Deseja visualizar os dados antes da operação?")
+        print("1 - Sim")
+        print("2 - Não")
         deseja_listar = input(">>> ")
         if deseja_listar == '1':
             listar_voluntarios(nome_arquivo_json)
@@ -22,7 +22,7 @@ def crud_voluntarios(tipo_operacao: str):
             print("Opção inválida.")    
 
     if tipo_operacao == "criar":
-        print("CRIAÇÃO DE VOLUNTÁRIO")
+        print("--- CRIAÇÃO DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
         nome = input("Nome completo: ").strip()
         nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
@@ -44,16 +44,9 @@ def crud_voluntarios(tipo_operacao: str):
 
         return criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone_formatado, nome_arquivo_json)
 
-    elif tipo_operacao == "ler":
-        print("LEITURA DE VOLUNTÁRIO")
-        cpf = solicitar_cpf()
-        voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
-        if voluntario is None:
-            return f"Erro ao ler voluntário com id {cpf}."
-        return ('ler', voluntario)
 
     elif tipo_operacao == "editar":
-        print("EDIÇÃO DE VOLUNTÁRIO")
+        print("--- EDIÇÃO DE VOLUNTÁRIO ---")
         cpf = input("Digite o CPF do voluntário que deseja editar: ").strip()
         voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
         if voluntario is None:
@@ -85,7 +78,7 @@ def crud_voluntarios(tipo_operacao: str):
 
 
     elif tipo_operacao == "deletar":
-        print("DELEÇÃO DE VOLUNTÁRIO")
+        print("--- DELEÇÃO DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
         voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
         if voluntario is None:
@@ -97,6 +90,7 @@ def crud_voluntarios(tipo_operacao: str):
 
 
     elif tipo_operacao == "ler":
+        print("--- LEITURA DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
         voluntario = armazenamento.ler_entrada(int(cpf), 'CPF', nome_arquivo_json)
         if voluntario is None:

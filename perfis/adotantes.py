@@ -8,9 +8,9 @@ import armazenamento_json
 
 def crud_adotantes(tipo_operacao: str):
     while True:
-        print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
-        print("1 - SIM")
-        print("2 - NÃO")
+        print("Deseja visualizar os dados antes da operação?")
+        print("1 - Sim")
+        print("2 - Não")
         deseja_listar = input(">>> ")
         if deseja_listar == "1":
             listar_todos_adotantes()  
@@ -21,16 +21,16 @@ def crud_adotantes(tipo_operacao: str):
             print("Opção inválida.")    
     
     if tipo_operacao == "criar":
-        print("CRIAÇÃO DE ADOTANTE")
+        print("--- CRIAÇÃO DE ADOTANTE ---")
         return cadastrar_adotante()
     elif tipo_operacao == "editar":
-        print("EDIÇÃO DE ADOTANTE")
+        print("--- EDIÇÃO DE ADOTANTE ---")
         return atualizar_adotante()
     elif tipo_operacao == "deletar":
-        print("DELEÇÃO DE ADOTANTE")
+        print("--- DELEÇÃO DE ADOTANTE ---")
         return excluir_adotante()
     elif tipo_operacao == "ler":
-        print("LEITURA DE ADOTANTE")
+        print("--- LEITURA DE ADOTANTE ---")
         return ler_adotante()
     else:
         return "Operação inválida. Tente novamente."
