@@ -43,7 +43,7 @@ def exibir_menu_crud():
     /          O 
    /    (_____/      
   /_____/    U 
-                """
+                    """
         print(cachorro)
         print("\n---- MENU CRUD ----\n")
         print("1. Adotante")
@@ -128,37 +128,37 @@ def exibir_resultado(resultado, tipo):
     print(corujas)
     if tipo == 'crud':
         if isinstance(resultado, tuple):
-            print(f"\n---- RESULTADO ({tipo.upper()}) ----\n")
+            print(f"\n===== RESULTADO ({tipo.upper()}) =====\n")
             operacao, dados = resultado
             if operacao == 'ler':
-                print("---Aqui estão os dados que você pediu:")
+                print("\n---Aqui estão os dados que você pediu:")
                 print(dados)
             elif operacao == 'criar':
-                print("---Você salvou:")
+                print("\n---Você salvou:")
                 print(dados)
             elif operacao == 'editar':
                 dados_antigos, dados_novos = dados
-                print("---Você editou:")
+                print("\n---Você editou:")
                 print("Dados alterados: ", dados_antigos)
                 print("Dados novos: ", dados_novos)
             elif operacao == 'deletar':
-                print("---Você exclui com sucesso estes dados:")
+                print("\n---Você exclui com sucesso estes dados:")
                 print(dados)
         else:
-            print("Houve um erro com a sua operação: ")
+            print("\nHouve um erro com a sua operação: ")
             print(resultado)
     elif tipo == 'match':
         if resultado is not None and isinstance(resultado, list):
-            print("\n---- 🔍 MELHORES MATCHES ----\n")
+            print("\n===== 🔍 MELHORES MATCHES =====\n")
             for i, match in enumerate(resultado[:4]):
-                print(f"{i+1}º Match --------------")
-                pprint.pprint(match)
+                print(f"{i+1}º Match --------------\n")
+                pprint.pprint(match,'\n')
         else:
-            print("Houve um erro ao fazer o match:")
+            print("\nHouve um erro ao fazer o match:")
             print(resultado)
 
     while True:
-        escolha = input("Deseja realizar outra operação? (s/n): ").lower()
+        escolha = input("\nDeseja realizar outra operação? (s/n): ").lower()
         if escolha == 's':
             return True
         elif escolha == 'n':

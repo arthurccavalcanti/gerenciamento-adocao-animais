@@ -105,7 +105,6 @@ def solicitar_cpf():
     while True:
         cpf = input("Digite o CPF: ").strip()
         if validar_cpf(cpf):
-            print("CPF cadastrado!")
             return re.sub(r'[^0-9]', '', cpf)
         else:
             print("CPF inválido, tente novamente.")
@@ -257,6 +256,7 @@ def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cada
 
 def listar_voluntarios(nome_arquivo):
 
+    print("\n--- LISTA DE VOLUNTÁRIOS ---")
     voluntarios = armazenamento.carregar_arquivo(nome_arquivo)
 
     if voluntarios is None:

@@ -15,8 +15,7 @@ def match_pets():
         print("4. Ver melhores matches de um adotante")
         print("5. Sair")
         print("=========================")
-
-        opcao = input("Escolha uma opção (1/2/3/4/5): ")
+        opcao = input("Escolha uma opção: ").strip()
 
         if opcao == '1':
             visualizar_pets()
@@ -27,7 +26,7 @@ def match_pets():
         elif opcao == '4':
             return ver_matches_adotante()
         elif opcao == '5':
-            print("Encerrando o programa. Até logo!")
+            print("Saindo do menu de match. Até logo!")
             break
         else:
             print("Opção inválida. Tente novamente.")
@@ -178,17 +177,25 @@ def mapear_idade_para_faixa(idade):
 
 def visualizar_pets():
     pets = armazenamento.carregar_arquivo('pets.json')
-    if pets is not None:
-        print("\n📋 Lista de Pets Disponíveis:\n")
-        pprint.pprint(pets)
-    else:
+    if pets is None:
         print("Erro ao abrir arquivo pets.json para visualizar no menu de match.")
+    elif not pets:
+        print("Oops, parece que não há entradas no arquivo pets.json")
+    else:
+        print("\n📋 Lista de Pets Disponíveis:\n")
+        for pet in pets:
+            print('-' * 40)
+            pprint.pprint(pet)
 
 
 def visualizar_adotantes():
     adotantes = armazenamento.carregar_arquivo('adotantes.json')
-    if adotantes is not None:
-        print("\n📋 Lista de Adotantes Registrados:\n")
-        pprint.pprint(adotantes)
-    else:
+    if adotantes is None:
         print("Erro ao abrir arquivo adotantes.json para visualizar no menu de match.")
+    elif not adotantes:
+        print("Oops, parece que não há entradas no arquivo adotantes.json")
+    else:
+        print("\n--- 📋 Lista de Adotantes Registrados ---\n")
+        for adotante in adotantes:
+            print('-' * 40)
+            pprint.pprint(adotantes)

@@ -56,7 +56,7 @@ def main():
        )   @).____\|  @ | 
       /    /       (    | 
      /     \       |    |
-"""
+                        """
             print(elefante)
             print("Encerrando o programa. Até mais! =)\n")
             break

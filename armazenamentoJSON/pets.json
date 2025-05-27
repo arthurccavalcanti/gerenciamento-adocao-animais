@@ -39,12 +39,12 @@
         "id": 4,
         "tipo": "felino",
         "nome": "2",
-        "idade": 2,
+        "idade": "-1",
         "sexo": "M",
         "personalidade": "Calmo",
         "historico": "Faltando",
         "raca": "2",
-        "cor": "2",
+        "cor": "123",
         "porte": "grande"
     }
 ]

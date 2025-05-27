@@ -142,7 +142,7 @@ def gerar_novo_id(pets_json):
 
 def ler_pet():
     while True:
-        id_pet = int(input("DIGITE A ID DO PET:\n"))
+        id_pet = int(input("DIGITE A ID DO PET: "))
         try:
             id_pet = int(id_pet)
             pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     
