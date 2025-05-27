@@ -3,9 +3,9 @@ from perfis.adotantes import validar_idade as validar_idade
 
 def crud_pets(tipo_operacao: str):
     while True:
-        print("DESEJA VISUALIZAR OS DADOS ANTES DA OPERAÇÃO?")
-        print("1 - SIM")
-        print("2 - NÃO")
+        print("Deseja visualizar os dados antes da operação?")
+        print("1 - Sim")
+        print("2 - Não")
         deseja_listar = input(">>> ")
         if deseja_listar == "1":
             listar_pets()
@@ -16,16 +16,16 @@ def crud_pets(tipo_operacao: str):
             print("Opção inválida.")    
     
     if tipo_operacao == "criar":
-        print("CRIAÇÃO DE PET")
+        print("--- CRIAÇÃO DE PET ---")
         return adicionar_pet()
     elif tipo_operacao == "editar":
-        print("EDIÇÃO DE PET")
+        print("--- EDIÇÃO DE PET ---")
         return atualizar_pet()
     elif tipo_operacao == "deletar":
-        print("DELEÇÃO DE PET")
+        print("--- DELEÇÃO DE PET ---")
         return deletar_pet()
     elif tipo_operacao == "ler":
-        print("LEITURA DE PET")
+        print("--- LEITURA DE PET ---")
         return ler_pet()
     else:
         return "Operação inválida. Tente novamente."
@@ -285,8 +285,11 @@ def deletar_pet():
 def listar_pets():
 
     pets = armazenamento.carregar_arquivo('pets.json')
-    if not pets:
-        print("Erro ao carregar o arquivo 'pets.json' para listar. Tente novamente.")
+
+    if pets is None:
+        print(f"Erro ao listar pets: não foi possível criar o arquivo pets.json")
+    elif not pets:
+        print("Oops. Parece que não há pets registrados.")
     else:
         print("="*50)
         print("LISTA DE PETS:")

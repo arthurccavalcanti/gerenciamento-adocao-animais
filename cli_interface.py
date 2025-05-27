@@ -1,6 +1,25 @@
+import pprint
+
 def exibir_menu():
     while True:
-        print("\n--- MENU PRINCIPAL ---")
+        gato = r"""
+        (`.
+         ) )
+        ( (
+         \ \
+          \ \
+        .-'  `-.
+       /        `.
+      (      )    `-._ ,    _
+       )   ,'         (.\--'(
+       \  (         ) /      \
+        \  \_(     / (    <6 (6
+         \_)))\   (   `._  .:Y)__
+          '''  \   `-._.'`---^_)))
+                `-._ )))                                
+                """
+        print(gato)
+        print("\n---- MENU PRINCIPAL ----\n")
         print("1. Gerenciar dados (CRUD)")
         print("2. Fazer match")
         print("3. Sair")
@@ -18,7 +37,15 @@ def exibir_menu():
 
 def exibir_menu_crud():
     while True:
-        print("\n--- MENU CRUD ---")
+        cachorro = r"""
+      / \__ 
+     (    @\___  
+    /          O 
+   /    (_____/      
+  /_____/    U 
+                """
+        print(cachorro)
+        print("\n---- MENU CRUD ----\n")
         print("1. Adotante")
         print("2. Pet")
         print("3. Voluntário")
@@ -32,7 +59,7 @@ def exibir_menu_crud():
         elif perfil_opcao in perfis:
             perfil = perfis[perfil_opcao]
 
-            print("\nOperações disponíveis:")
+            print("\n---- OPERAÇÕES DISPONÍVEIS ----\n")
             print("1. Criar")
             print("2. Ler")
             print("3. Editar")
@@ -55,49 +82,80 @@ def exibir_menu_crud():
 
 def exibir_menu_match():
     while True:
-        print("\n--- MENU MATCH ---")
-        print("1. Ver melhores matches para um pet")
-        print("2. Ver melhores matches para um adotante")
+        coelho = r"""
+
+                     /\    .-" /
+                    /  ; .'  .' 
+                   :   :/  .'   
+                    \  ;-.'     
+       .--''''--..__/     `.    
+     .'           .'    `o  \   
+    /                    `   ;  
+   :                  \      :  
+ .-;        -.         `.__.-'  
+:  ;          \     ,   ;       
+'._:           ;   :   (        
+    \/  .__    ;    \   `-.     
+ ;     "-,/_..--"`-..__)    
+     '""--.._:
+                """
+        print(coelho)
+        print("\n---- MENU MATCH ----\n")
+        print("1. Melhores matches para um pet")
+        print("2. Melhores matches para um voluntário")
         print("3. Voltar ao menu principal")
         escolha = input("Escolha uma opção: ")
 
         opcoes = {
-            '1': 'pet',
-            '2': 'adotante',
+            '1': 'pets',
+            '2': 'voluntarios',
             '3': False
         }
 
         if escolha in opcoes:
             return opcoes[escolha]
-        else:
-            print("Opção inválida. Tente novamente.")
+        print("Opção indisponível. Tente novamente.")
 
 
 
 def exibir_resultado(resultado, tipo):
-    print(f"\n--- RESULTADO ({tipo.upper()}) ---")
+    corujas = r"""
+   ___     ___
+  (o o)   (o o)
+ (  V  ) (  V  ) 
+/--m-m- /--m-m-
+                """
+    print(corujas)
     if tipo == 'crud':
         if isinstance(resultado, tuple):
+            print(f"\n---- RESULTADO ({tipo.upper()}) ----\n")
             operacao, dados = resultado
             if operacao == 'ler':
-                print("Aqui estão os dados que você pediu:")
+                print("---Aqui estão os dados que você pediu:")
                 print(dados)
             elif operacao == 'criar':
-                print("Você salvou:")
+                print("---Você salvou:")
                 print(dados)
             elif operacao == 'editar':
                 dados_antigos, dados_novos = dados
-                print("Você editou:")
+                print("---Você editou:")
                 print("Dados alterados: ", dados_antigos)
                 print("Dados novos: ", dados_novos)
             elif operacao == 'deletar':
-                print("Você exclui com sucesso estes dados:")
+                print("---Você exclui com sucesso estes dados:")
                 print(dados)
         else:
             print("Houve um erro com a sua operação: ")
             print(resultado)
     elif tipo == 'match':
-        print(resultado)
+        if resultado is not None and isinstance(resultado, list):
+            print("\n---- 🔍 MELHORES MATCHES ----\n")
+            for i, match in enumerate(resultado[:4]):
+                print(f"{i+1}º Match --------------")
+                pprint.pprint(match)
+        else:
+            print("Houve um erro ao fazer o match:")
+            print(resultado)
 
     while True:
         escolha = input("Deseja realizar outra operação? (s/n): ").lower()

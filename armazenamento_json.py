@@ -98,7 +98,7 @@ def ler_entrada(id: int, chave_id: str, nome_json: str) -> Optional[Dict]:
         if isinstance(entrada, dict) and entrada.get(chave_id) == id:
             return entrada
 
-    print(f"AVISO: Entrada com {chave_id}={id} não encontrada em {nome_json}")
+    print(f"AVISO: Entrada com {chave_id} {id} não encontrada em {nome_json}")
     return None
 
 def editar_entrada(id: int, chave_id: str, dados_atualizados: Dict, nome_json: str) -> bool:

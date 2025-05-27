@@ -1,13 +1,14 @@
+import pprint
+import armazenamento_json as armazenamento
 import sys
 import os
-import pprint
 
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import armazenamento_json as armazenamento
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-def menu():
+
+def match_pets():
     while True:
-        print("\n========= MENU =========")
+        print("\n========= MENU DE MATCH (PETS) =========")
         print("1. Visualizar todos os pets")
         print("2. Ver melhores matches de um pet")
         print("3. Visualizar todos os adotantes")
@@ -20,29 +21,55 @@ def menu():
         if opcao == '1':
             visualizar_pets()
         elif opcao == '2':
-            ver_matches()
+            return ver_matches_pet()
         elif opcao == '3':
             visualizar_adotantes()
         elif opcao == '4':
-            ver_matches_para_adotante()
+            return ver_matches_adotante()
         elif opcao == '5':
             print("Encerrando o programa. Até logo!")
             break
         else:
             print("Opção inválida. Tente novamente.")
-            
-def mapear_idade_para_faixa(idade):
-    if idade <= 3:
-        return 'filhote'
-    elif 4 <= idade <= 9:
-        return 'adulto'
-    else:
-        return 'idoso'
+
+ # ---------------------------------------------------------------         
+
+def ver_matches_pet():
+    try:
+        id_pet = int(input("Digite a ID do pet para visualizar os melhores matches: \n"))
+    except ValueError:
+        print("❌ Entrada inválida. Use um número inteiro.")
+        return
+
+    pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')
+    if pet is None:
+        return f"❌ Pet com ID {id_pet} não encontrado. Verifique o ID e tente novamente."
+
+    return encontrar_matches_pet(pet)
 
 
+def ver_matches_adotante():
+    cpf = input("Digite o CPF do adotante para visualizar os melhores matches: \n")
 
-def encontrar_matches(pet):
+    adotante = armazenamento.ler_entrada(int(cpf), 'CPF', 'adotantes.json')
+
+    if adotante is None:
+        return f"❌ Adotante com CPF {cpf} não encontrado. Verifique o CPF e tente novamente."
+
+    return encontrar_matches_adotante(adotante)
+
+
+# --------------------------------------------------------------------
+
+def encontrar_matches_pet(pet):
+
     possiveis_adotantes = armazenamento.carregar_arquivo('adotantes.json')
+
+    if possiveis_adotantes is None:
+        return f"Erro ao encontrar matches para pet {pet}\n Não conseguimos abrir o arquivo adotantes.json. Tente novamente."
+    elif not possiveis_adotantes:
+        return f"Não foi possível encontrar matches para o pet {pet}\n O arquivo adotantes.json não contém entradas."
+
     compatibilidades = []
 
     for adotante in possiveis_adotantes:
@@ -87,15 +114,22 @@ def encontrar_matches(pet):
     return sorted(compatibilidades, key=lambda d: d['compatibilidade'], reverse=True)
 
 
-def encontrar_matches_para_adotante(adotante):
+
+def encontrar_matches_adotante(adotante):
+
     pets_disponiveis = armazenamento.carregar_arquivo('pets.json')
+
+    if pets_disponiveis is None:
+        return f"Erro ao encontrar matches para adotante {adotante}\n Não conseguimos abrir o arquivo pets.json. Tente novamente."
+    elif not pets_disponiveis:
+        return f"Não foi possível encontrar matches para o adotante {adotante}\n O arquivo pets.json não contém entradas."
+
     compatibilidades = []
     preferencias = adotante.get('preferencias', {})
 
     for pet in pets_disponiveis:
         compatibilidade_counter = 0
         testes = 0
-
 
         if pet['porte'] == preferencias.get('porte'):
             compatibilidade_counter += 1
@@ -132,57 +166,29 @@ def encontrar_matches_para_adotante(adotante):
     return sorted(compatibilidades, key=lambda d: d['compatibilidade'], reverse=True)
 
 
+# -------------------------------------------------------
+
+def mapear_idade_para_faixa(idade):
+    if idade <= 3:
+        return 'filhote'
+    elif 4 <= idade <= 9:
+        return 'adulto'
+    else:
+        return 'idoso'
+
 def visualizar_pets():
     pets = armazenamento.carregar_arquivo('pets.json')
-    print("\n📋 Lista de Pets Disponíveis:\n")
-    pprint.pprint(pets)
+    if pets is not None:
+        print("\n📋 Lista de Pets Disponíveis:\n")
+        pprint.pprint(pets)
+    else:
+        print("Erro ao abrir arquivo pets.json para visualizar no menu de match.")
 
 
 def visualizar_adotantes():
     adotantes = armazenamento.carregar_arquivo('adotantes.json')
-    print("\n📋 Lista de Adotantes Registrados:\n")
-    pprint.pprint(adotantes)
-
-
-def ver_matches():
-    try:
-        id_pet = int(input("Digite a ID do pet para visualizar os melhores matches: \n"))
-    except ValueError:
-        print("❌ Entrada inválida. Use um número inteiro.")
-        return
-
-    pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')
-
-    if not pet:
-        print("❌ Pet não encontrado. Verifique o ID e tente novamente.")
-        return
-
-    matches = encontrar_matches(pet)
-    top_matches = matches[:10]
-
-    print("\n🔍 Melhores Matches:\n")
-    for match in top_matches:
-        pprint.pprint(match)
-
-
-def ver_matches_para_adotante():
-    cpf = input("Digite o CPF do adotante para visualizar os melhores matches: \n")
-
-    adotante = armazenamento.ler_entrada(cpf, 'id', 'adotantes.json')
-
-    if not adotante:
-        print("❌ Adotante não encontrado. Verifique o CPF e tente novamente.")
-        return
-
-    matches = encontrar_matches_para_adotante(adotante)
-    top_matches = matches[:10]
-
-    print("\n🔍 Melhores Matches para o Adotante:\n")
-    for match in top_matches:
-        pprint.pprint(match)
-
-
-
-
-if __name__ == "__main__":
-    menu()
+    if adotantes is not None:
+        print("\n📋 Lista de Adotantes Registrados:\n")
+        pprint.pprint(adotantes)
+    else:
+        print("Erro ao abrir arquivo adotantes.json para visualizar no menu de match.")
