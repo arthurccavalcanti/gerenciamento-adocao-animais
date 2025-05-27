@@ -265,7 +265,6 @@ def listar_voluntarios(nome_arquivo):
     elif not voluntarios:
         print("Oops. Parece que não há voluntários registrados.")
     
-    print("\n--- LISTA DE VOLUNTÁRIOS ---")
     for v in voluntarios:
         print(f"CPF: {v['CPF']}")
         print(f"Nome: {v['Nome Completo']}")
