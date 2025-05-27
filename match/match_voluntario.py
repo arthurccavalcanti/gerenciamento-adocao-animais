@@ -2,7 +2,33 @@ import pprint
 import armazenamento_json as armazenamento
 
 
+        
 def match_voluntario():
+
+    while True:
+        print("\n========= MENU DE MATCH (VOLUNTÁRIOS) =========")
+        print("1. Visualizar todos os voluntários")
+        print("2. Ver melhores matches de um voluntário")
+        print("3. Sair")
+        print("=========================")
+
+        opcao = input("Escolha uma opção (1/2/3): ")
+
+        if opcao == '1':
+            print("ESTAMOS TRABALHANDO NESTE RECURSO...")
+            #visualizar_voluntarios()
+        elif opcao == '2':
+            print("ESTAMOS TRABALHANDO NESTE RECURSO...")
+            #ver_matches_para_voluntarios()
+        elif opcao == '3':
+            print("Saindo do menu de match. Até logo!")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+
+     
+def something():
 
     visualizar = input("Deseja visualizar todos os voluntários? 's'/'n'\n")
 

@@ -1,18 +1,20 @@
 [
     {
-        "CPF": 10806824589,
-        "nome": "asd",
-        "idade": 123,
-        "profissao": "123",
-        "endereco": "12345678",
-        "contato": 12345678,
+        "CPF": 10258045688,
+        "nome": "bvc",
+        "idade": 32,
+        "profissao": "234",
+        "endereco": "12567894",
+        "contato": 123789456,
         "preferencias": {
-            "tipo": "canino",
-            "porte": "pequeno",
-            "temperamento": [],
-            "sexo": "macho",
-            "faixa_etaria": "filhote",
-            "experiencia": "Não"
+            "tipo": "felino",
+            "porte": "grande",
+            "temperamento": [
+                "e"
+            ],
+            "sexo": "fêmea",
+            "faixa_etaria": "idoso",
+            "experiencia": "Sim"
         }
     }
 ]

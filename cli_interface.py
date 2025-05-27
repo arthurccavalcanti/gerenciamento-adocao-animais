@@ -1,3 +1,5 @@
+import pprint
+
 def exibir_menu():
     while True:
         print("\n--- MENU PRINCIPAL ---")
@@ -97,7 +99,9 @@ def exibir_resultado(resultado, tipo):
             print("Houve um erro com a sua operação: ")
             print(resultado)
     elif tipo == 'match':
-        print(resultado)
+        print("\n🔍 Melhores Matches:\n")
+        for match in resultado:
+            pprint.pprint(resultado)
 
     while True:
         escolha = input("Deseja realizar outra operação? (s/n): ").lower()

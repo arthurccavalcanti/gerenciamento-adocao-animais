@@ -248,6 +248,7 @@ def excluir_adotante():
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ")
 
+    cpf = int(cpf)
     adotante = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
     if adotante is None:
         return f"Erro ao excluir: problema ao ler adotante com id {cpf}."
@@ -258,7 +259,7 @@ def excluir_adotante():
     confirm = input("Deseja realmente excluir esse adotante? (s/n): ").lower()
     while True:
         if confirm == "s":
-            armazenamento.deletar_entrada(cpf, "adotantes.json")
+            armazenamento.deletar_entrada(cpf, 'CPF', "adotantes.json")
             return ("deletar", adotante)
         elif confirm == "n":
             return f"Exclusão do adotante com id {cpf} cancelada."

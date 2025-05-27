@@ -25,7 +25,7 @@ def main():
                 continue
 
             if not cli_interface.exibir_resultado(resultado_crud, 'crud'):   
-                print("Voltando ao menu principal...")
+                print("Voltando ao menu principal...\n")
                 break
 
         while operacao == 'match':
@@ -42,12 +42,14 @@ def main():
                 continue
 
             if not cli_interface.exibir_resultado(resultado_match, 'match'):
-                print("Voltando ao menu principal...")
+                print("Voltando ao menu principal...\n")
                 break
   
         if operacao == 'sair':
-            print("Encerrando o programa. Até mais!")
+            print("Encerrando o programa. Até mais! =)\n")
             break
+
+
 
 if __name__ == "__main__":
     main()
