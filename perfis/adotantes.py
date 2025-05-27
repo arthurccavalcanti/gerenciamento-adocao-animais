@@ -48,9 +48,9 @@ def validar_cep(cep):
 def listar_todos_adotantes():
     adotantes = armazenamento.carregar_arquivo("adotantes.json")
     if adotantes is None:
-        print("Erro ao carregar arquivo de adotantes.")
+        print("Erro ao carregar arquivo adotantes.json")
     if not adotantes:
-        print("O arquivo de adotantes estava vazio. Criando arquivo...")
+        print("Oops. Parece que não há pets registrados.")
     else:
         print("="*50)
         print("LISTA DE ADOTANTES:")

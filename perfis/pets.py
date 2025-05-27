@@ -285,8 +285,11 @@ def deletar_pet():
 def listar_pets():
 
     pets = armazenamento.carregar_arquivo('pets.json')
-    if not pets:
-        print("Erro ao carregar o arquivo 'pets.json' para listar. Tente novamente.")
+
+    if pets is None:
+        print(f"Erro ao listar pets: não foi possível criar o arquivo pets.json")
+    elif not pets:
+        print("Oops. Parece que não há pets registrados.")
     else:
         print("="*50)
         print("LISTA DE PETS:")

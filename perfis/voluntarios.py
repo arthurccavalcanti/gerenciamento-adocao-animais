@@ -268,6 +268,8 @@ def listar_voluntarios(nome_arquivo):
     if voluntarios is None:
         print(f"Erro ao listar voluntários: não foi possível criar o arquivo {nome_arquivo}")
         return
+    elif not voluntarios:
+        print("Oops. Parece que não há voluntários registrados.")
     
     print("\n--- LISTA DE VOLUNTÁRIOS ---")
     for v in voluntarios:
