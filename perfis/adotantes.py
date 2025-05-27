@@ -1,6 +1,6 @@
 import re
 import armazenamento_json as armazenamento
-from perfis.voluntarios import validar_cpf, validar_email
+from perfis.voluntarios import validar_cpf, validar_email, tem_algarismos, validar_data_nascimento
 from datetime import datetime
 
 def crud_adotantes(tipo_operacao: str):
@@ -40,24 +40,6 @@ def validar_telefone(telefone):
 def validar_cep(cep):
     return re.match(r"^\d{8}$", cep) is not None
 
-def tem_algarismos(string_usuario):
-    return any(char.isdigit() for char in string_usuario)
-
-def validar_data_nascimento(nascimento):
-    try:
-        data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y")
-        hoje = datetime.today()
-        if data_nascimento > hoje:
-            print("A data de nascimento não pode estar no futuro.")
-            return False
-        if data_nascimento.year < 1900:
-            print("Ano de nascimento muito antigo.")
-            return False
-        return True
-    except ValueError:
-        print("Formato inválido. Use DD/MM/AAAA.")
-        return False
-
 def listar_todos_adotantes():
     adotantes = armazenamento.carregar_arquivo("adotantes.json")
     if adotantes is None:
@@ -77,7 +59,7 @@ def listar_todos_adotantes():
             print(f"Telefone: {adotante['telefone']}")
             print(f"Data de cadastro: {adotante['data_cadastro']}")
             print(f"Data de nascimento: {adotante['nascimento']}")
-            print(f"E-mail": {adotante['email']})
+            print(f"E-mail: {adotante['email']}")
             for preferencia in adotante['preferencias']:
                 print(f"Preferência: {preferencia}\n")
         print('=' * 50)

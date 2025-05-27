@@ -1,6 +1,5 @@
 import armazenamento_json as armazenamento
 from datetime import datetime
-from perfis.adotantes import tem_algarismos, validar_data_nascimento
 import re
 import requests
 
@@ -245,6 +244,26 @@ def validar_e_formatar_telefone(telefone):
     elif re.fullmatch(r'\d{10}', numeros) and numeros[2] != '9':
         return True, f"({numeros[:2]}) {numeros[2:6]}-{numeros[6:]}"    
     return False, None
+
+def tem_algarismos(string_usuario):
+    return any(char.isdigit() for char in string_usuario)
+
+def validar_data_nascimento(nascimento):
+    try:
+        data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y")
+        hoje = datetime.today()
+        if data_nascimento > hoje:
+            print("A data de nascimento não pode estar no futuro.")
+            return False
+        if data_nascimento.year < 1900:
+            print("Ano de nascimento muito antigo.")
+            return False
+        return True
+    except ValueError:
+        print("Formato inválido. Use DD/MM/AAAA.")
+        return False
+    
+# ------------------------------------------------------------------------------
 
 
 def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone, nome_arquivo_json):
