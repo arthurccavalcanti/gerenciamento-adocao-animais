@@ -19,7 +19,7 @@ def exibir_menu():
                 `-._ )))                                
                 """
         print(gato)
-        print("\n--- MENU PRINCIPAL ---")
+        print("\n---- MENU PRINCIPAL ----\n")
         print("1. Gerenciar dados (CRUD)")
         print("2. Fazer match")
         print("3. Sair")
@@ -45,7 +45,7 @@ def exibir_menu_crud():
   /_____/    U 
                 """
         print(cachorro)
-        print("\n--- MENU CRUD ---")
+        print("\n---- MENU CRUD ----\n")
         print("1. Adotante")
         print("2. Pet")
         print("3. Voluntário")
@@ -59,7 +59,7 @@ def exibir_menu_crud():
         elif perfil_opcao in perfis:
             perfil = perfis[perfil_opcao]
 
-            print("\n--- OPERAÇÕES DISPONÍVEIS ---")
+            print("\n---- OPERAÇÕES DISPONÍVEIS ----\n")
             print("1. Criar")
             print("2. Ler")
             print("3. Editar")
@@ -100,7 +100,7 @@ def exibir_menu_match():
      '""--.._:
                 """
         print(coelho)
-        print("\n--- MENU MATCH ---")
+        print("\n---- MENU MATCH ----\n")
         print("1. Melhores matches para um pet")
         print("2. Melhores matches para um voluntário")
         print("3. Voltar ao menu principal")
@@ -128,7 +128,7 @@ def exibir_resultado(resultado, tipo):
     print(corujas)
     if tipo == 'crud':
         if isinstance(resultado, tuple):
-            print(f"\n--- RESULTADO ({tipo.upper()}) ---")
+            print(f"\n---- RESULTADO ({tipo.upper()}) ----\n")
             operacao, dados = resultado
             if operacao == 'ler':
                 print("---Aqui estão os dados que você pediu:")
@@ -149,9 +149,9 @@ def exibir_resultado(resultado, tipo):
             print(resultado)
     elif tipo == 'match':
         if resultado is not None and isinstance(resultado, list):
-            print("\n🔍 Melhores Matches:\n")
+            print("\n---- 🔍 MELHORES MATCHES ----\n")
             for i, match in enumerate(resultado[:4]):
-                print(f"{i+1}º MATCH ==============")
+                print(f"{i+1}º Match --------------")
                 pprint.pprint(match)
         else:
             print("Houve um erro ao fazer o match:")
