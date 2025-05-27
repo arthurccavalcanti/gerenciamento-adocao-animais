@@ -34,8 +34,7 @@ def carregar_arquivo(nome_json: str) -> Optional[Union[List, Dict]]:
                 with open(caminho_arquivo, 'w', encoding='utf-8') as f:
                     json.dump([], f, indent=4)
                 return []
-            
-            
+                  
             with open(caminho_arquivo, 'r', encoding='utf-8') as f:
                 conteudo = json.load(f)
                 return conteudo

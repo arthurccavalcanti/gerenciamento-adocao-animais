@@ -2,10 +2,35 @@ import sys
 import os
 import pprint
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import armazenamento_json as armazenamento
 
+def menu():
+    while True:
+        print("\n========= MENU =========")
+        print("1. Visualizar todos os pets")
+        print("2. Ver melhores matches de um pet")
+        print("3. Visualizar todos os adotantes")
+        print("4. Ver melhores matches de um adotante")
+        print("5. Sair")
+        print("=========================")
 
+        opcao = input("Escolha uma opção (1/2/3/4/5): ")
+
+        if opcao == '1':
+            visualizar_pets()
+        elif opcao == '2':
+            ver_matches()
+        elif opcao == '3':
+            visualizar_adotantes()
+        elif opcao == '4':
+            ver_matches_para_adotante()
+        elif opcao == '5':
+            print("Encerrando o programa. Até logo!")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+            
 def mapear_idade_para_faixa(idade):
     if idade <= 3:
         return 'filhote'
@@ -157,31 +182,7 @@ def ver_matches_para_adotante():
         pprint.pprint(match)
 
 
-def menu():
-    while True:
-        print("\n========= MENU =========")
-        print("1. Visualizar todos os pets")
-        print("2. Ver melhores matches de um pet")
-        print("3. Visualizar todos os adotantes")
-        print("4. Ver melhores matches de um adotante")
-        print("5. Sair")
-        print("=========================")
 
-        opcao = input("Escolha uma opção (1/2/3/4/5): ")
-
-        if opcao == '1':
-            visualizar_pets()
-        elif opcao == '2':
-            ver_matches()
-        elif opcao == '3':
-            visualizar_adotantes()
-        elif opcao == '4':
-            ver_matches_para_adotante()
-        elif opcao == '5':
-            print("Encerrando o programa. Até logo!")
-            break
-        else:
-            print("Opção inválida. Tente novamente.")
 
 if __name__ == "__main__":
     menu()

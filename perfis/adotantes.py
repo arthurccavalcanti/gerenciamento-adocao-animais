@@ -47,14 +47,16 @@ def validar_cep(cep):
 
 def listar_todos_adotantes():
     adotantes = armazenamento.carregar_arquivo("adotantes.json")
-    if not adotantes:
+    if adotantes is None:
         print("Erro ao carregar arquivo de adotantes.")
+    if not adotantes:
+        print("O arquivo de adotantes estava vazio. Criando arquivo...")
     else:
         print("="*50)
         print("LISTA DE ADOTANTES:")
         for adotante in adotantes:
             print("-"*50)
-            print(f"ID: {adotante['CPF']}")
+            print(f"CPF: {adotante['CPF']}")
             print(f"Nome completo: {adotante['nome']}")
             print(f"Idade: {adotante['idade']}")
             print(f"Profissão: {adotante['profissao']}")
@@ -62,7 +64,7 @@ def listar_todos_adotantes():
             print(f"Contato: {adotante['contato']}")
             for preferencia in adotante['preferencias']:
                 print(f"Preferência: {preferencia}\n")
-        print('=*50')
+        print('=' * 50)
 
 
 # ------------------------------------------------------------
@@ -84,11 +86,12 @@ def cadastrar_adotante():
         while not validar_cpf(cpf):
             cpf = input("CPF inválido. Digite o CPF do adotante: ")
 
+        cpf = int(cpf)
         nome = input("Digite o nome completo: \n")
 
         idade = input("Digite a idade: \n")
         while not validar_idade(idade):
-            print("Idade inválida!\n")
+            idade = input("Idade inválida!\n Digite a idade: \n")
             continue
         idade = int(idade)
 
@@ -129,7 +132,15 @@ def cadastrar_adotante():
             faixa_etaria = input("Entrada inválida. Digite filhote, adulto ou idoso: ").lower()
 
         experiencia = input("Tem experiência com animais? (s/n): ").lower()
-        experiencia = True if experiencia == "s" else False
+        while True:
+            if experiencia == 's':
+                experiencia = 'Sim'
+                break
+            elif experiencia == 'n':
+                experiencia = 'Não'
+                break
+            else:
+                print("Opção inválida.")
 
         preferencias = {
             "tipo": tipo,
@@ -171,6 +182,7 @@ def atualizar_adotante():
     cpf = input("Digite o CPF do adotante a ser atualizado: ")
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ")
+    cpf = int(cpf)
 
     dados_atuais = armazenamento.ler_entrada(cpf, "CPF", "adotantes.json")
     if dados_atuais is None:
@@ -221,7 +233,7 @@ def atualizar_adotante():
     confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
     while True:
         if confirm == "s":
-            if armazenamento.editar_entrada(cpf, novos_dados, "adotantes.json"):
+            if armazenamento.editar_entrada(int(cpf), 'CPF', novos_dados, "adotantes.json"):
                 return ("atualizar", (dados_antigos, dados_atuais))
             return "Erro ao atualizar adotante."
         elif confirm == "n":
