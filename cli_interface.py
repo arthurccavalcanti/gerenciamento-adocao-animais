@@ -80,16 +80,18 @@ def exibir_resultado(resultado, tipo):
         if isinstance(resultado, tuple):
             operacao, dados = resultado
             if operacao == 'ler':
-                print("LEITURA DE DADOS:")
+                print("Aqui estão os dados que você pediu:")
                 print(dados)
             elif operacao == 'criar':
-                print("CRIAÇÃO DE DADOS")
+                print("Você salvou:")
                 print(dados)
             elif operacao == 'editar':
-                print("EDIÇÃO DE DADOS")
-                print(dados)
+                dados_antigos, dados_novos = dados
+                print("Você editou:")
+                print("Dados alterados: ", dados_antigos)
+                print("Dados novos: ", dados_novos)
             elif operacao == 'deletar':
-                print("DELEÇÃO DE DADOS")
+                print("Você exclui com sucesso estes dados:")
                 print(dados)
         else:
             print("Houve um erro com a sua operação: ")

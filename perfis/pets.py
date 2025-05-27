@@ -16,12 +16,16 @@ def crud_pets(tipo_operacao: str):
             print("Opção inválida.")    
     
     if tipo_operacao == "criar":
+        print("CRIAÇÃO DE PET")
         return adicionar_pet()
     elif tipo_operacao == "editar":
+        print("EDIÇÃO DE PET")
         return atualizar_pet()
     elif tipo_operacao == "deletar":
+        print("DELEÇÃO DE PET")
         return deletar_pet()
     elif tipo_operacao == "ler":
+        print("LEITURA DE PET")
         return ler_pet()
     else:
         return "Operação inválida. Tente novamente."
@@ -142,9 +146,7 @@ def ler_pet():
         try:
             id_pet = int(id_pet)
             pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     
-            if pet == 1:
-                return f"Erro ao criar arquivo 'pets.json'."
-            elif pet == 7:                                                 
+            if pet is None:                                               
                 while True:
                     print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
                     print("1 - SIM")
@@ -261,25 +263,30 @@ def atualizar_pet():
             print("Opção inválida.")
 
         continuar = input("Deseja continuar editando este pet? (s/n)\n>>> ").lower()
-        if continuar != 's':
-            print("Finalizando edição do pet.")
-            res = armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json')
-            if not isinstance(res, int):
-                return ('atualizar', (pet_antigo, novo_pet))
-            return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
+        while True:
+            if continuar == 'n':
+                print("Finalizando edição do pet.")
+                if not armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json'):
+                    return ('atualizar', (pet_antigo, novo_pet))
+                return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
+            elif continuar == 's':
+                break
+            else:
+                print("Opção inválida.")
 
 def deletar_pet():
     pet_excluido = ler_pet()[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
-    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json')
+    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json'):
         return ('deletar', pet_excluido)
     return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
 
 def listar_pets():
 
-    if not armazenamento.carregar_arquivo('pets.json'):
-        return "Erro ao listar o arquivo 'pets.json'. Tente novamente."
+    pets = armazenamento.carregar_arquivo('pets.json')
+    if not pets:
+        print("Erro ao carregar o arquivo 'pets.json' para listar. Tente novamente.")
     else:
         print("="*50)
         print("LISTA DE PETS:")
@@ -294,7 +301,7 @@ def listar_pets():
             print(f"Histórico: {pet['historico']}")
             print(f"Raça: {pet['raca']}")
             print(f"Cor: {pet['cor']}")
-            print(f"Porte: {pet['porte']}")
+            print(f"Porte: {pet['porte']}\n")
         print("="*50)
 
 def filtrar_pets():
