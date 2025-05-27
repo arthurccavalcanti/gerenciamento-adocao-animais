@@ -20,9 +20,6 @@ def main():
                 resultado_crud = voluntarios.crud_voluntarios(tipo_operacao)
             elif perfil == 'adotante':
                 resultado_crud = adotantes.crud_adotantes(tipo_operacao)
-            else:
-                print("Perfil inválido.")
-                continue
 
             if not cli_interface.exibir_resultado(resultado_crud, 'crud'):   
                 print("Voltando ao menu principal...\n")
@@ -35,11 +32,8 @@ def main():
 
             if escolha_usuario == 'pets':
                 resultado_match = match_pet.match_pets()
-            elif escolha_usuario == 'voluntario':
+            elif escolha_usuario == 'voluntarios':
                 resultado_match = match_voluntario.match_voluntario()
-            else: 
-                print("Opção inválida.")
-                continue
 
             if not cli_interface.exibir_resultado(resultado_match, 'match'):
                 print("Voltando ao menu principal...\n")

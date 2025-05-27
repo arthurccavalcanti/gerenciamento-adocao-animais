@@ -51,7 +51,7 @@ def ver_matches_pet():
 def ver_matches_adotante():
     cpf = input("Digite o CPF do adotante para visualizar os melhores matches: \n")
 
-    adotante = armazenamento.ler_entrada(cpf, 'id', 'adotantes.json')
+    adotante = armazenamento.ler_entrada(int(cpf), 'CPF', 'adotantes.json')
 
     if adotante is None:
         return f"❌ Adotante com CPF {cpf} não encontrado. Verifique o CPF e tente novamente."
@@ -181,7 +181,8 @@ def visualizar_pets():
     if pets is not None:
         print("\n📋 Lista de Pets Disponíveis:\n")
         pprint.pprint(pets)
-    print("Erro ao abrir arquivo pets.json para visualizar no menu de match.")
+    else:
+        print("Erro ao abrir arquivo pets.json para visualizar no menu de match.")
 
 
 def visualizar_adotantes():
@@ -189,4 +190,5 @@ def visualizar_adotantes():
     if adotantes is not None:
         print("\n📋 Lista de Adotantes Registrados:\n")
         pprint.pprint(adotantes)
-    print("Erro ao abrir arquivo adotantes.json para visualizar no menu de match.")
+    else:
+        print("Erro ao abrir arquivo adotantes.json para visualizar no menu de match.")

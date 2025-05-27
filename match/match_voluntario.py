@@ -15,10 +15,10 @@ def match_voluntario():
         opcao = input("Escolha uma opção (1/2/3): ")
 
         if opcao == '1':
-            print("ESTAMOS TRABALHANDO NESTE RECURSO...")
+            print("AINDA ESTAMOS TRABALHANDO NESTE RECURSO... TENTE MAIS TARDE.")
             #visualizar_voluntarios()
         elif opcao == '2':
-            print("ESTAMOS TRABALHANDO NESTE RECURSO...")
+            print("AINDA ESTAMOS TRABALHANDO NESTE RECURSO... TENTE MAIS TARDE")
             #ver_matches_para_voluntarios()
         elif opcao == '3':
             print("Saindo do menu de match. Até logo!")

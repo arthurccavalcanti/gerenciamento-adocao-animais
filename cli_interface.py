@@ -59,49 +59,53 @@ def exibir_menu_match():
     while True:
         print("\n--- MENU MATCH ---")
         print("1. Ver melhores matches para um pet")
-        print("2. Ver melhores matches para um adotante")
+        print("2. Ver melhores matches para um voluntário")
         print("3. Voltar ao menu principal")
         escolha = input("Escolha uma opção: ")
 
         opcoes = {
-            '1': 'pet',
-            '2': 'adotante',
+            '1': 'pets',
+            '2': 'voluntarios',
             '3': False
         }
 
         if escolha in opcoes:
             return opcoes[escolha]
-        else:
-            print("Opção inválida. Tente novamente.")
+        print("Opção indisponível. Tente novamente.")
 
 
 
 def exibir_resultado(resultado, tipo):
-    print(f"\n--- RESULTADO ({tipo.upper()}) ---")
     if tipo == 'crud':
         if isinstance(resultado, tuple):
+            print(f"\n--- RESULTADO ({tipo.upper()}) ---")
             operacao, dados = resultado
             if operacao == 'ler':
-                print("Aqui estão os dados que você pediu:")
+                print("---Aqui estão os dados que você pediu:")
                 print(dados)
             elif operacao == 'criar':
-                print("Você salvou:")
+                print("---Você salvou:")
                 print(dados)
             elif operacao == 'editar':
                 dados_antigos, dados_novos = dados
-                print("Você editou:")
+                print("---Você editou:")
                 print("Dados alterados: ", dados_antigos)
                 print("Dados novos: ", dados_novos)
             elif operacao == 'deletar':
-                print("Você exclui com sucesso estes dados:")
+                print("---Você exclui com sucesso estes dados:")
                 print(dados)
         else:
             print("Houve um erro com a sua operação: ")
             print(resultado)
     elif tipo == 'match':
-        print("\n🔍 Melhores Matches:\n")
-        for match in resultado:
-            pprint.pprint(resultado)
+        if resultado is not None and isinstance(resultado, list):
+            print("\n🔍 Melhores Matches:\n")
+            for i, match in enumerate(resultado[:4]):
+                print(f"{i+1}º MATCH ==============")
+                pprint.pprint(match)
+        else:
+            print("Houve um erro ao fazer o match.")
+            print(resultado)
 
     while True:
         escolha = input("Deseja realizar outra operação? (s/n): ").lower()

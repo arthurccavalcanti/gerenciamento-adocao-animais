@@ -16,5 +16,81 @@
             "faixa_etaria": "idoso",
             "experiencia": "Sim"
         }
+    },
+    {
+        "CPF": 12345678987,
+        "nome": "jose jose",
+        "idade": 1,
+        "profissao": "565",
+        "endereco": "12345678",
+        "contato": 12345678,
+        "preferencias": {
+            "tipo": "canino",
+            "porte": "pequeno",
+            "temperamento": [
+                "calmo",
+                "protetor"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "adulto",
+            "experiencia": "Não"
+        }
+    },
+    {
+        "CPF": 12345678598,
+        "nome": "ze ze",
+        "idade": 31,
+        "profissao": "lala",
+        "endereco": "12345678",
+        "contato": 12345678,
+        "preferencias": {
+            "tipo": "felino",
+            "porte": "grande",
+            "temperamento": [
+                "calmo",
+                "??"
+            ],
+            "sexo": "fêmea",
+            "faixa_etaria": "adulto",
+            "experiencia": "Sim"
+        }
+    },
+    {
+        "CPF": 45678945612,
+        "nome": "koko",
+        "idade": 43234,
+        "profissao": "43234",
+        "endereco": "23445444",
+        "contato": 44444444,
+        "preferencias": {
+            "tipo": "canino",
+            "porte": "pequeno",
+            "temperamento": [
+                "calmo",
+                "??"
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "adulto",
+            "experiencia": "Sim"
+        }
+    },
+    {
+        "CPF": 91919191919,
+        "nome": "12",
+        "idade": 12,
+        "profissao": "12",
+        "endereco": "12345678",
+        "contato": 12345678,
+        "preferencias": {
+            "tipo": "felino",
+            "porte": "pequeno",
+            "temperamento": [
+                "protetor",
+                ".."
+            ],
+            "sexo": "macho",
+            "faixa_etaria": "filhote",
+            "experiencia": "Não"
+        }
     }
 ]
