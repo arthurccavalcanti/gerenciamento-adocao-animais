@@ -1,87 +1,34 @@
 [
     {
-        "endereco": "12345678",
-        "contato": 12345678,
+        "CPF": 12345678912,
+        "nome": "asas",
+        "idade": 12,
+        "profissao": "asdsd",
+        "endereco": "55555555",
+        "contato": 555555555,
         "preferencias": {
             "tipo": "felino",
             "porte": "grande",
             "temperamento": [
-                "calmo",
-                "??"
+                "fliz"
             ],
             "sexo": "fêmea",
-            "faixa_etaria": "adulto",
+            "faixa_etaria": "idoso",
             "experiencia": "Sim"
         }
     },
     {
-        "CPF": 45678945612,
-        "nome": "koko",
-        "idade": 43234,
-        "profissao": "43234",
-        "endereco": "23445444",
-        "contato": 44444444,
-        "preferencias": {
-            "tipo": "canino",
-            "porte": "pequeno",
-            "temperamento": [
-                "calmo",
-                "??"
-            ],
-            "sexo": "macho",
-            "faixa_etaria": "adulto",
-            "experiencia": "Sim"
-        }
-    },
-    {
-        "CPF": 91919191919,
-        "nome": "12",
-        "idade": 12,
-        "profissao": "12",
-        "endereco": "12345678",
-        "contato": 12345678,
+        "CPF": 12312312312,
+        "nome": "jard",
+        "idade": 54,
+        "profissao": "asdasd",
+        "endereco": "12541254",
+        "contato": 25698745,
         "preferencias": {
             "tipo": "felino",
-            "porte": "pequeno",
-            "temperamento": [
-                "protetor",
-                ".."
-            ],
-            "sexo": "macho",
-            "faixa_etaria": "filhote",
-            "experiencia": "Não"
-        }
-    },
-    {
-        "CPF": 12345678912,
-        "nome": "adasdsad",
-        "idade": 12,
-        "profissao": "adasda",
-        "endereco": "23232323",
-        "contato": 123456789,
-        "preferencias": {
-            "tipo": "canino",
             "porte": "grande",
             "temperamento": [
-                "calmo"
-            ],
-            "sexo": "macho",
-            "faixa_etaria": "adulto",
-            "experiencia": "Sim"
-        }
-    },
-    {
-        "CPF": 12345687978,
-        "nome": "lol",
-        "idade": 12,
-        "profissao": "ki",
-        "endereco": "56565656",
-        "contato": 848459598,
-        "preferencias": {
-            "tipo": "felino",
-            "porte": "pequeno",
-            "temperamento": [
-                "calmo"
+                "feliz"
             ],
             "sexo": "macho",
             "faixa_etaria": "idoso",
