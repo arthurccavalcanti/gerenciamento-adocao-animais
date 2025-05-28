@@ -55,14 +55,24 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['Nome'] = input("Digite o nome do pet:\n>>> ")
+    while True:
+        nome = input("Digite o nome do pet:\n>>> ")
+        if nome.isalpha():
+            pets['Nome'] = nome
+            break
+        else:
+            print("Nome inválido! Digite apenas letras, sem números ou caracteres especiais.\n")
     while True:
         idade = input("Digite a idade do pet:\n>>> ")
         try:
-            pets['Idade'] = int(idade)
-            break
+            idade_int = int(idade)
+            if idade_int < 0:
+                print("Idade inválida! Tem que ser um número inteiro não negativo\n")
+            else:
+                pets['Idade'] = idade_int
+                break
         except ValueError:
-            print("Idade inválida! Tem que ser um número inteiro\n")
+            print("Idade inválida! Tem que ser um número inteiro não negativo\n")
 
     while True:
         print("SEXO:")
@@ -110,8 +120,20 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['Raça'] = input("DIGITE A RAÇA:\n>>> ")
-    pets['Cor'] = input("DIGITE A COR PREDOMINANTE:\n>>> ")
+    while True:
+        raca = input("DIGITE A RAÇA:\n>>> ")
+        if raca.isalpha():
+            pets['Raça'] = raca
+            break
+        else:
+            print("Raça inválida! Digite apenas letras, sem números ou caracteres especiais.\n")
+    while True:
+        cor = input("DIGITE A COR PREDOMINANTE:\n>>> ")
+        if cor.isalpha():
+            pets['Cor'] = cor
+            break
+        else:
+            print("Cor inválida! Digite apenas letras, sem números ou caracteres especiais.\n")
 
     opcoes_porte = {
         "1": "pequeno",
@@ -171,8 +193,13 @@ def ler_pet():
         except ValueError:
             print("A ID fornecida deve ser um número. Tente novamente.")
 
-def atualizar_pet():                   
-    pet_antigo = ler_pet()[1]  
+def atualizar_pet():
+    resultado = ler_pet()
+    if resultado is None:
+        return "Não há pets para atualizar."
+    
+    
+    pet_antigo = resultado[1]  
     novo_pet = pet_antigo.copy()
 
     while True:
