@@ -25,7 +25,10 @@ def crud_pets(tipo_operacao: str):
         return deletar_pet()
     elif tipo_operacao == "ler":
         print("--- LEITURA DE PET ---")
-        return ler_pet()
+        resultado = ler_pet()
+        if resultado is None:
+            return "Não foi possível realizar a leitura. Nenhum pet cadastrado."
+        return resultado
     else:
         return "Operação inválida. Tente novamente."
 
@@ -140,6 +143,12 @@ def gerar_novo_id(pets_json):
         return len(pets_json) + 1
 
 def ler_pet():
+    pets = listar_pets()
+    
+    if not pets:
+        print("Não há pets cadastrados.")
+        return None
+
     while True:
         id_pet = int(input("Digite a ID do pet: "))
         try:
