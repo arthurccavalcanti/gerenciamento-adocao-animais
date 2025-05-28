@@ -143,20 +143,19 @@ def gerar_novo_id(pets_json):
         return len(pets_json) + 1
 
 def ler_pet():
-    pets = listar_pets()
-    
+    pets = armazenamento.carregar_arquivo('pets.json')
+
     if not pets:
         print("Não há pets cadastrados.")
         return None
 
     while True:
-        id_pet = int(input("Digite a ID do pet: "))
         try:
-            id_pet = int(id_pet)
+            id_pet = int(input("Digite a ID do pet: "))
             pet = armazenamento.ler_entrada(id_pet, 'ID', 'pets.json')     
             if pet is None:                                               
                 while True:
-                    print("Deseja listar as IDs disponíveis?")
+                    print("ID não encontrada. Deseja listar as IDs disponíveis?")
                     print("1 - Sim")
                     print("2 - Não")
                     deseja_listar = input(">>> ")
@@ -171,7 +170,6 @@ def ler_pet():
                 return ('ler', pet)
         except ValueError:
             print("A ID fornecida deve ser um número. Tente novamente.")
-            continue
 
 def atualizar_pet():                   
     pet_antigo = ler_pet()[1]  
