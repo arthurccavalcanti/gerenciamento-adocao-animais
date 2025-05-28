@@ -245,7 +245,7 @@ def atualizar_adotante():
         "Data de nascimento": str(data_nascimento.date())
     }
 
-    print("\nConfira as alterações:")
+    print("\n---- Confira as alterações ----")
     for chave in novos_dados:
         print(f"{chave}: {dados_atuais[chave]} → {novos_dados[chave]}")
 
@@ -295,7 +295,7 @@ def ler_adotante():
     cpf = input("Digite o CPF do adotante: ")
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ")
-    adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
+    adotante = armazenamento_json.ler_entrada(cpf, 'CPF', "adotantes.json")
     if adotante is not None:
         return ('ler', adotante)
     return f"Erro ao ler adotante com CPF {cpf}"
