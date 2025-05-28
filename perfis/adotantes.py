@@ -39,8 +39,8 @@ def crud_adotantes(tipo_operacao: str):
 
 # -----------------------------------------------------------
 
-def validar_contato(contato):
-    return str(contato).isdigit() and len(str(contato)) >= 8
+def validar_telefone(telefone):
+    return str(telefone).isdigit() and len(str(telefone)) >= 8
 
 def validar_cep(cep):
     return re.match(r"^\d{8}$", cep) is not None
@@ -70,7 +70,7 @@ def listar_todos_adotantes():
             print(f"E-mail: {adotante['email']}")
             
             print("Preferências:")
-            for chave, valor in adotante['preferencias'].items():
+            for chave, valor in adotante['Preferências'].items():
                 print(f"  {chave}: {valor}")
         
         print("=" * 50)
@@ -107,7 +107,7 @@ def cadastrar_adotante():
             endereco = input("Digite o CEP (somente números): \n").strip()
 
         telefone = input("Digite o telefone (somente números): ")
-        while not telefone(telefone):
+        while not validar_telefone(telefone):
             print("Telefone inválido! Deve conter ao menos 8 dígitos.\n")
             telefone = input("Digite o telefone (somente números): ")
         telefone = int(telefone)
@@ -145,12 +145,12 @@ def cadastrar_adotante():
         experiencia = 'Sim' if experiencia == 's' else 'Não'
 
         preferencias = {
-            "tipo": tipo,
-            "porte": porte,
-            "temperamento": temperamento,
-            "sexo": sexo,
-            "faixa_etaria": faixa_etaria,
-            "experiencia": experiencia
+            "Tipo": tipo,
+            "Porte": porte,
+            "Temperamento": temperamento,
+            "Sexo": sexo,
+            "Faixa etária": faixa_etaria,
+            "Experiência": experiencia
         }
 
         adotante = {
@@ -162,7 +162,7 @@ def cadastrar_adotante():
             "Telefone": telefone,
             "Email": email,
             "Data de cadastro": data_cadastro,
-            "Data de nascimento":nascimento,
+            "Data de nascimento": str(data_nascimento),
             "Preferências": preferencias
         }
 
@@ -242,7 +242,7 @@ def atualizar_adotante():
         "Endereço": endereco,
         "Telefone": telefone,
         "Email": email,
-        "Data de nascimento": nascimento
+        "Data de nascimento": str(data_nascimento.date())
     }
 
     print("\nConfira as alterações:")
@@ -253,12 +253,12 @@ def atualizar_adotante():
     while True:
         if confirm == "s":
             if armazenamento_json.editar_entrada(int(cpf), 'CPF', novos_dados, "adotantes.json"):
-                return ("atualizar", (dados_antigos, dados_atuais))
+                return ("editar", (dados_antigos, dados_atuais))
             return "Erro ao atualizar adotante."
         elif confirm == "n":
             return f"Atualização do adotante com id {cpf} cancelada."
         else:
-            print('Opção inválida. Digite \'s\' ou \'n\'')
+            print("Opção inválida. Digite 's' ou 'n'")
             confirm = input("Deseja prosseguir com a atualização? (s/n): ").strip().lower()
 
 # ------------------------------------------------------------
@@ -290,7 +290,7 @@ def excluir_adotante():
             print("Opção inválida.")
             confirm = input("Deseja realmente excluir esse adotante? (s/n): ").strip().lower()
 
-# ------------------------------------------------------------
+
 def ler_adotante():
     cpf = input("Digite o CPF do adotante: ")
     while not validar_cpf(cpf):

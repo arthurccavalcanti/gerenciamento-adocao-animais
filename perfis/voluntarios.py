@@ -24,6 +24,7 @@ def crud_voluntarios(tipo_operacao: str):
     if tipo_operacao == "criar":
         print("--- CRIAÇÃO DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
+        cpf = int(cpf)
 
         nome = input("Nome completo: ").strip()
         while tem_algarismos(nome):
@@ -63,7 +64,6 @@ def crud_voluntarios(tipo_operacao: str):
         print("Deixe em branco os campos que você **não** deseja alterar.")
         novo_nome = input("Novo nome completo: ").strip()
         novo_nascimento = input("Nova data de nascimento: ").strip()
-        # novo_endereco = input("Novo endereço: ").strip()
         novo_email = input("Novo e-mail: ").strip()
         novo_telefone = input("Novo telefone: ").strip()
         alterar_disponibilidade = input("Deseja alterar a disponibilidade? (s/n): ").strip().lower()
@@ -248,10 +248,8 @@ def validar_data_nascimento(nascimento):
         data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y")
         hoje = datetime.today()
         if data_nascimento > hoje:
-            print("A data de nascimento não pode estar no futuro.")
             return False
         if data_nascimento.year < 1900:
-            print("Ano de nascimento muito antigo.")
             return False
         return True
     except ValueError:

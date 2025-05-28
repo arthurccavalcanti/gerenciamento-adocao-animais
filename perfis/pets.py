@@ -36,7 +36,7 @@ def adicionar_pet():
     if not pets_json:
         pets_json = []
     
-    pets['id'] = gerar_novo_id(pets_json)
+    pets['ID'] = gerar_novo_id(pets_json)
 
     while True:
         print("TIPO DO PET:")
@@ -44,19 +44,19 @@ def adicionar_pet():
         print("2 - Felino")
         tipo_opcao = input(">>> ")
         if tipo_opcao == "1":
-            pets['tipo'] = 'canino'
+            pets['Tipo'] = 'canino'
             break
         elif tipo_opcao == "2":
-            pets['tipo'] = 'felino'
+            pets['Tipo'] = 'felino'
             break
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['nome'] = input("Digite o nome do pet:\n>>> ")
+    pets['Nome'] = input("Digite o nome do pet:\n>>> ")
     while True:
         idade = input("Digite a idade do pet:\n>>> ")
         try:
-            idade = int(idade)
+            pets['Idade'] = int(idade)
             break
         except ValueError:
             print("Idade inválida! Tem que ser um número inteiro\n")
@@ -67,10 +67,10 @@ def adicionar_pet():
         print("2 - Fêmea")
         sexo_opcao = input(">>> ")
         if sexo_opcao == "1":
-            pets['sexo'] = 'M'
+            pets['Sexo'] = 'M'
             break
         elif sexo_opcao == "2":
-            pets['sexo'] = 'F'
+            pets['Sexo'] = 'F'
             break
         else:
             print("Opção inválida. Tente novamente.")
@@ -87,7 +87,7 @@ def adicionar_pet():
             print(f"{k} - {v}")
         personalidade_opcao = input(">>> ")
         if personalidade_opcao in opcoes_personalidade:
-            pets['personalidade'] = opcoes_personalidade[personalidade_opcao]
+            pets['Personalidade'] = opcoes_personalidade[personalidade_opcao]
             break
         else:
             print("Opção inválida. Tente novamente.")
@@ -102,13 +102,13 @@ def adicionar_pet():
             print(f"{k} - {v}")
         historico_opcao = input(">>> ")
         if historico_opcao in opcoes_historico:
-            pets['historico'] = opcoes_historico[historico_opcao]
+            pets['Histórico'] = opcoes_historico[historico_opcao]
             break
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['raca'] = input("DIGITE A RAÇA:\n>>> ")
-    pets['cor'] = input("DIGITE A COR PREDOMINANTE:\n>>> ")
+    pets['Raça'] = input("DIGITE A RAÇA:\n>>> ")
+    pets['Cor'] = input("DIGITE A COR PREDOMINANTE:\n>>> ")
 
     opcoes_porte = {
         "1": "pequeno",
@@ -121,7 +121,7 @@ def adicionar_pet():
             print(f"{k} - {v}")
         porte_opcao = input(">>> ")
         if porte_opcao in opcoes_porte:
-            pets['porte'] = opcoes_porte[porte_opcao]
+            pets['Porte'] = opcoes_porte[porte_opcao]
             break
         else:
             print("Opção inválida. Tente novamente.")
@@ -141,15 +141,15 @@ def gerar_novo_id(pets_json):
 
 def ler_pet():
     while True:
-        id_pet = int(input("DIGITE A ID DO PET: "))
+        id_pet = int(input("Digite a ID do pet: "))
         try:
             id_pet = int(id_pet)
-            pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')     
+            pet = armazenamento.ler_entrada(id_pet, 'ID', 'pets.json')     
             if pet is None:                                               
                 while True:
-                    print("DESEJA LISTAR AS IDS DISPONÍVEIS?")
-                    print("1 - SIM")
-                    print("2 - NÃO")
+                    print("Deseja listar as IDs disponíveis?")
+                    print("1 - Sim")
+                    print("2 - Não")
                     deseja_listar = input(">>> ")
                     if deseja_listar == "1":
                         listar_pets()
@@ -161,7 +161,7 @@ def ler_pet():
             else:
                 return ('ler', pet)
         except ValueError:
-            print("A ID FORNECIDA DEVE SER UM NÚMERO. TENTE NOVAMENTE.")
+            print("A ID fornecida deve ser um número. Tente novamente.")
             continue
 
 def atualizar_pet():                   
@@ -169,7 +169,7 @@ def atualizar_pet():
     novo_pet = pet_antigo.copy()
 
     while True:
-        print(f"\nAtualizando pet: {novo_pet['nome']} (ID: {novo_pet['id']})")
+        print(f"\nAtualizando pet: {novo_pet['Nome']} (ID: {novo_pet['ID']})")
         print("Escolha o campo para atualizar:")
         print("1 - Tipo (Canino/Felino)")
         print("2 - Nome")
@@ -187,28 +187,28 @@ def atualizar_pet():
             print("1 - Canino")
             print("2 - Felino")
             tipo_opcao = input(">>> ")
-            novo_pet['tipo'] = "canino" if tipo_opcao == "1" else "felino" if tipo_opcao == "2" else pet_antigo['tipo']
-            print(f"Tipo atualizado para: {novo_pet['tipo']}")
+            novo_pet['Tipo'] = "canino" if tipo_opcao == "1" else "felino" if tipo_opcao == "2" else pet_antigo['Tipo']
+            print(f"Tipo atualizado para: {novo_pet['Tipo']}")
         elif opcao == "2":
-            novo_nome = input(f"Novo nome (atual: {pet_antigo['nome']}):\n>>> ")
+            novo_nome = input(f"Novo nome (atual: {pet_antigo['Nome']}):\n>>> ")
             if novo_nome.strip():
-                novo_pet['nome'] = novo_nome
-                print(f"Nome atualizado para: {novo_pet['nome']}")
+                novo_pet['Nome'] = novo_nome
+                print(f"Nome atualizado para: {novo_pet['Nome']}")
         elif opcao == "3":
-            nova_idade = input(f"Nova idade (atual: {pet_antigo['idade']}):\n>>> ")
+            nova_idade = input(f"Nova idade (atual: {pet_antigo['Idade']}):\n>>> ")
             if nova_idade.strip():
-                novo_pet['idade'] = nova_idade
-                print(f"Idade atualizada para: {novo_pet['idade']}")
+                novo_pet['Idade'] = nova_idade
+                print(f"Idade atualizada para: {novo_pet['Idade']}")
         elif opcao == "4":
             print("SEXO:")
             print("1 - Macho")
             print("2 - Fêmea")
             sexo_opcao = input(">>> ")
             if sexo_opcao == "1":
-                novo_pet['sexo'] = "M"
+                novo_pet['Sexo'] = "M"
             elif sexo_opcao == "2":
-                novo_pet['sexo'] = "F"
-            print(f"Sexo atualizado para: {novo_pet['sexo']}")
+                novo_pet['Sexo'] = "F"
+            print(f"Sexo atualizado para: {novo_pet['Sexo']}")
         elif opcao == "5":
             print("PERSONALIDADE:")
             print("1 - Brincalhão")
@@ -222,8 +222,8 @@ def atualizar_pet():
                 "3": "Protetor",
                 "4": "Dócil"
             }
-            novo_pet['personalidade'] = opcoes_personalidade.get(personalidade_opcao, pet_antigo['personalidade'])
-            print(f"Personalidade atualizada para: {novo_pet['personalidade']}")
+            novo_pet['Personalidade'] = opcoes_personalidade.get(personalidade_opcao, pet_antigo['Personalidade'])
+            print(f"Personalidade atualizada para: {novo_pet['Personalidade']}")
         elif opcao == "6":
             print("HISTÓRICO VETERINÁRIO/VACINAL:")
             print("1 - Tudo em dia")
@@ -233,18 +233,18 @@ def atualizar_pet():
                 "1": "Tudo em dia",
                 "2": "Faltando"
             }
-            novo_pet['historico'] = opcoes_historico.get(historico_opcao, pet_antigo['historico'])
-            print(f"Histórico atualizado para: {novo_pet['historico']}")
+            novo_pet['Histórico'] = opcoes_historico.get(historico_opcao, pet_antigo['Histórico'])
+            print(f"Histórico atualizado para: {novo_pet['Histórico']}")
         elif opcao == "7":
-            nova_raca = input(f"Nova raça (atual: {pet_antigo['raca']}):\n>>> ")
+            nova_raca = input(f"Nova raça (atual: {pet_antigo['Raça']}):\n>>> ")
             if nova_raca.strip():
-                novo_pet['raca'] = nova_raca
-                print(f"Raça atualizada para: {novo_pet['raca']}")
+                novo_pet['Raça'] = nova_raca
+                print(f"Raça atualizada para: {novo_pet['Raça']}")
         elif opcao == "8":
-            nova_cor = input(f"Nova cor predominante (atual: {pet_antigo['cor']}):\n>>> ")
+            nova_cor = input(f"Nova cor predominante (atual: {pet_antigo['Cor']}):\n>>> ")
             if nova_cor.strip():
-                novo_pet['cor'] = nova_cor
-                print(f"Cor atualizada para: {novo_pet['cor']}")
+                novo_pet['Cor'] = nova_cor
+                print(f"Cor atualizada para: {novo_pet['Cor']}")
         elif opcao == "9":
             print("PORTE:")
             print("1 - Pequeno")
@@ -256,8 +256,8 @@ def atualizar_pet():
                 "2": "médio",
                 "3": "grande"
             }
-            novo_pet['porte'] = opcoes_porte.get(porte_opcao, pet_antigo['porte'])
-            print(f"Porte atualizado para: {novo_pet['porte']}")
+            novo_pet['Porte'] = opcoes_porte.get(porte_opcao, pet_antigo['Porte'])
+            print(f"Porte atualizado para: {novo_pet['Porte']}")
         else:
             print("Opção inválida.")
 
@@ -265,9 +265,9 @@ def atualizar_pet():
         while True:
             if continuar == 'n':
                 print("Finalizando edição do pet.")
-                if not armazenamento.editar_entrada(int(pet_antigo['id']), 'id', novo_pet, 'pets.json'):
+                if armazenamento.editar_entrada(int(pet_antigo['ID']), 'ID', novo_pet, 'pets.json'):
                     return ('atualizar', (pet_antigo, novo_pet))
-                return f"Erro ao atualizar pet com a id {pet_antigo['id']}. Tente novamente."
+                return f"Erro ao atualizar pet com a id {pet_antigo['ID']}. Tente novamente."
             elif continuar == 's':
                 break
             else:
@@ -277,9 +277,9 @@ def deletar_pet():
     pet_excluido = ler_pet()[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
-    if armazenamento.deletar_entrada(int(pet_excluido['id']), 'id', 'pets.json'):
+    if armazenamento.deletar_entrada(int(pet_excluido['ID']), 'ID', 'pets.json'):
         return ('deletar', pet_excluido)
-    return f"Erro ao deletar pet com a id {pet_excluido['id']}. Tente novamente."
+    return f"Erro ao deletar pet com a id {pet_excluido['ID']}. Tente novamente."
 
 def listar_pets():
 
@@ -294,16 +294,16 @@ def listar_pets():
         print("LISTA DE PETS:")
         for pet in pets:
             print("-"*50)
-            print(f"ID: {pet['id']}")
-            print(f"Tipo: {pet['tipo']}")
-            print(f"Nome: {pet['nome']}")
-            print(f"Idade: {pet['idade']}")
-            print(f"Sexo: {pet['sexo']}")
-            print(f"Personalidade: {pet['personalidade']}")
-            print(f"Histórico: {pet['historico']}")
-            print(f"Raça: {pet['raca']}")
-            print(f"Cor: {pet['cor']}")
-            print(f"Porte: {pet['porte']}\n")
+            print(f"ID: {pet['ID']}")
+            print(f"Tipo: {pet['Tipo']}")
+            print(f"Nome: {pet['Nome']}")
+            print(f"Idade: {pet['Idade']}")
+            print(f"Sexo: {pet['Sexo']}")
+            print(f"Personalidade: {pet['Personalidade']}")
+            print(f"Histórico: {pet['Histórico']}")
+            print(f"Raça: {pet['Raça']}")
+            print(f"Cor: {pet['Cor']}")
+            print(f"Porte: {pet['Porte']}\n")
         print("="*50)
 
 def filtrar_pets():
@@ -323,10 +323,10 @@ def filtrar_pets():
                 print("2 - Felino")
                 escolha = input(">>> ")
                 if escolha == "1":
-                    filtros["tipo"] = "canino"
+                    filtros["Tipo"] = "canino"
                     break
                 elif escolha == "2":
-                    filtros["tipo"] = "felino"
+                    filtros["Tipo"] = "felino"
                     break
                 else:
                     print("Opção inválida. Tente novamente.")
@@ -338,10 +338,10 @@ def filtrar_pets():
                 print("2 - Fêmea")
                 escolha = input(">>> ")
                 if escolha == "1":
-                    filtros["sexo"] = "M"
+                    filtros["Sexo"] = "M"
                     break
                 elif escolha == "2":
-                    filtros["sexo"] = "F"
+                    filtros["Sexo"] = "F"
                     break
                 else:
                     print("Opção inválida. Tente novamente.")
@@ -434,17 +434,16 @@ def filtrar_pets():
     else:
         print("\n=== PETS FILTRADOS ===")
         for pet in pets_filtrados:
-            print("-" * 50)
-            print(f"ID: {pet['id']}")
-            print(f"Tipo: {pet['tipo']}")
-            print(f"Nome: {pet['nome']}")
-            print(f"Idade: {pet['idade']}")
-            print(f"Sexo: {pet['sexo']}")
-            print(f"Personalidade: {pet['personalidade']}")
-            print(f"Histórico: {pet['historico']}")
-            print(f"Raça: {pet['raca']}")
-            print(f"Cor: {pet['cor']}")
-            print(f"Porte: {pet['porte']}")
+            print(f"ID: {pet['ID']}")
+            print(f"Tipo: {pet['Tipo']}")
+            print(f"Nome: {pet['Nome']}")
+            print(f"Idade: {pet['Idade']}")
+            print(f"Sexo: {pet['Sexo']}")
+            print(f"Personalidade: {pet['Personalidade']}")
+            print(f"Histórico: {pet['Histórico']}")
+            print(f"Raça: {pet['Raça']}")
+            print(f"Cor: {pet['Cor']}")
+            print(f"Porte: {pet['Porte']}")
         print("=" * 50)
 
 def menu_filtrar():
