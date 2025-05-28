@@ -205,8 +205,10 @@ def atualizar_adotante():
     nascimento = input("Nova data de nascimento (DD/MM/AAAA): ").strip()
     while not validar_data_nascimento(nascimento):
         nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+    data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y") 
+
     hoje = datetime.today()
-    idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
+    idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
 
     profissao = input("Digite a nova profissão: \n")
     while tem_algarismos(profissao):
