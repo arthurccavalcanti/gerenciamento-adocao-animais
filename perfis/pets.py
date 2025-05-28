@@ -281,7 +281,12 @@ def atualizar_pet():
                 print("Opção inválida.")
 
 def deletar_pet():
-    pet_excluido = ler_pet()[1]  
+    resultado = ler_pet()
+    if resultado is None:
+        return "Não há pets para deletar."
+    
+    
+    pet_excluido = resultado[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
     if armazenamento.deletar_entrada(int(pet_excluido['ID']), 'ID', 'pets.json'):
