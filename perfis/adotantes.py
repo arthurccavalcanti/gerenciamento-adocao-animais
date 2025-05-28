@@ -8,27 +8,44 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import armazenamento_json
 
 
+def crud_adotantes(tipo_operacao: str):
 
-def crud_adotantes(tipo_operacao):
+
+    while True:
+
+        print("Deseja visualizar os dados de adotantes antes da operação?")
+        print("1 - Sim")
+        print("2 - Não")
+        deseja_listar = input(">>> ")
+
+        if deseja_listar == "1":
+            listar_todos_adotantes()
+            break
+        elif deseja_listar == "2":
+            break
+        else:
+            print("Opção inválida.")
+
     if tipo_operacao == "criar":
         print("--- CRIAÇÃO DE ADOTANTE ---")
-        resultado = cadastrar_adotante()
+        return cadastrar_adotante()
+
     elif tipo_operacao == "editar":
         print("--- EDIÇÃO DE ADOTANTE ---")
-        resultado = atualizar_adotante()
+        return atualizar_adotante()
+
     elif tipo_operacao == "deletar":
         print("--- DELEÇÃO DE ADOTANTE ---")
-        resultado = excluir_adotante()
+        return excluir_adotante()
+
     elif tipo_operacao == "ler":
         print("--- LEITURA DE ADOTANTE ---")
-        resultado = ler_adotante()
-    elif tipo_operacao == "listar":
-        listar_todos_adotantes()
-        resultado = "Listagem concluída."
-    else:
-        resultado = "Operação inválida para adotantes."
+        return ler_adotante()
 
-    return resultado
+    else:
+        return "Operação inválida. Tente novamente."
+
+# ----------------------------------------------------------
 
 def validar_telefone(telefone):
     return str(telefone).isdigit() and len(str(telefone)) >= 8
@@ -107,7 +124,7 @@ def cadastrar_adotante():
             cpf = int(cpf)
             break
 
-        nome = entrada_usuario("Digite o nome completo(ou digite 'cancelar' para voltar): ")
+        nome = entrada_usuario("Digite o nome completo (ou digite 'cancelar' para voltar): ")
         while tem_algarismos(nome):
             nome = entrada_usuario("Nome inválido! Não deve conter algarismos. Digite novamente: ")
 
@@ -186,7 +203,7 @@ def atualizar_adotante():
         while tem_algarismos(nome):
             nome = entrada_usuario("Nome inválido! Não deve conter algarismos. Digite novamente: ")
 
-        nascimento = entrada_usuario("Nova data de nascimento (DD/MM/AAAA)(ou digite 'cancelar' para voltar): ")
+        nascimento = entrada_usuario("Nova data de nascimento (DD/MM/AAAA) (ou digite 'cancelar' para voltar): ")
         while not validar_data_nascimento(nascimento):
             nascimento = entrada_usuario("Data inválida. Tente novamente: ")
 
@@ -198,11 +215,11 @@ def atualizar_adotante():
         while tem_algarismos(profissao):
             profissao = entrada_usuario("Profissão inválida! Digite novamente: ")
 
-        endereco = entrada_usuario("Novo CEP (somente números)(ou digite 'cancelar' para voltar): ")
+        endereco = entrada_usuario("Novo CEP (somente números) (ou digite 'cancelar' para voltar): ")
         while not validar_cep(endereco):
             endereco = entrada_usuario("CEP inválido! Digite novamente: ")
 
-        telefone = entrada_usuario("Novo telefone (somente números)(ou digite 'cancelar' para voltar): ")
+        telefone = entrada_usuario("Novo telefone (somente números) (ou digite 'cancelar' para voltar): ")
         while not validar_telefone(telefone):
             telefone = entrada_usuario("Telefone inválido! Digite novamente: ")
 
@@ -238,7 +255,7 @@ def atualizar_adotante():
 
 def excluir_adotante():
     try:
-        cpf = entrada_usuario("Digite o CPF do adotante a ser excluído ( ou digite 'cancelar' para voltar): ")
+        cpf = entrada_usuario("Digite o CPF do adotante a ser excluído (ou digite 'cancelar' para voltar): ")
         if not cpf.isdigit() or len(cpf) < 11 or not validar_cpf(cpf):
             return "CPF inválido."
 
