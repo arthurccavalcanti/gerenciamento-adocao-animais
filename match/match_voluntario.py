@@ -22,7 +22,7 @@ def match_voluntario():
             #ver_matches_voluntarios()
         elif opcao == '3':
             print("Saindo do menu de match. Até logo!")
-            break
+            return 'cancelar'
         else:
             print("Opção inválida. Tente novamente.")
 

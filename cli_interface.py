@@ -132,18 +132,20 @@ def exibir_resultado(resultado, tipo):
             operacao, dados = resultado
             if operacao == 'ler':
                 print("\n---Aqui estão os dados que você pediu:")
-                print(dados)
+                pprint.pprint(dados)
             elif operacao == 'criar':
                 print("\n---Você salvou:")
-                print(dados)
+                pprint.pprint(dados)
             elif operacao == 'editar':
                 dados_antigos, dados_novos = dados
                 print("\n---Você editou:")
-                print("Dados alterados: ", dados_antigos)
-                print("Dados novos: ", dados_novos)
+                print("Dados alterados:")
+                pprint.pprint(dados_antigos)
+                print("Dados novos: ")
+                pprint.pprint(dados_novos)
             elif operacao == 'deletar':
                 print("\n---Você excluiu com sucesso estes dados:")
-                print(dados)
+                pprint.pprint(dados)
         else:
             print("\nHouve um erro com a sua operação: ")
             print(resultado)
@@ -156,6 +158,8 @@ def exibir_resultado(resultado, tipo):
             for i, match in enumerate(matches[:4]):
                 print(f"\n{i+1}º Match --------------\n")
                 pprint.pprint(match)
+        elif resultado == 'cancelar':
+            print("Operação de match cancelada.")
         else:
             print("\nHouve um erro ao fazer o match:")
             print(resultado)
