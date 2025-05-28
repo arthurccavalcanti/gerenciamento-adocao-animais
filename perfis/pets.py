@@ -284,7 +284,7 @@ def deletar_pet():
     resultado = ler_pet()
     if resultado is None:
         print("Não há pets para deletar.")
-        return None
+        return "Não há pets para deletar."
     
     
     pet_excluido = resultado[1]  
