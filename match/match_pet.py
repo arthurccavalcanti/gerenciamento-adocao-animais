@@ -35,12 +35,12 @@ def match_pets():
 
 def ver_matches_pet():
     try:
-        id_pet = int(input("Digite a ID do pet para visualizar os melhores matches: \n"))
+        id_pet = int(input("Digite a ID do pet para visualizar os melhores matches: "))
     except ValueError:
         print("❌ Entrada inválida. Use um número inteiro.")
         return
 
-    pet = armazenamento.ler_entrada(id_pet, 'id', 'pets.json')
+    pet = armazenamento.ler_entrada(id_pet, 'ID', 'pets.json')
     if pet is None:
         return f"❌ Pet com ID {id_pet} não encontrado. Verifique o ID e tente novamente."
 
@@ -74,43 +74,38 @@ def encontrar_matches_pet(pet):
     for adotante in possiveis_adotantes:
         compatibilidade_counter = 0
         testes = 0
-        preferencias = adotante.get('preferencias', {})
+        preferencias = adotante.get('Preferências', {})
 
-        if pet['porte'] == preferencias.get('porte'):
+        if pet['Porte'] == preferencias.get('Porte'):
             compatibilidade_counter += 1
         testes += 1
 
-        if pet.get('personalidade', '').lower() in [t.lower() for t in preferencias.get('temperamento', [])]:
+        if pet.get('Personalidade', '').lower() in [t.lower() for t in preferencias.get('Temperamento', [])]:
             compatibilidade_counter += 1
         testes += 1
 
-        if pet['sexo'].lower() == preferencias.get('sexo', '').lower():
+        if pet['Sexo'].lower() == preferencias.get('Sexo', '').lower():
             compatibilidade_counter += 1
         testes += 1
 
-        faixa_pet = mapear_idade_para_faixa(pet['idade'])
-        if faixa_pet == preferencias.get('faixa_etaria'):
+        faixa_pet = mapear_idade_para_faixa(pet['Idade'])
+        if faixa_pet == preferencias.get('Faixa etária'):
             compatibilidade_counter += 1
         testes += 1
 
-        if pet['tipo'] == preferencias.get('tipo'):
-            compatibilidade_counter += 1
-        testes += 1
-
-        if not pet.get('exige_experiencia', False) or preferencias.get('experiencia', False):
+        if pet['Tipo'] == preferencias.get('Tipo'):
             compatibilidade_counter += 1
         testes += 1
 
 
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
 
-
         compatibilidades.append({
-            'adotante': adotante,
-            'compatibilidade': round(compatibilidade_em_porcentagem, 2)
+            'Compatibilidade': round(compatibilidade_em_porcentagem, 2),
+            'Adotante': adotante
         })
 
-    return sorted(compatibilidades, key=lambda d: d['compatibilidade'], reverse=True)
+    return (sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True), pet)
 
 
 
@@ -124,45 +119,42 @@ def encontrar_matches_adotante(adotante):
         return f"Não foi possível encontrar matches para o adotante {adotante}\n O arquivo pets.json não contém entradas."
 
     compatibilidades = []
-    preferencias = adotante.get('preferencias', {})
+    preferencias = adotante.get('Preferências', {})
 
     for pet in pets_disponiveis:
         compatibilidade_counter = 0
         testes = 0
 
-        if pet['porte'] == preferencias.get('porte'):
+        if pet['Porte'] == preferencias.get('Porte'):
             compatibilidade_counter += 1
         testes += 1
 
-        if pet.get('personalidade', '').lower() in [t.lower() for t in preferencias.get('temperamento', [])]:
+        if pet.get('Personalidade', '').lower() in [t.lower() for t in preferencias.get('Temperamento', [])]:
             compatibilidade_counter += 1
         testes += 1
 
-        if pet['sexo'].lower() == preferencias.get('sexo', '').lower():
+        if pet['Sexo'].lower() == preferencias.get('Sexo', '').lower():
             compatibilidade_counter += 1
         testes += 1
 
-        faixa_pet = mapear_idade_para_faixa(pet['idade'])
-        if faixa_pet == preferencias.get('faixa_etaria'):
+        faixa_pet = mapear_idade_para_faixa(pet['Idade'])
+        if faixa_pet == preferencias.get('Faixa etária'):
             compatibilidade_counter += 1
         testes += 1
 
-        if pet['tipo'] == preferencias.get('tipo'):
+        if pet['Tipo'] == preferencias.get('Tipo'):
             compatibilidade_counter += 1
         testes += 1
 
-        if not pet.get('exige_experiencia', False) or preferencias.get('experiencia', False):
-            compatibilidade_counter += 1
-        testes += 1
-
+        
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
 
         compatibilidades.append({
-            'pet': pet,
-            'compatibilidade': round(compatibilidade_em_porcentagem, 2)
+            'Compatibilidade': round(compatibilidade_em_porcentagem, 2),
+            'Pet': pet,
         })
 
-    return sorted(compatibilidades, key=lambda d: d['compatibilidade'], reverse=True)
+    return (sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True), adotante)
 
 
 # -------------------------------------------------------
@@ -198,4 +190,4 @@ def visualizar_adotantes():
         print("\n--- 📋 Lista de Adotantes Registrados ---\n")
         for adotante in adotantes:
             print('-' * 40)
-            pprint.pprint(adotantes)
+            pprint.pprint(adotante)

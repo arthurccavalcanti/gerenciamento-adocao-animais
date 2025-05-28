@@ -25,7 +25,10 @@ def crud_pets(tipo_operacao: str):
         return deletar_pet()
     elif tipo_operacao == "ler":
         print("--- LEITURA DE PET ---")
-        return ler_pet()
+        resultado = ler_pet()
+        if resultado is None:
+            return "Não foi possível realizar a leitura. Nenhum pet cadastrado."
+        return resultado
     else:
         return "Operação inválida. Tente novamente."
 
@@ -52,14 +55,24 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['Nome'] = input("Digite o nome do pet:\n>>> ")
+    while True:
+        nome = input("Digite o nome do pet:\n>>> ")
+        if nome.isalpha():
+            pets['Nome'] = nome
+            break
+        else:
+            print("Nome inválido! Digite apenas letras, sem números ou caracteres especiais.\n")
     while True:
         idade = input("Digite a idade do pet:\n>>> ")
         try:
-            pets['Idade'] = int(idade)
-            break
+            idade_int = int(idade)
+            if idade_int < 0:
+                print("Idade inválida! Tem que ser um número inteiro não negativo\n")
+            else:
+                pets['Idade'] = idade_int
+                break
         except ValueError:
-            print("Idade inválida! Tem que ser um número inteiro\n")
+            print("Idade inválida! Tem que ser um número inteiro não negativo\n")
 
     while True:
         print("SEXO:")
@@ -107,8 +120,20 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['Raça'] = input("DIGITE A RAÇA:\n>>> ")
-    pets['Cor'] = input("DIGITE A COR PREDOMINANTE:\n>>> ")
+    while True:
+        raca = input("DIGITE A RAÇA:\n>>> ")
+        if raca.isalpha():
+            pets['Raça'] = raca
+            break
+        else:
+            print("Raça inválida! Digite apenas letras, sem números ou caracteres especiais.\n")
+    while True:
+        cor = input("DIGITE A COR PREDOMINANTE:\n>>> ")
+        if cor.isalpha():
+            pets['Cor'] = cor
+            break
+        else:
+            print("Cor inválida! Digite apenas letras, sem números ou caracteres especiais.\n")
 
     opcoes_porte = {
         "1": "pequeno",
@@ -140,10 +165,15 @@ def gerar_novo_id(pets_json):
         return len(pets_json) + 1
 
 def ler_pet():
+    pets = armazenamento.carregar_arquivo('pets.json')
+
+    if not pets:
+        print("Não há pets cadastrados.")
+        return None
+
     while True:
-        id_pet = int(input("Digite a ID do pet: "))
         try:
-            id_pet = int(id_pet)
+            id_pet = int(input("Digite a ID do pet: "))
             pet = armazenamento.ler_entrada(id_pet, 'ID', 'pets.json')     
             if pet is None:                                               
                 while True:
@@ -162,10 +192,14 @@ def ler_pet():
                 return ('ler', pet)
         except ValueError:
             print("A ID fornecida deve ser um número. Tente novamente.")
-            continue
 
-def atualizar_pet():                   
-    pet_antigo = ler_pet()[1]  
+def atualizar_pet():
+    resultado = ler_pet()
+    if resultado is None:
+        return "Não há pets para atualizar."
+    
+    
+    pet_antigo = resultado[1]  
     novo_pet = pet_antigo.copy()
 
     while True:
@@ -274,7 +308,12 @@ def atualizar_pet():
                 print("Opção inválida.")
 
 def deletar_pet():
-    pet_excluido = ler_pet()[1]  
+    resultado = ler_pet()
+    if resultado is None:
+        return "Não há pets para deletar."
+    
+    
+    pet_excluido = resultado[1]  
 
     print(f"Deletando pet:\n {pet_excluido}")
     if armazenamento.deletar_entrada(int(pet_excluido['ID']), 'ID', 'pets.json'):

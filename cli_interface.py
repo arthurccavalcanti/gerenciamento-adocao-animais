@@ -148,11 +148,14 @@ def exibir_resultado(resultado, tipo):
             print("\nHouve um erro com a sua operação: ")
             print(resultado)
     elif tipo == 'match':
-        if resultado is not None and isinstance(resultado, list):
+        if resultado is not None and isinstance(resultado, tuple):
             print("\n===== 🔍 MELHORES MATCHES =====\n")
-            for i, match in enumerate(resultado[:4]):
-                print(f"{i+1}º Match --------------\n")
-                pprint.pprint(match,'\n')
+            matches, perfil = resultado
+            print("Perfil em busca de matches:\n")
+            pprint.pprint(perfil)
+            for i, match in enumerate(matches[:4]):
+                print(f"\n{i+1}º Match --------------\n")
+                pprint.pprint(match)
         else:
             print("\nHouve um erro ao fazer o match:")
             print(resultado)
