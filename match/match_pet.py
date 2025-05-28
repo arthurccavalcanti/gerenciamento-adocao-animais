@@ -98,17 +98,11 @@ def encontrar_matches_pet(pet):
         testes += 1
 
 
-        '''
-        if not pet.get('exige_experiencia', False) or preferencias.get('experiencia', False):
-            compatibilidade_counter += 1
-        testes += 1
-        '''
-
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
 
         compatibilidades.append({
-            'Adotante': adotante,
-            'Compatibilidade': round(compatibilidade_em_porcentagem, 2)
+            'Compatibilidade': round(compatibilidade_em_porcentagem, 2),
+            'Adotante': adotante
         })
 
     return (sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True), pet)
@@ -152,20 +146,15 @@ def encontrar_matches_adotante(adotante):
             compatibilidade_counter += 1
         testes += 1
 
-        '''
-        if not pet.get('exige_experiencia', False) or preferencias.get('Experiência', False):
-            compatibilidade_counter += 1
-        testes += 1
-        '''
         
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
 
         compatibilidades.append({
+            'Compatibilidade': round(compatibilidade_em_porcentagem, 2),
             'Pet': pet,
-            'Compatibilidade': round(compatibilidade_em_porcentagem, 2)
         })
 
-    return sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True)
+    return (sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True), adotante)
 
 
 # -------------------------------------------------------
@@ -201,4 +190,4 @@ def visualizar_adotantes():
         print("\n--- 📋 Lista de Adotantes Registrados ---\n")
         for adotante in adotantes:
             print('-' * 40)
-            pprint.pprint(adotantes)
+            pprint.pprint(adotante)

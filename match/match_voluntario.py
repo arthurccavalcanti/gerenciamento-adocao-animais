@@ -1,5 +1,7 @@
 import pprint
 import armazenamento_json as armazenamento
+import requests
+from perfis.voluntarios import buscar_endereco_por_cep
 
 
 def match_voluntario():
@@ -50,6 +52,9 @@ def ver_matches_voluntario():
         return "Oops, parece que não há entradas no arquivo voluntarios.json"
     return encontrar_matches_voluntario(voluntario)
      
+def calcular_distancia(cep1, cep2):
+    return
+
 
 def encontrar_matches_voluntario(voluntario):
 
@@ -65,21 +70,17 @@ def encontrar_matches_voluntario(voluntario):
     for adotante in possiveis_adotantes:
         compatibilidade_counter = 0
         testes = 0
-        
-        '''
-        preferencias = adotante.get('preferencias', {})
-        if pet['porte'] == preferencias.get('porte'):
-            compatibilidade_counter += 1
-        testes += 1 
 
-        distancia_max = 5       # maxima distancia de 5km
-
-
-        if voluntario['sexo'] == adotante['sexo']:
+        if voluntario['Sexo'] == adotante['Sexo']:
             compatibilidade_counter += 1
         testes += 1
 
-        if (voluntario['idade'] )
+        if abs(voluntario['Idade'] - adotante['Idade']) < 10:
+            compatibilidade_counter +=1
+        testes += 1
+        
+        '''
+        distancia_max = 5       # maxima distancia de 5km
 
         if distancia_total(adotante['endereco'], voluntario['endereco']) < distancia_max:
             compatibilidade_counter += 1
@@ -90,11 +91,11 @@ def encontrar_matches_voluntario(voluntario):
 
 
         compatibilidades.append({
-            'adotante': adotante,
-            'compatibilidade': round(compatibilidade_em_porcentagem, 2)
+            'Compatibilidade': round(compatibilidade_em_porcentagem, 2),
+            'Adotante': adotante
         })
 
-    return sorted(compatibilidades, key=lambda d: d['compatibilidade'], reverse=True)
+    return (sorted(compatibilidades, key=lambda d: d['Compatibilidade'], reverse=True), voluntario)
 
 
 
