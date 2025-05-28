@@ -24,6 +24,7 @@ def crud_voluntarios(tipo_operacao: str):
     if tipo_operacao == "criar":
         print("--- CRIAÇÃO DE VOLUNTÁRIO ---")
         cpf = solicitar_cpf()
+        cpf = int(cpf)
 
         nome = input("Nome completo: ").strip()
         while tem_algarismos(nome):
@@ -62,7 +63,7 @@ def crud_voluntarios(tipo_operacao: str):
         
         print("Deixe em branco os campos que você **não** deseja alterar.")
         novo_nome = input("Novo nome completo: ").strip()
-        novo_nascimento = input("Nova data de nascimento: ").strip()
+        novo_nascimento = input("Nova data de nascimento: ").strip() # não está validado
         # novo_endereco = input("Novo endereço: ").strip()
         novo_email = input("Novo e-mail: ").strip()
         novo_telefone = input("Novo telefone: ").strip()
@@ -117,7 +118,6 @@ def solicitar_cpf():
     while True:
         cpf = input("Digite o CPF: ").strip()
         if validar_cpf(cpf):
-            print("CPF cadastrado!")
             return re.sub(r'[^0-9]', '', cpf)
         else:
             print("CPF inválido, tente novamente.")

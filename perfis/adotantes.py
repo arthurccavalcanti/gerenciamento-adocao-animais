@@ -52,15 +52,15 @@ def listar_todos_adotantes():
         for adotante in adotantes:
             print("-"*50)
             print(f"CPF: {adotante['CPF']}")
-            print(f"Nome completo: {adotante['nome']}")
-            print(f"Idade: {adotante['idade']}")
-            print(f"Profissão: {adotante['profissao']}")
-            print(f"Endereço: {adotante['endereco']}")
-            print(f"Telefone: {adotante['telefone']}")
-            print(f"Data de cadastro: {adotante['data_cadastro']}")
-            print(f"Data de nascimento: {adotante['nascimento']}")
-            print(f"E-mail: {adotante['email']}")
-            for preferencia in adotante['preferencias']:
+            print(f"Nome completo: {adotante['Nome']}")
+            print(f"Idade: {adotante['Idade']}")
+            print(f"Profissão: {adotante['Profissão']}")
+            print(f"Endereço: {adotante['Endereço']}")
+            print(f"Telefone: {adotante['Telefone']}")
+            print(f"Data de cadastro: {adotante['Data de cadastro']}")
+            print(f"Data de nascimento: {adotante['Data de nascimento']}")
+            print(f"E-mail: {adotante['E-mail']}")
+            for preferencia in adotante['Preferências']:
                 print(f"Preferência: {preferencia}\n")
         print('=' * 50)
 
@@ -85,8 +85,10 @@ def cadastrar_adotante():
         nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
         while not validar_data_nascimento(nascimento):
             nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+        data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y") 
+
         hoje = datetime.today()
-        idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
+        idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
         
         endereco = input("Digite o CEP (somente números): \n")
         while not validar_cep(endereco):
@@ -94,7 +96,7 @@ def cadastrar_adotante():
             endereco = input("Digite o CEP (somente números): \n")
 
         telefone = input("Digite o telefone (somente números): ")
-        while not telefone(telefone):
+        while not validar_telefone(telefone):
             print("Telefone inválido! Deve conter ao menos 8 dígitos.\n")
             telefone = input("Digite o telefone (somente números): ")
         telefone = int(telefone)
@@ -137,14 +139,15 @@ def cadastrar_adotante():
                 break
             else:
                 print("Opção inválida.")
+                experiencia = input("Tem experiência com animais? (s/n): ").lower()
 
         preferencias = {
-            "tipo": tipo,
-            "porte": porte,
-            "temperamento": temperamento,
-            "sexo": sexo,
-            "faixa_etaria": faixa_etaria,
-            "experiencia": experiencia
+            "Tipo": tipo,
+            "Porte": porte,
+            "Temperamento": temperamento,
+            "Sexo": sexo,
+            "Faixa etária": faixa_etaria,
+            "Experiência": experiencia
         }
 
         adotante = {
@@ -154,9 +157,9 @@ def cadastrar_adotante():
             "Profissão": profissao,
             "Endereço": endereco,
             "Telefone": telefone,
-            "Email": email,
+            "E-mail": email,
             "Data de cadastro": data_cadastro,
-            "Data de nascimento":nascimento,
+            "Data de nascimento": str(data_nascimento),
             "Preferências": preferencias
         }
 
@@ -201,8 +204,11 @@ def atualizar_adotante():
     nascimento = input("Nova data de nascimento (DD/MM/AAAA): ").strip()
     while not validar_data_nascimento(nascimento):
         nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+    data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y") 
+
     hoje = datetime.today()
-    idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
+    idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
+
 
     profissao = input("Digite a nova profissão: \n")
     while tem_algarismos(profissao):
@@ -233,8 +239,8 @@ def atualizar_adotante():
         "Profissão": profissao,
         "Endereço": endereco,
         "Telefone": telefone,
-        "Email": email,
-        "Data de nascimento": nascimento
+        "E-mail": email,
+        "Data de nascimento": str(data_nascimento.date())
     }
 
     print("\nConfira as alterações:")
@@ -245,12 +251,13 @@ def atualizar_adotante():
     while True:
         if confirm == "s":
             if armazenamento.editar_entrada(int(cpf), 'CPF', novos_dados, "adotantes.json"):
-                return ("atualizar", (dados_antigos, dados_atuais))
+                return ("editar", (dados_antigos, dados_atuais))
             return "Erro ao atualizar adotante."
         elif confirm == "n":
             return f"Atualização do adotante com id {cpf} cancelada."
         else:
-            print('Opção inválida. Digite \'s\' ou \'n\'')
+            print('Opção inválida. Digite "s" ou "n"')
+            confirm = input("Deseja prosseguir com a atualização? (s/n): ").lower()
 
 # ------------------------------------------------------------
 
@@ -283,7 +290,7 @@ def ler_adotante():
     cpf = input("Digite o CPF do adotante: ")
     while not validar_cpf(cpf):
         cpf = input("CPF inválido. Digite o CPF do adotante: ")
-    adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
+    adotante = armazenamento.ler_entrada(int(cpf), 'CPF', "adotantes.json")
     if adotante is not None:
         return ('ler', adotante)
     return f"Erro ao ler adotante com CPF {cpf}"

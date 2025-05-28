@@ -142,7 +142,7 @@ def exibir_resultado(resultado, tipo):
                 print("Dados alterados: ", dados_antigos)
                 print("Dados novos: ", dados_novos)
             elif operacao == 'deletar':
-                print("---Você exclui com sucesso estes dados:")
+                print("---Você excluiu com sucesso estes dados:")
                 print(dados)
         else:
             print("Houve um erro com a sua operação: ")
