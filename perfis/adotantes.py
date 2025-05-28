@@ -238,7 +238,7 @@ def atualizar_adotante():
 
 def excluir_adotante():
     try:
-        cpf = entrada_usuario("Digite o CPF do adotante a ser excluído (ou digite 'cancelar' para voltar): ")
+        cpf = entrada_usuario("Digite o CPF do adotante a ser excluído ( ou digite 'cancelar' para voltar): ")
         if not cpf.isdigit() or len(cpf) < 11 or not validar_cpf(cpf):
             return "CPF inválido."
 
