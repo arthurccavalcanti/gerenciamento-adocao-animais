@@ -283,7 +283,6 @@ def atualizar_pet():
 def deletar_pet():
     resultado = ler_pet()
     if resultado is None:
-        print("Não há pets para deletar.")
         return "Não há pets para deletar."
     
     
