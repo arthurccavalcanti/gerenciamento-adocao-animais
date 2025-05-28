@@ -155,7 +155,7 @@ def ler_pet():
             pet = armazenamento.ler_entrada(id_pet, 'ID', 'pets.json')     
             if pet is None:                                               
                 while True:
-                    print("ID não encontrada. Deseja listar as IDs disponíveis?")
+                    print("Deseja listar as IDs disponíveis?")
                     print("1 - Sim")
                     print("2 - Não")
                     deseja_listar = input(">>> ")
