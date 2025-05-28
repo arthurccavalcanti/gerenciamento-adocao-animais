@@ -171,8 +171,13 @@ def ler_pet():
         except ValueError:
             print("A ID fornecida deve ser um número. Tente novamente.")
 
-def atualizar_pet():                   
-    pet_antigo = ler_pet()[1]  
+def atualizar_pet():
+    resultado = ler_pet()
+    if resultado is None:
+        return "Não há pets para atualizar."
+    
+    
+    pet_antigo = resultado[1]  
     novo_pet = pet_antigo.copy()
 
     while True:
