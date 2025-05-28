@@ -93,11 +93,13 @@ def cadastrar_adotante():
         while tem_algarismos(profissao):
             profissao = input("Profissão inválida! Não deve conter algarismos.\n Digite a profissão: \n")
 
-        nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
+        nascimento = input("Digite a data de nascimento (DD/MM/AAAA): ").strip()
         while not validar_data_nascimento(nascimento):
-            nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+            nascimento = input("Data inválida. Tente novamente.\n Digite a data de nascimento (DD/MM/AAAA): ")
+        data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y") 
+
         hoje = datetime.today()
-        idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
+        idade = hoje.year - data_nascimento.year - ((hoje.month, hoje.day) < (data_nascimento.month, data_nascimento.day))
 
         endereco = input("Digite o CEP (somente números): \n").strip()
         while not validar_cep(endereco):
