@@ -110,7 +110,7 @@ def crud_voluntarios(tipo_operacao: str):
         return ('ler', voluntario)
 
 
-# -----------------------------------------------------
+
 
 
 def solicitar_cpf():
@@ -256,7 +256,7 @@ def validar_data_nascimento(nascimento):
         print("Formato inválido. Use DD/MM/AAAA.")
         return False
 
-# ------------------------------------------------------------------------------
+
 
 def criar_voluntario(cpf, nome, nascimento, endereco, disponibilidade, data_cadastro, email, telefone, nome_arquivo_json):
     data_nascimento = datetime.strptime(nascimento, "%d/%m/%Y")

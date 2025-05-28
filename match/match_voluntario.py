@@ -1,7 +1,5 @@
 import pprint
 import armazenamento_json as armazenamento
-import requests
-from perfis.voluntarios import buscar_endereco_por_cep
 
 
 def match_voluntario():
@@ -19,7 +17,6 @@ def match_voluntario():
             visualizar_voluntarios()
         elif opcao == '2':
             print("AINDA ESTAMOS TRABALHANDO NESTE RECURSO... TENTE MAIS TARDE")
-            #ver_matches_voluntarios()
         elif opcao == '3':
             print("Saindo do menu de match. Até logo!")
             return 'cancelar'
@@ -71,21 +68,9 @@ def encontrar_matches_voluntario(voluntario):
         compatibilidade_counter = 0
         testes = 0
 
-        if voluntario['Sexo'] == adotante['Sexo']:
-            compatibilidade_counter += 1
-        testes += 1
-
         if abs(voluntario['Idade'] - adotante['Idade']) < 10:
             compatibilidade_counter +=1
         testes += 1
-        
-        '''
-        distancia_max = 5       # maxima distancia de 5km
-
-        if distancia_total(adotante['endereco'], voluntario['endereco']) < distancia_max:
-            compatibilidade_counter += 1
-        testes += 1
-        '''
         
         compatibilidade_em_porcentagem = (compatibilidade_counter / testes) * 100
 

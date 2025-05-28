@@ -45,7 +45,7 @@ def crud_adotantes(tipo_operacao: str):
     else:
         return "Operação inválida. Tente novamente."
 
-# ----------------------------------------------------------
+
 
 def validar_telefone(telefone):
     return str(telefone).isdigit() and len(str(telefone)) >= 8

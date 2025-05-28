@@ -14,17 +14,7 @@ def get_caminho_arquivo(nome_arquivo: str) -> Path:
     return ARMAZENAMENTO_DIR / nome_arquivo
 
 def carregar_arquivo(nome_json: str) -> Optional[Union[List, Dict]]:
-    """
-    Carrega o conteúdo de um arquivo JSON.
-    Se o arquivo não existir, cria um novo com uma lista vazia.
-    
-    Args:
-        nome_json (str): Nome do arquivo JSON (incluindo extensão)
-        
-    Returns:
-        Union[List, Dict]: Conteúdo do arquivo JSON
-        None: Em caso de erro crítico
-    """
+
     caminho_arquivo = get_caminho_arquivo(nome_json)
     
     for tentativa in range(3):
@@ -132,17 +122,7 @@ def editar_entrada(id: int, chave_id: str, dados_atualizados: Dict, nome_json: s
         return False
 
 def deletar_entrada(id: int, chave_id: str, nome_json: str) -> bool:
-    """
-    Remove uma entrada do arquivo JSON.
-    
-    Args:
-        id (int): ID da entrada a ser removida
-        chave_id (str): Nome da chave que contém o ID
-        nome_json (str): Nome do arquivo JSON
-        
-    Returns:
-        bool: True se bem sucedido, False caso contrário
-    """
+
     conteudo = carregar_arquivo(nome_json)
     if conteudo is None:
         return False
@@ -168,7 +148,6 @@ def deletar_entrada(id: int, chave_id: str, nome_json: str) -> bool:
         return False
 
 def verificar_configuracao():
-    """Verifica as configurações de armazenamento"""
     print("\n=== VERIFICAÇÃO DE CONFIGURAÇÃO ===")
     print(f"Diretório base: {BASE_DIR}")
     print(f"Diretório de armazenamento: {ARMAZENAMENTO_DIR}")
