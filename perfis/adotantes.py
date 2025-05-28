@@ -1,6 +1,8 @@
 import re
 import sys
 import os
+from perfis.voluntarios import validar_cpf, validar_email, tem_algarismos, validar_data_nascimento
+from datetime import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -8,7 +10,7 @@ import armazenamento_json
 
 def crud_adotantes(tipo_operacao: str):
     while True:
-        print("Deseja visualizar os dados antes da operação?")
+        print("Deseja visualizar os dados de adotantes antes da operação?")
         print("1 - Sim")
         print("2 - Não")
         deseja_listar = input(">>> ")
@@ -40,12 +42,6 @@ def crud_adotantes(tipo_operacao: str):
 def validar_contato(contato):
     return str(contato).isdigit() and len(str(contato)) >= 8
 
-def validar_cpf(cpf):
-    return re.match(r"^\d{11}$", cpf) is not None
-
-def validar_idade(idade):
-    return idade.isdigit() and int(idade) > 0
-
 def validar_cep(cep):
     return re.match(r"^\d{8}$", cep) is not None
 
@@ -68,7 +64,10 @@ def listar_todos_adotantes():
             print(f"Idade: {adotante['idade']}")
             print(f"Profissão: {adotante['profissao']}")
             print(f"Endereço: {adotante['endereco']}")
-            print(f"Contato: {adotante['contato']}")
+            print(f"Telefone: {adotante['telefone']}")
+            print(f"Data de cadastro: {adotante['data_cadastro']}")
+            print(f"Data de nascimento: {adotante['nascimento']}")
+            print(f"E-mail: {adotante['email']}")
             
             print("Preferências:")
             for chave, valor in adotante['preferencias'].items():
@@ -79,44 +78,44 @@ def listar_todos_adotantes():
 
 # ------------------------------------------------------------
 
-def ler_adotante():
-    cpf = input("Digite o CPF do adotante: ").strip()
-    while not validar_cpf(cpf):
-        cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
-    adotante = armazenamento_json.ler_entrada(cpf, 'CPF', "adotantes.json")
-    if adotante is not None:
-        return ('ler', adotante)
-    return f"Erro ao ler adotante com CPF {cpf}"
-
-# --------------------------------
-
 def cadastrar_adotante():
     while True:
         cpf = input("Digite o CPF do adotante: ").strip()
         while not validar_cpf(cpf):
             cpf = input("CPF inválido. Digite o CPF do adotante: ").strip()
-
         cpf = int(cpf)
-        nome = input("Digite o nome completo: \n")
 
-        idade = input("Digite a idade: \n").strip()
-        while not validar_idade(idade):
-            idade = input("Idade inválida!\nDigite a idade: \n").strip()
-        idade = int(idade)
+        nome = input("Digite o nome completo: \n")
+        while tem_algarismos(nome):
+            nome = input("Nome inválido! Não deve conter algarismos.\n Digite o nome completo: \n")
 
         profissao = input("Digite a profissão: \n")
+        while tem_algarismos(profissao):
+            profissao = input("Profissão inválida! Não deve conter algarismos.\n Digite a profissão: \n")
+
+        nascimento = input("Data de nascimento (DD/MM/AAAA): ").strip()
+        while not validar_data_nascimento(nascimento):
+            nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+        hoje = datetime.today()
+        idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
 
         endereco = input("Digite o CEP (somente números): \n").strip()
         while not validar_cep(endereco):
             print("CEP inválido! Deve conter 8 dígitos.\n")
             endereco = input("Digite o CEP (somente números): \n").strip()
 
-        contato = input("Digite o contato (somente números): ").strip()
-        while not validar_contato(contato):
-            print("Contato inválido! Deve conter ao menos 8 dígitos.\n")
-            contato = input("Digite o contato (somente números): ").strip()
-        contato = int(contato)
+        telefone = input("Digite o telefone (somente números): ")
+        while not telefone(telefone):
+            print("Telefone inválido! Deve conter ao menos 8 dígitos.\n")
+            telefone = input("Digite o telefone (somente números): ")
+        telefone = int(telefone)
 
+        email = input("Digite o e-mail: ").strip()
+        while not validar_email(email):
+            print("E-mail inválido.")
+            email = input("Digite o e-mail: ").strip()
+
+        data_cadastro = datetime.today().strftime("%d/%m/%Y")
         print("\n--- Preferências do adotante ---")
 
         tipo = input("Prefere qual tipo de animal? (canino/felino): ").strip().lower()
@@ -154,12 +153,15 @@ def cadastrar_adotante():
 
         adotante = {
             "CPF": cpf,
-            "nome": nome,
-            "idade": idade,
-            "profissao": profissao,
-            "endereco": endereco,
-            "contato": contato,
-            "preferencias": preferencias
+            "Nome": nome,
+            "Idade": idade,
+            "Profissão": profissao,
+            "Endereço": endereco,
+            "Telefone": telefone,
+            "Email": email,
+            "Data de cadastro": data_cadastro,
+            "Data de nascimento":nascimento,
+            "Preferências": preferencias
         }
 
         print("\nConfira os dados inseridos:")
@@ -171,14 +173,14 @@ def cadastrar_adotante():
             if confirm == "s":
                 if armazenamento_json.criar_entrada(adotante, "adotantes.json"):
                     return ("criar", adotante)
-                return "Erro ao criar entrada."
+                return "Erro ao criar entrada em adotantes.json."
             elif confirm == "n":
-                return "Cadastro cancelado."
+                return "Cadastro cancelado pelo usuário."
             else:
                 print("Opção inválida.")
                 confirm = input("Deseja salvar esse adotante? (s/n): ").strip().lower()
 
-# --------------------------------
+# ------------------------------------------------------------
 
 def atualizar_adotante():
     cpf = input("Digite o CPF do adotante a ser atualizado: ").strip()
@@ -197,15 +199,18 @@ def atualizar_adotante():
         print(f"{k}: {v}")
 
     nome = input("Novo nome: ")
+    while tem_algarismos(nome):
+        nome = input("Novo nome inválido! Não deve conter algarismos.\n Novo nome: \n")
 
-    while True:
-        idade = input("Nova idade: ").strip()
-        if validar_idade(idade):
-            idade = int(idade)
-            break
-        print("Idade inválida!")
+    nascimento = input("Nova data de nascimento (DD/MM/AAAA): ").strip()
+    while not validar_data_nascimento(nascimento):
+        nascimento = input("Data inválida. Tente novamente.\n Data de nascimento (DD/MM/AAAA): ")
+    hoje = datetime.today()
+    idade = hoje.year - nascimento.year - ((hoje.month, hoje.day) < (nascimento.month, nascimento.day))  
 
-    profissao = input("Nova profissão: ")
+    profissao = input("Digite a nova profissão: \n")
+    while tem_algarismos(profissao):
+        profissao = input("Nova profissão inválida! Não deve conter algarismos.\n Digite a nova profissão: \n")
 
     while True:
         endereco = input("Novo CEP (somente números): ").strip()
@@ -214,18 +219,26 @@ def atualizar_adotante():
         print("CEP inválido! Deve conter 8 dígitos.")
 
     while True:
-        contato = input("Novo contato (somente números): ").strip()
-        if validar_contato(contato):
-            contato = int(contato)
+        telefone = input("Novo telefone (somente números): ")
+        if validar_telefone(telefone):
+            telefone = int(telefone)
             break
-        print("Contato inválido! Deve conter ao menos 8 dígitos.")
+        print("Telefone inválido! Deve conter ao menos 8 dígitos.")
+
+    while True:
+        email = input("Novo email: ")
+        if validar_email(email):
+            break
+        print("Email inválido! Tente novamente.")
 
     novos_dados = {
-        "nome": nome,
-        "idade": idade,
-        "profissao": profissao,
-        "endereco": endereco,
-        "contato": contato
+        "Nome": nome,
+        "Idade": idade,
+        "Profissão": profissao,
+        "Endereço": endereco,
+        "Telefone": telefone,
+        "Email": email,
+        "Data de nascimento": nascimento
     }
 
     print("\nConfira as alterações:")
@@ -244,7 +257,7 @@ def atualizar_adotante():
             print('Opção inválida. Digite \'s\' ou \'n\'')
             confirm = input("Deseja prosseguir com a atualização? (s/n): ").strip().lower()
 
-# --------------------------------
+# ------------------------------------------------------------
 
 def excluir_adotante():
     cpf = input("Digite o CPF do adotante: ").strip()
@@ -273,6 +286,15 @@ def excluir_adotante():
             print("Opção inválida.")
             confirm = input("Deseja realmente excluir esse adotante? (s/n): ").strip().lower()
 
+# ------------------------------------------------------------
+def ler_adotante():
+    cpf = input("Digite o CPF do adotante: ")
+    while not validar_cpf(cpf):
+        cpf = input("CPF inválido. Digite o CPF do adotante: ")
+    adotante = armazenamento.ler_entrada(cpf, 'CPF', "adotantes.json")
+    if adotante is not None:
+        return ('ler', adotante)
+    return f"Erro ao ler adotante com CPF {cpf}"
 
 # --------------------------------
 

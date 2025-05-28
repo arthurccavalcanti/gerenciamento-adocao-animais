@@ -1,9 +1,8 @@
 import armazenamento_json as armazenamento
-from perfis.adotantes import validar_idade as validar_idade
 
 def crud_pets(tipo_operacao: str):
     while True:
-        print("Deseja visualizar os dados antes da operação?")
+        print("Deseja visualizar os dados de pets antes da operação?")
         print("1 - Sim")
         print("2 - Não")
         deseja_listar = input(">>> ")
@@ -53,14 +52,14 @@ def adicionar_pet():
         else:
             print("Opção inválida. Tente novamente.")
 
-    pets['nome'] = input("DIGITE O NOME DO PET:\n>>> ")
+    pets['nome'] = input("Digite o nome do pet:\n>>> ")
     while True:
-        idade = input("Digite a idade do PET:\n>>> ")
-        if not validar_idade(idade):
-            print("Idade inválida!\n")
-            continue
-        pets['idade'] = int(idade)
-        break
+        idade = input("Digite a idade do pet:\n>>> ")
+        try:
+            idade = int(idade)
+            break
+        except ValueError:
+            print("Idade inválida! Tem que ser um número inteiro\n")
 
     while True:
         print("SEXO:")

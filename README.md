@@ -75,18 +75,22 @@ O arquivo pets.json tem os seguintes campos:
 O arquivo voluntário.json tem os seguintes campos:
 - cpf
 - nome completo
-- data de nascimento
 - idade
 - endereço
-- disponibilidade
-- data cadastro
-- email
 - telefone
+- email
+- data cadastro
+- data de nascimento
+- disponibilidade
 
 O arquivo adotantes.json tem os seguintes campos:
-- nome
 - cpf
+- nome completo
 - idade
-- profissão
 - endereço
-- contato
+- telefone
+- email
+- data de cadastro
+- data de nascimento
+- profissão
+- preferências
