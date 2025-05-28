@@ -75,9 +75,11 @@ def encontrar_matches_voluntario(voluntario):
         distancia_max = 5       # maxima distancia de 5km
 
 
-        if adotante['sexo'] == voluntario['sexo']:
+        if voluntario['sexo'] == adotante['sexo']:
             compatibilidade_counter += 1
         testes += 1
+
+        if (voluntario['idade'] )
 
         if distancia_total(adotante['endereco'], voluntario['endereco']) < distancia_max:
             compatibilidade_counter += 1

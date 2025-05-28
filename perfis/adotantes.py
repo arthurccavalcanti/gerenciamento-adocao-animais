@@ -60,14 +60,14 @@ def listar_todos_adotantes():
         for adotante in adotantes:
             print("-" * 50)
             print(f"CPF: {adotante['CPF']}")
-            print(f"Nome completo: {adotante['nome']}")
-            print(f"Idade: {adotante['idade']}")
-            print(f"Profissão: {adotante['profissao']}")
-            print(f"Endereço: {adotante['endereco']}")
-            print(f"Telefone: {adotante['telefone']}")
-            print(f"Data de cadastro: {adotante['data_cadastro']}")
-            print(f"Data de nascimento: {adotante['nascimento']}")
-            print(f"E-mail: {adotante['email']}")
+            print(f"Nome completo: {adotante['Nome']}")
+            print(f"Idade: {adotante['Idade']}")
+            print(f"Profissão: {adotante['Profissão']}")
+            print(f"Endereço: {adotante['Endereço']}")
+            print(f"Telefone: {adotante['Telefone']}")
+            print(f"Data de cadastro: {adotante['Data de cadastro']}")
+            print(f"Data de nascimento: {adotante['Data de nascimento']}")
+            print(f"Email: {adotante['Email']}")
             
             print("Preferências:")
             for chave, valor in adotante['Preferências'].items():
@@ -162,7 +162,7 @@ def cadastrar_adotante():
             "Telefone": telefone,
             "Email": email,
             "Data de cadastro": data_cadastro,
-            "Data de nascimento": str(data_nascimento),
+            "Data de nascimento": str(data_nascimento.date()),
             "Preferências": preferencias
         }
 
